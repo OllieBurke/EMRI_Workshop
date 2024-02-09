@@ -453,7 +453,33 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="emri-waveforms-in-a-nutshell">
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-q<span class="w"> </span>condacolab
+<span class="kn">import</span> <span class="nn">condacolab</span>
+<span class="n">condacolab</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
+
+<span class="o">!</span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/BlackHolePerturbationToolkit/FastEMRIWaveforms.git
+<span class="o">!</span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>gcc_linux-64<span class="w"> </span>gxx_linux-64<span class="w"> </span>wget<span class="w"> </span>gsl<span class="w"> </span><span class="nv">lapack</span><span class="o">=</span><span class="m">3</span>.6.1<span class="w"> </span>hdf5<span class="w"> </span>numpy<span class="w"> </span>Cython<span class="w"> </span>scipy<span class="w"> </span>tqdm<span class="w"> </span>jupyter<span class="w"> </span>ipython<span class="w"> </span>h5py<span class="w"> </span>requests<span class="w"> </span>matplotlib<span class="w"> </span>python
+<span class="o">!</span><span class="nb">cd</span><span class="w"> </span>FastEMRIWaveforms<span class="p">;</span><span class="w"> </span>python<span class="w"> </span>setup.py<span class="w"> </span>install<span class="p">;</span>
+
+<span class="o">!</span>python<span class="w">  </span>-m<span class="w"> </span>unittest<span class="w"> </span>discover<span class="w"> </span>./FastEMRIWaveforms
+
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;./FastEMRIWaveforms/&#39;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;/usr/local/lib/python3.10/site-packages/few-1.4.11-py3.10-linux-x86_64.egg/&#39;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">few</span>
+<span class="kn">from</span> <span class="nn">few.trajectory.inspiral</span> <span class="kn">import</span> <span class="n">EMRIInspiral</span>
+</pre></div>
+</div>
+</div>
+</div>
+<a target="_blank" href="https://colab.research.google.com/github/OllieBurke/EMRI_Workshop/blob/main/docs/Auckland_Tutorial.ipynb">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+<section class="tex2jax_ignore mathjax_ignore" id="emri-waveforms-in-a-nutshell">
 <h1>EMRI Waveforms in a nutshell<a class="headerlink" href="#emri-waveforms-in-a-nutshell" title="Permalink to this heading">#</a></h1>
 <p>Here you can find a pedagogical tutorial on creating Extreme Mass Ratio Inspiral (EMRI) waveforms. We will make an extensive use of the Fast EMRI Waveform (FEW) package <a class="reference external" href="https://arxiv.org/abs/2104.04582">arxiv.org/2104.04582</a> <a class="reference external" href="https://arxiv.org/abs/2008.06071">arxiv.org/2008.06071</a>. The waveforms in this package combine a variety of separately accessible modules to form EMRI waveforms on both CPUs and GPUs. Generally, the modules fall into four categories: trajectory, amplitudes, summation, and utilities. Please see the <a class="reference external" href="https://bhptoolkit.org/FastEMRIWaveforms/">documentation</a> for further information on these modules. The code and installation instructions can be found on Github <a class="reference external" href="https://github.com/BlackHolePerturbationToolkit/FastEMRIWaveforms">here</a>.</p>
 <p>In this tutorial will cover the basics of EMRI waveforms. In particular, we will understand:</p>
