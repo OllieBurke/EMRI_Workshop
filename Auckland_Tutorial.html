@@ -330,7 +330,7 @@ document.write(`
 <section id="what-is-an-extreme-mass-ratio-inspiral">
 <h2>What is an Extreme Mass Ratio Inspiral?<a class="headerlink" href="#what-is-an-extreme-mass-ratio-inspiral" title="Permalink to this heading">#</a></h2>
 <p>One of the primary sources for the future space-based gravitational wave detector, the Laser Interferometer Space Antenna, are the inspirals of small compact objects into massive black holes in the centers of galaxies. Such binaries are characterized by a small compact object of mass typically <span class="math notranslate nohighlight">\(\mu\in[1,100]M_\odot\)</span> (for example a solar-mass black hole or a neutron star) inspiralling around a Massive Black Hole (MBH) of mass <span class="math notranslate nohighlight">\(M\in[10^5,10^7]M_\odot\)</span>. Due to their particularly small mass ratio <span class="math notranslate nohighlight">\(\epsilon = \mu / M \sim [10^{-4},10^{-6}]\)</span> these systems are called Extreme Mass Ratio Inspiral (EMRI). Using perturbation theory in the mass ratio <span class="math notranslate nohighlight">\(\epsilon\)</span> it is possible to model the evolution of the orbit of the compact object. On short time-scales (order of the orbital period), the compact object moves on geodesic orbits as if it was a test particles. However, on longer time-scales, it is necessary to take into account the impact of the gravitational field of the compact object on the background and the gravitational wave emission. During the inspiral, the compact object is slowly driven away from geodesic orbits and this deviation can be interpreted as an effective acceleration/force due to the so-called Gravitational <a class="reference external" href="https://arxiv.org/abs/1805.10385">Self-Force</a>.</p>
-<p>Below, in the left panel, we show an example of a small compact object of ten solar masses inspiraling around a spinning MBH of <span class="math notranslate nohighlight">\(10^6\)</span> solar masses. The duration of the animation corresponds to 25 hours. In the right panel, you can see the gravitational wave signal emmitted during this inspirals.</p>
+<p>Below, in the left panel, we show an example of a small compact object of ten solar masses inspiraling around a spinning MBH of <span class="math notranslate nohighlight">\(10^6\)</span> solar masses. The duration of the animation corresponds to 25 hours. In the right panel, you can see the gravitational wave signal emmitted during this inspirals. After you complete this tutorial you will easily be able to build animations like the ones above! If you want to impress your family, friends and possible pets, <a class="reference external" href="https://github.com/OllieBurke/animations.git">click this link</a></p>
 <table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>[Building Trajectories]</p></th>
@@ -450,8 +450,6 @@ with initial condition <span class="math notranslate nohighlight">\(\{\Phi_{\var
     <span class="s2">&quot;use_gpu&quot;</span><span class="p">:</span> <span class="n">use_gpu</span>  <span class="c1"># GPU is available in this class</span>
 <span class="p">}</span>
 
-
-
 <span class="c1"># keyword arguments for Ylm generator (GetYlms)</span>
 <span class="n">Ylm_kwargs</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;assume_positive_m&quot;</span><span class="p">:</span> <span class="kc">False</span>  <span class="c1"># if we assume positive m, it will generate negative m for all m&gt;0</span>
@@ -477,12 +475,15 @@ with initial condition <span class="math notranslate nohighlight">\(\{\Phi_{\var
 <p>\begin{equation}
 p(t), e(t), x_I(t), \Phi_\varphi(t), \Phi_\theta(t), \Phi_r(t)
 \end{equation}</p>
-<p>with initial inputs <span class="math notranslate nohighlight">\(M, \mu, p_0, e_0, \iota_0, \Phi_{\varphi0}, \Phi_{\theta0}, \Phi_{r 0}\)</span>. The trajectory is evolved for a user defined time of <span class="math notranslate nohighlight">\(T\)</span> years or until the last-stable orbit, defined by the separatrix <span class="math notranslate nohighlight">\(p_{sep}\)</span> is reached. If the specified duration <span class="math notranslate nohighlight">\(T\)</span> is longer than the time taken to reach the separatrix, then the orbit will terminate at <span class="math notranslate nohighlight">\(p(t_{\text{sep}}) = p_{\text{sep}}\)</span>.</p>
+<p>with initial inputs <span class="math notranslate nohighlight">\(M, \mu, p_0, e_0, (x_{I})_{0}, \iota_0, \Phi_{\varphi0}, \Phi_{\theta0}, \Phi_{r 0}\)</span>. We remark here that <span class="math notranslate nohighlight">\(x_{I} = \cos(\iota (t))\)</span> for <span class="math notranslate nohighlight">\(\iota\)</span> the inclination angle of the body with respect to the equatorial plane (see image below). The trajectory is evolved for a user defined time of <span class="math notranslate nohighlight">\(T\)</span> years or until the last-stable orbit, defined by the separatrix <span class="math notranslate nohighlight">\(p_{sep}\)</span> is reached. If the specified duration <span class="math notranslate nohighlight">\(T\)</span> is longer than the time taken to reach the separatrix, then the orbit will terminate at <span class="math notranslate nohighlight">\(p(t_{\text{sep}}) = p_{\text{sep}}\)</span>. At a single point in time, the orbit can be thought of as</p>
+<div style="text-align:center;">
+<img src="https://github.com/OllieBurke/EMRI_Workshop/blob/main/docs/images/Orbit.jpg?raw=true" width="700" height="200">
+</div>
 <p><span class="math notranslate nohighlight">\(M\)</span> is the larger mass (<span class="math notranslate nohighlight">\(M_\odot\)</span>), <span class="math notranslate nohighlight">\(\mu\)</span> is the compact object mass (<span class="math notranslate nohighlight">\(M_\odot\)</span>), <span class="math notranslate nohighlight">\(p_0\)</span> is the initial semi-latus rectum (dimensionless), <span class="math notranslate nohighlight">\(e_0\)</span> is the initial eccentricity (dimensionless), and the final three are the initial orbital phases <span class="math notranslate nohighlight">\(\Phi_{\varphi 0}, \Phi_{\theta 0}, \Phi_{r 0}\)</span> (in radians). The three orbital phases can be thought of as “positional elements” of the smaller body when in orbit of the primary black hole. Take, for example, a sphere of radius <span class="math notranslate nohighlight">\(r\)</span>. There are infinitely many points on that sphere for where that radius could be defined. However, only by fixing the angular variables in <span class="math notranslate nohighlight">\(\theta\)</span> and <span class="math notranslate nohighlight">\(\phi\)</span> can you define a specific point on a sphere with spherical polar coordinates <span class="math notranslate nohighlight">\((r,\theta,\phi)\)</span>. It’s similar for the EMRI orbit. If you specify a specific orbital parameters <span class="math notranslate nohighlight">\(p_{0},e_{0},(x_{I})_{0}\)</span> then we need phase variables <span class="math notranslate nohighlight">\(\Phi_{\varphi 0,\theta 0,\phi 0}\)</span> to determine the smaller bodies position with respect to the central massive black hole.</p>
 <p>For the special case of non-rotating black holes (Schwarzchild black holes) the spin parameter is zero <span class="math notranslate nohighlight">\(a=0\)</span>. This will simplify the orbit where the body necessarily remains on the same plane <span class="math notranslate nohighlight">\(x_I=1\)</span>, and the separatrix is located at <span class="math notranslate nohighlight">\(p_\textrm{sep} = 6+2e\)</span>. Given that <span class="math notranslate nohighlight">\(p(t)\)</span> and <span class="math notranslate nohighlight">\(e(t)\)</span> are time-evolving quantities, the separatrix will also be evolving in time. For further details on the location of the separatrix for generic orbits around rotating black holes (and various special cases), see <a class="reference external" href="https://arxiv.org/pdf/1912.07609.pdf">Stein and Warburton</a> for an excellent discussion.</p>
-<section id="let-us-being-by-analysing-a-basic-trajectory">
-<h3>Let us being by analysing a basic trajectory<a class="headerlink" href="#let-us-being-by-analysing-a-basic-trajectory" title="Permalink to this heading">#</a></h3>
-<p>We begin by analysing eccentric orbits in a Schwarzschild space-time. This means that <span class="math notranslate nohighlight">\(a = 0, x_{I}(t) = 1, \Phi_{r0}(t) = \Phi_{\theta0} = 0\)</span> will be fixed.</p>
+<section id="let-us-begin-by-analysing-a-basic-trajectory">
+<h3>Let us begin by analysing a basic trajectory<a class="headerlink" href="#let-us-begin-by-analysing-a-basic-trajectory" title="Permalink to this heading">#</a></h3>
+<p>We begin by analysing eccentric orbits in a Schwarzschild space-time. This means that <span class="math notranslate nohighlight">\(a = 0, x_{I}(t) = 1, \Phi_{\theta0} = 0\)</span> will be fixed.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># initialize trajectory class</span>
@@ -631,9 +632,6 @@ p(t), e(t), x_I(t), \Phi_\varphi(t), \Phi_\theta(t), \Phi_r(t)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="_images/54217a89f878171ca98b99cc88a583fe3d6f270786b0ece8581360ef4c4b012c.png" src="_images/54217a89f878171ca98b99cc88a583fe3d6f270786b0ece8581360ef4c4b012c.png" />
-</div>
 </div>
 <section id="quasi-keplerian-parameters-p-e">
 <h3>Quasi-Keplerian parameters: <span class="math notranslate nohighlight">\((p,e)\)</span><a class="headerlink" href="#quasi-keplerian-parameters-p-e" title="Permalink to this heading">#</a></h3>
@@ -676,7 +674,6 @@ p(t), e(t), x_I(t), \Phi_\varphi(t), \Phi_\theta(t), \Phi_r(t)
     <span class="n">xx</span> <span class="o">=</span> <span class="n">rr</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">Csi</span><span class="p">)</span>
     <span class="n">yy</span> <span class="o">=</span> <span class="n">rr</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">Csi</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">cmap</span><span class="p">(</span><span class="n">ii</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)),</span><span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;time = </span><span class="si">{</span><span class="n">t</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="n">YRSID_SI</span><span class="p">)</span><span class="si">:</span><span class="s1">.2e</span><span class="si">}</span><span class="s1"> years&#39;</span> <span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">ii</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;MBH&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
@@ -689,20 +686,8 @@ p(t), e(t), x_I(t), \Phi_\varphi(t), \Phi_\theta(t), \Phi_r(t)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/qb/rd70hvq510n36l7vtbm3ms9r0000gn/T/ipykernel_92783/1717558844.py:26: MatplotlibDeprecationWarning: The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/qb/rd70hvq510n36l7vtbm3ms9r0000gn/T/ipykernel_28167/3297450775.py:26: MatplotlibDeprecationWarning: The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
   cmap = matplotlib.cm.get_cmap(&#39;Spectral&#39;)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 114
-12 114
-24 114
-36 114
-48 114
-60 114
-72 114
-84 114
-96 114
-108 114
 </pre></div>
 </div>
 <img alt="_images/4bc56d9f07100933337eb1dfa132c817593e6453e62ded14a3fa69e3d5627d0f.png" src="_images/4bc56d9f07100933337eb1dfa132c817593e6453e62ded14a3fa69e3d5627d0f.png" />
@@ -1060,9 +1045,9 @@ T_{\text{observation}} \sim 1/\epsilon
 &lt;&gt;:28: SyntaxWarning: invalid escape sequence &#39;\e&#39;
 &lt;&gt;:27: SyntaxWarning: invalid escape sequence &#39;\e&#39;
 &lt;&gt;:28: SyntaxWarning: invalid escape sequence &#39;\e&#39;
-/var/folders/qb/rd70hvq510n36l7vtbm3ms9r0000gn/T/ipykernel_92783/1454408438.py:27: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+/var/folders/qb/rd70hvq510n36l7vtbm3ms9r0000gn/T/ipykernel_28167/1454408438.py:27: SyntaxWarning: invalid escape sequence &#39;\e&#39;
   plt.plot(t1/YRSID_SI,Phi_phi1/(2*np.pi), label=f&#39;mu={mu1}, M={M1/1e6} x $10^6$, $\epsilon$ = {mu1/M1}&#39;)
-/var/folders/qb/rd70hvq510n36l7vtbm3ms9r0000gn/T/ipykernel_92783/1454408438.py:28: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+/var/folders/qb/rd70hvq510n36l7vtbm3ms9r0000gn/T/ipykernel_28167/1454408438.py:28: SyntaxWarning: invalid escape sequence &#39;\e&#39;
   plt.plot(t2/YRSID_SI,Phi_phi2/(2*np.pi), label=f&#39;mu={mu2}, M={M2/1e6} x $10^6$, $\epsilon$ = {mu2/M2}&#39;)
 </pre></div>
 </div>
@@ -1128,9 +1113,9 @@ $<span class="math notranslate nohighlight">\(
 &lt;&gt;:36: SyntaxWarning: invalid escape sequence &#39;\e&#39;
 &lt;&gt;:35: SyntaxWarning: invalid escape sequence &#39;\e&#39;
 &lt;&gt;:36: SyntaxWarning: invalid escape sequence &#39;\e&#39;
-/var/folders/qb/rd70hvq510n36l7vtbm3ms9r0000gn/T/ipykernel_92783/2150444768.py:35: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+/var/folders/qb/rd70hvq510n36l7vtbm3ms9r0000gn/T/ipykernel_28167/2150444768.py:35: SyntaxWarning: invalid escape sequence &#39;\e&#39;
   plt.plot(t1/YRSID_SI,OmegaPhi1/(2*np.pi), label=f&#39;mu={mu1}, M={M1/1e6} x $10^6$, $\epsilon$ = {mu1/M1}&#39;)
-/var/folders/qb/rd70hvq510n36l7vtbm3ms9r0000gn/T/ipykernel_92783/2150444768.py:36: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+/var/folders/qb/rd70hvq510n36l7vtbm3ms9r0000gn/T/ipykernel_28167/2150444768.py:36: SyntaxWarning: invalid escape sequence &#39;\e&#39;
   plt.plot(t2/YRSID_SI,OmegaPhi2/(2*np.pi), label=f&#39;mu={mu2}, M={M2/1e6} x $10^6$, $\epsilon$ = {mu2/M2}&#39;)
 </pre></div>
 </div>
@@ -1218,12 +1203,13 @@ Therefore is possible to plot the frequency evolution of each harmonic given a t
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\Omega_\varphi$ [1/s]&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t [s]&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7ebcedea052debb0fa2c2f5c080551a652d08e7434283eae3b9ebcb2357b95a8.png" src="_images/7ebcedea052debb0fa2c2f5c080551a652d08e7434283eae3b9ebcb2357b95a8.png" />
+<img alt="_images/dce1987c3f7e9e08ee7240e2ff1a8c0bc706b852075f48898b867d3244df3c94.png" src="_images/dce1987c3f7e9e08ee7240e2ff1a8c0bc706b852075f48898b867d3244df3c94.png" />
 </div>
 </div>
 <p>The system with smaller MBH mass spans more frequencies and evolves more quickly than the system with larger MBH mass. This piece of code will be exceptionally useful for a later exercise. Understand here that, for the <span class="math notranslate nohighlight">\(\phi\)</span> angular frequency <span class="math notranslate nohighlight">\(\Omega_{\phi}\)</span>, we can determine up to what mode in <span class="math notranslate nohighlight">\(m\)</span> we are sensitive to when analysing EMRI waveforms.</p>
@@ -1253,7 +1239,13 @@ h_{+} - ih_{\times} = \frac{\mu}{d_L}\sum_{lmn} A_{lmn}(p(t),e(t),x_{I}(t)) , S_
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We first define a few key word arguments to help our EMRI generator understand precisely what we want. </span>
 
 <span class="c1"># GPU accelerated waveforms, this is an absolute game changer. </span>
-<span class="n">use_gpu</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
+    <span class="n">use_gpu</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">xp</span> <span class="o">=</span> <span class="n">cp</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">use_gpu</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">xp</span> <span class="o">=</span> <span class="n">np</span>
 
 <span class="c1"># keyword arguments for inspiral generator (RunSchwarzEccFluxInspiral)</span>
 <span class="n">inspiral_kwargs</span><span class="o">=</span><span class="p">{</span>
@@ -1267,12 +1259,22 @@ h_{+} - ih_{\times} = \frac{\mu}{d_L}\sum_{lmn} A_{lmn}(p(t),e(t),x_{I}(t)) , S_
     <span class="s2">&quot;pad_output&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">}</span>
 
+<span class="c1"># keyword arguments for inspiral generator (RomanAmplitude)</span>
+<span class="n">amplitude_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;max_init_len&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e3</span><span class="p">),</span>  <span class="c1"># all of the trajectories will be well under len = 1000</span>
+    <span class="s2">&quot;use_gpu&quot;</span><span class="p">:</span> <span class="n">use_gpu</span>  <span class="c1"># GPU is available in this class</span>
+<span class="p">}</span>
 
+<span class="c1"># keyword arguments for summation generator (InterpolatedModeSum)</span>
+<span class="n">sum_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;use_gpu&quot;</span><span class="p">:</span> <span class="n">use_gpu</span><span class="p">,</span>  <span class="c1"># GPU is available for this type of summation</span>
+    <span class="s2">&quot;pad_output&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">}</span>
 
 <span class="n">few_gen</span> <span class="o">=</span> <span class="n">FastSchwarzschildEccentricFlux</span><span class="p">(</span>
     <span class="n">inspiral_kwargs</span><span class="o">=</span><span class="n">inspiral_kwargs</span><span class="p">,</span>
-    <span class="c1"># amplitude_kwargs=amplitude_kwargs,</span>
-    <span class="c1"># Ylm_kwargs=Ylm_kwargs,</span>
+    <span class="n">amplitude_kwargs</span><span class="o">=</span><span class="n">amplitude_kwargs</span><span class="p">,</span>
+    <span class="n">Ylm_kwargs</span><span class="o">=</span><span class="n">Ylm_kwargs</span><span class="p">,</span>
     <span class="n">sum_kwargs</span><span class="o">=</span><span class="n">sum_kwargs</span><span class="p">,</span>
     <span class="n">use_gpu</span><span class="o">=</span><span class="n">use_gpu</span><span class="p">,</span>
 <span class="p">)</span>
@@ -1289,9 +1291,13 @@ h_{+} - ih_{\times} = \frac{\mu}{d_L}\sum_{lmn} A_{lmn}(p(t),e(t),x_{I}(t)) , S_
 <span class="n">wave</span> <span class="o">=</span> <span class="n">few_gen</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span><span class="n">Phi_phi0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>  <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>  <span class="c1">#  assumes dt = 10.0 for max T = 0.01 year</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wave</span><span class="o">.</span><span class="n">real</span><span class="p">[:</span><span class="mi">400</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wave</span><span class="o">.</span><span class="n">imag</span><span class="p">[:</span><span class="mi">400</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">wave</span><span class="o">.</span><span class="n">real</span><span class="p">[:</span><span class="mi">400</span><span class="p">]))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">wave</span><span class="o">.</span><span class="n">imag</span><span class="p">[:</span><span class="mi">400</span><span class="p">]))</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wave</span><span class="o">.</span><span class="n">real</span><span class="p">[:</span><span class="mi">400</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wave</span><span class="o">.</span><span class="n">imag</span><span class="p">[:</span><span class="mi">400</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>  
 </pre></div>
 </div>
 </div>
@@ -1302,55 +1308,149 @@ h_{+} - ih_{\times} = \frac{\mu}{d_L}\sum_{lmn} A_{lmn}(p(t),e(t),x_{I}(t)) , S_
 </section>
 <section id="emri-waveforms-in-different-domains">
 <h2>EMRI Waveforms in different domains<a class="headerlink" href="#emri-waveforms-in-different-domains" title="Permalink to this heading">#</a></h2>
-<p>The output of FEW is a time domain waveform, i.e. the dimensionless strain as a function of time. We are working on providing waveforms directly in Fourier and Time-Frequency domain.</p>
+<p>The output of FEW is a time domain waveform, i.e. the dimensionless strain as a function of time. Later on in this tutorial we will discuss a frequency domain model. We are currently working on trying to output an EMRI waveform directly in the time-frequency domain… watch this space!</p>
+<p>Let’s have a look at the waveform at different stages of the trajectory. a</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># parameters</span>
 <span class="n">M</span> <span class="o">=</span> <span class="mf">1e6</span>
-<span class="n">mu</span> <span class="o">=</span> <span class="mf">1e2</span>
-<span class="n">p0</span> <span class="o">=</span> <span class="mf">12.0</span>
-<span class="n">e0</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="mf">1e1</span>
+<span class="n">p0</span> <span class="o">=</span> <span class="mf">10.63</span>
+<span class="n">e0</span> <span class="o">=</span> <span class="mf">0.3</span>
 <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span>  <span class="c1"># polar viewing angle in source frame</span>
 <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span>  <span class="c1"># azimuthal viewing angle in source frame</span>
 <span class="n">dt</span> <span class="o">=</span> <span class="mf">10.0</span>
 <span class="c1"># notice that we are providing the distance parameter</span>
-<span class="n">wave</span> <span class="o">=</span> <span class="n">few_gen</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">dist</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>  <span class="c1">#  assumes dt = 10.0 for max T = 1.0 year</span>
+<span class="n">wave</span> <span class="o">=</span> <span class="n">few_gen</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">dist</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>  <span class="c1">#  assumes dt = 10.0 for max T = 1.0 year</span>
 <span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">wave</span><span class="p">))</span><span class="o">*</span><span class="n">dt</span>
+
+<span class="c1"># On my local machine, this took me five minutes to execute. I hope you have a GPU enabled! </span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="time-domain">
-<h2>Time Domain<a class="headerlink" href="#time-domain" title="Permalink to this heading">#</a></h2>
+<section id="the-full-signal">
+<h2>The full signal<a class="headerlink" href="#the-full-signal" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="o">/</span><span class="n">YRSID_SI</span><span class="p">,</span> <span class="n">wave</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$h_+$&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t [years]&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="o">/</span><span class="n">YRSID_SI</span><span class="p">,</span> <span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">wave</span><span class="o">.</span><span class="n">real</span><span class="p">))</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="o">/</span><span class="n">YRSID_SI</span><span class="p">,</span> <span class="n">wave</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$h_+$&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t [years]&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e1ad0615a1a84177627893a8bbda66a813075e839b52d92fc3b7010b3f3bf506.png" src="_images/e1ad0615a1a84177627893a8bbda66a813075e839b52d92fc3b7010b3f3bf506.png" />
+<img alt="_images/4afe725f08ff48c973225ef58e90daf5791cc22b1d602e03fb710598647b6da9.png" src="_images/4afe725f08ff48c973225ef58e90daf5791cc22b1d602e03fb710598647b6da9.png" />
 </div>
 </div>
+<p>What we can now do is check to see how the waveform evolves in time. Given our recently built intuition from the trajectory part of the tutorial, we should expect to see the rate of change of frequency evolve with time. We will now compare snapshots of the waveform as the smaller body gets closer to the separatrix.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">xI</span><span class="p">,</span> <span class="n">Phi_phi</span><span class="p">,</span> <span class="n">Phi_theta</span><span class="p">,</span> <span class="n">Phi_r</span> <span class="o">=</span> <span class="n">traj</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span>
+                                              <span class="n">Phi_phi0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                                              <span class="n">Phi_theta0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                                              <span class="n">Phi_r0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                                              <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="n">j0</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">j1</span> <span class="o">=</span> <span class="mi">3000000</span>
+<span class="n">j2</span> <span class="o">=</span> <span class="mi">6000000</span>
+<span class="n">j3</span> <span class="o">=</span> <span class="o">-</span><span class="mi">400</span>
+
+<span class="n">t_index_j1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">t</span> <span class="o">&gt;</span> <span class="n">time</span><span class="p">[</span><span class="n">j1</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">t_index_j2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">t</span> <span class="o">&gt;</span> <span class="n">time</span><span class="p">[</span><span class="n">j2</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">t_index_j3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">t</span> <span class="o">&gt;</span> <span class="n">time</span><span class="p">[</span><span class="n">j3</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">t_index_j3</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+    <span class="n">wave_np</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">wave</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">wave_np</span> <span class="o">=</span> <span class="n">wave</span><span class="o">.</span><span class="n">real</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>97
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">16</span><span class="p">))</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Location of small body&quot;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="o">/</span><span class="n">YRSID_SI</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">YRSID_SI</span><span class="p">,</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">ms</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Small body&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">400</span><span class="p">]</span><span class="o">/</span><span class="mi">60</span><span class="p">,</span> <span class="n">wave_np</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">400</span><span class="p">])</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Waveform&quot;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="o">/</span><span class="n">YRSID_SI</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">t_index_j1</span><span class="p">]</span><span class="o">/</span><span class="n">YRSID_SI</span><span class="p">,</span><span class="n">p</span><span class="p">[</span><span class="n">t_index_j1</span><span class="p">],</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">ms</span> <span class="o">=</span> <span class="mi">12</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="n">j1</span><span class="p">:</span><span class="n">j1</span> <span class="o">+</span> <span class="mi">400</span><span class="p">]</span><span class="o">/</span><span class="n">YRSID_SI</span><span class="p">,</span> <span class="n">wave_np</span><span class="p">[</span><span class="n">j1</span><span class="p">:</span><span class="n">j1</span> <span class="o">+</span> <span class="mi">400</span><span class="p">])</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">t_index_j2</span><span class="p">],</span><span class="n">p</span><span class="p">[</span><span class="n">t_index_j2</span><span class="p">],</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">ms</span> <span class="o">=</span> <span class="mi">12</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="n">j2</span><span class="p">:</span><span class="n">j2</span> <span class="o">+</span> <span class="mi">400</span><span class="p">]</span><span class="o">/</span><span class="n">YRSID_SI</span><span class="p">,</span> <span class="n">wave_np</span><span class="p">[</span><span class="n">j2</span><span class="p">:</span><span class="n">j2</span> <span class="o">+</span> <span class="mi">400</span><span class="p">])</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="o">/</span><span class="n">YRSID_SI</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">t_index_j3</span><span class="p">]</span><span class="o">/</span><span class="n">YRSID_SI</span><span class="p">,</span><span class="n">p</span><span class="p">[</span><span class="n">t_index_j3</span><span class="p">],</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">ms</span> <span class="o">=</span> <span class="mi">12</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="n">j3</span><span class="p">:]</span><span class="o">/</span><span class="n">YRSID_SI</span><span class="p">,</span> <span class="n">wave_np</span><span class="p">[</span><span class="n">j3</span><span class="p">:])</span>
+
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+        <span class="n">ax</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;t [years]&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+        <span class="n">ax</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$p(t)$&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+        <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+        <span class="n">ax</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$h_+$&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+        <span class="n">ax</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;t [years]&#39;</span><span class="p">,</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;t [minutes]&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+        <span class="c1"># ax[0][j].set_xlabel(&#39;t [years]&#39;, fontsize = 16)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/e47e31aade3226414b6e08cf5225d62b4c77b5d50c25114ad3f8ae0b2c83e092.png" src="_images/e47e31aade3226414b6e08cf5225d62b4c77b5d50c25114ad3f8ae0b2c83e092.png" />
+</div>
+</div>
+<p>Notice that as the smaller body ventures closer to the separatrix, both the amplitude and frequencies become larger and larger.</p>
 </section>
-<section id="fourier-domain">
-<h2>Fourier Domain<a class="headerlink" href="#fourier-domain" title="Permalink to this heading">#</a></h2>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="optional-exercise">
+<h1>Optional Exercise<a class="headerlink" href="#optional-exercise" title="Permalink to this heading">#</a></h1>
+<p>Repeat the same plot as above but instead of plotting the evolution of semi-latus rectum, plot the angular frequency <span class="math notranslate nohighlight">\(\Omega_{\phi}\)</span>.</p>
+<section id="fourier-domain-signal-to-noise-ratio-and-overlaps">
+<h2>Fourier Domain, Signal to noise ratio and Overlaps.<a class="headerlink" href="#fourier-domain-signal-to-noise-ratio-and-overlaps" title="Permalink to this heading">#</a></h2>
+<p>Within gravitational wave astronomy, data analysis is usually conducted in the frequency domain. This is for a multitude of reasons, one being that our probabilistic models used for inferring parameters (such as the likelihood) dramatically simplifies in comparison to its time-domain counterpart. Similarly, analysing gravitational waveforms as a function of frequency may simply reveal more information about the underlying structure of the signal. In this section, we will define the power spectral density of the noise <span class="math notranslate nohighlight">\(S_{n}(f)\)</span>, a function that qualitatively describes the root mean square average of noise fluctuations from some stationary process. We will then analyse the EMRI waveform in the frequency domain and compute a few useful statistics used within gravitaitonal wave astronomy.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load Power Spectral Density of LISA. This represents how loud the instrumental noise is.</span>
-<span class="n">noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="s2">&quot;LPA.txt&quot;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">f</span><span class="p">,</span> <span class="n">PSD</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">noise</span><span class="p">[</span><span class="s2">&quot;f&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">noise</span><span class="p">[</span><span class="s2">&quot;ASD&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="k">def</span> <span class="nf">PowerSpectralDensity</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    PSD obtained from: https://arxiv.org/pdf/1803.01944.pdf</span>
+<span class="sd">    </span>
+<span class="sd">    Removed galactic confusion noise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>        
+    
+    <span class="n">L</span> <span class="o">=</span> <span class="mf">2.5</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span>   <span class="c1"># Length of LISA arm</span>
+    <span class="n">f0</span> <span class="o">=</span> <span class="mf">19.09</span><span class="o">*</span><span class="mi">10</span><span class="o">**-</span><span class="mi">3</span>    
+    
+    <span class="n">Poms</span> <span class="o">=</span> <span class="p">((</span><span class="mf">1.5</span><span class="o">*</span><span class="mi">10</span><span class="o">**-</span><span class="mi">11</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="mi">10</span><span class="o">**-</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="n">f</span><span class="p">)</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># Optical Metrology Sensor</span>
+    <span class="n">Pacc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="mi">10</span><span class="o">**-</span><span class="mi">15</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="mi">10</span><span class="o">**-</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="mi">10</span><span class="o">*</span><span class="n">f</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">f</span><span class="o">/</span><span class="p">(</span><span class="mi">8</span><span class="o">*</span><span class="mi">10</span><span class="o">**-</span><span class="mi">3</span><span class="p">))</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># Acceleration Noise </span>
 
-<span class="c1"># here we use a cubic spline to interpolate the PSD</span>
-<span class="n">sens_fn</span> <span class="o">=</span> <span class="n">CubicSplineInterpolant</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">PSD</span><span class="p">,</span> <span class="n">use_gpu</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">PSD</span> <span class="o">=</span> <span class="p">((</span><span class="mi">10</span><span class="o">/</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">L</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">Poms</span> <span class="o">+</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">Pacc</span><span class="p">)</span><span class="o">/</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">f</span><span class="p">))</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="p">(</span><span class="n">f</span><span class="o">/</span><span class="n">f0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="c1"># PSD</span>
+
+    <span class="k">return</span> <span class="n">PSD</span>
 </pre></div>
 </div>
 </div>
@@ -1358,14 +1458,24 @@ h_{+} - ih_{\times} = \frac{\mu}{d_L}\sum_{lmn} A_{lmn}(p(t),e(t),x_{I}(t)) , S_
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we take the Fast Fourier transform of the signal</span>
-<span class="n">hp_fft</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">wave</span><span class="o">.</span><span class="n">real</span><span class="p">)</span><span class="o">*</span><span class="n">dt</span>
-<span class="n">hx_fft</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">wave</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span><span class="o">*</span><span class="n">dt</span>
+<span class="n">hp_fft</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">wave</span><span class="o">.</span><span class="n">real</span><span class="p">)</span><span class="o">*</span><span class="n">dt</span>
+<span class="n">hx_fft</span> <span class="o">=</span> <span class="o">-</span><span class="n">xp</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">wave</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span><span class="o">*</span><span class="n">dt</span>
 
 <span class="n">freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">wave</span><span class="p">),</span><span class="n">dt</span><span class="p">)</span>
+<span class="n">freq</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">freq</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">PSD_np</span> <span class="o">=</span> <span class="n">PowerSpectralDensity</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+    <span class="n">PSD_cp</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">PSD_np</span><span class="p">)</span>
+
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">hx_fft</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">PSD</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;LISA Sensitivity curve&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">xp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">hp_fft</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Frequency domain EMRI&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">hp_fft</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Frequency domain EMRI&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">PSD_np</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Approx LISA Sensitivity curve&#39;</span><span class="p">,</span><span class="n">c</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">ls</span> <span class="o">=</span> <span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mf">1e-5</span><span class="p">,</span><span class="mf">1e-1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">1e-44</span><span class="p">,</span><span class="mf">1e-29</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$|\tilde</span><span class="si">{h}</span><span class="s1">(f)|^2$&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;f [Hz]&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -1373,28 +1483,29 @@ h_{+} - ih_{\times} = \frac{\mu}{d_L}\sum_{lmn} A_{lmn}(p(t),e(t),x_{I}(t)) , S_
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/fa32bf508461ebb554e0917861d92d671a9f553c98f16c0eb274436716cccf98.png" src="_images/fa32bf508461ebb554e0917861d92d671a9f553c98f16c0eb274436716cccf98.png" />
+<img alt="_images/6bd5112e67024b68ef26834589490cc86dc72d7624e5e4bae7cc903c760760c2.png" src="_images/6bd5112e67024b68ef26834589490cc86dc72d7624e5e4bae7cc903c760760c2.png" />
 </div>
 </div>
 <p>We define the inner product:
 $<span class="math notranslate nohighlight">\(
-&lt;{a (t)}|{b (t)}&gt; =4 \Re \int _{0} ^\infty \frac{\tilde{a} ^* (f) \tilde{b} (f) }{S_n (f)} \, {\rm d} f \, .
+(a (t)|b (t)) =4 \Re \int _{0} ^\infty \frac{\tilde{a} ^* (f) \tilde{b} (f) }{S_n (f)} \, {\rm d} f \, .
 \)</span><span class="math notranslate nohighlight">\(
 where the tilde indicates the Fourier transform, the symbol \)</span>^*<span class="math notranslate nohighlight">\( indicates the complex conjugation, and \)</span>S_n (f)<span class="math notranslate nohighlight">\( is the one-sided noise power spectral density, which can be interpreted as the size of the root mean square fluctuations at a given frequency \)</span>\Delta n <em>{\text{rms}} \sim \sqrt{S_n(f) \Delta f}<span class="math notranslate nohighlight">\(. From a practical point of view the spectral density represents our information on the detector sensitivity and the aforementioned inner product can be used to quantify the Signal to Noise Ratio (SNR) of a waveform \)</span>h(t)<span class="math notranslate nohighlight">\(:
 \)</span><span class="math notranslate nohighlight">\(
-{\rm SNR}^2 =&lt;{h (t)}|{h (t)}&gt; =4 \Re \int _{0} ^\infty \frac{|\tilde{h} (f)| }{S_n (f)} \, {\rm d} f \approx 4 \Re \sum_{i=0}^{N/2 - 1}\frac{|\tilde{h}(f_{i})|^2}{S_{n}(f_{i})}\Delta f\, .
+{\rm SNR}^2 =(h (t)|h (t)) =4 \Re \int _{0} ^\infty \frac{|\tilde{h} (f)| }{S_n (f)} \, {\rm d} f \approx 4 \Re \sum_{i=0}^{N/2 - 1}\frac{|\tilde{h}(f_{i})|^2}{S_{n}(f_{i})}\Delta f\, .
 \)</span><span class="math notranslate nohighlight">\(
 for \)</span>\Delta f<span class="math notranslate nohighlight">\( the spacing between frequencies defined by \)</span>\Delta f = 1/N\Delta t = 1/T</em>{\text{observation}}<span class="math notranslate nohighlight">\(. 
 EMRIs are usually considered to be detectable for \)</span>SNR\gtrsim 15$ or so</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inner_product</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">dt</span><span class="p">):</span>
-    <span class="n">a_tilde</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">dt</span>
-    <span class="n">b_tilde</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="n">dt</span>
-    <span class="n">freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">),</span><span class="n">dt</span><span class="p">)</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">freq</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">freq</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">psd_f</span> <span class="o">=</span> <span class="n">sens_fn</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span>
-    <span class="k">return</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span> <span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">a_tilde</span><span class="p">)</span> <span class="o">*</span> <span class="n">b_tilde</span> <span class="o">*</span> <span class="n">df</span> <span class="o">/</span> <span class="n">psd_f</span><span class="p">)</span> <span class="p">)</span>
+    <span class="n">a_tilde</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">dt</span>
+    <span class="n">b_tilde</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="n">dt</span>
+    <span class="n">freq</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">),</span><span class="n">dt</span><span class="p">)</span>
+    <span class="n">freq</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">freq</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">freq</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">freq</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">psd_f</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">PowerSpectralDensity</span><span class="p">(</span><span class="n">freq</span><span class="p">))</span>
+    <span class="k">return</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">xp</span><span class="o">.</span><span class="n">real</span> <span class="p">(</span> <span class="n">xp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="n">xp</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">a_tilde</span><span class="p">)</span> <span class="o">*</span> <span class="n">b_tilde</span> <span class="o">*</span> <span class="n">df</span> <span class="o">/</span> <span class="n">psd_f</span><span class="p">)</span> <span class="p">)</span>
 
 <span class="c1"># the SNR of the previous waveform is</span>
 <span class="n">SNR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">inner_product</span><span class="p">(</span><span class="n">wave</span><span class="o">.</span><span class="n">real</span><span class="p">,</span><span class="n">wave</span><span class="o">.</span><span class="n">real</span><span class="p">,</span><span class="n">dt</span><span class="p">))</span>
@@ -1403,11 +1514,7 @@ EMRIs are usually considered to be detectable for \)</span>SNR\gtrsim 15$ or so<
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SNR = 115.1163351387092
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/homebrew/anaconda3/envs/few_env/lib/python3.7/site-packages/few-1.4.6-py3.7-macosx-10.9-x86_64.egg/few/summation/interpolatedmodesum.py:202: UserWarning: New t array outside bounds of input t array. These points are filled with edge values.
-  &quot;New t array outside bounds of input t array. These points are filled with edge values.&quot;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SNR = 48.59587351256262
 </pre></div>
 </div>
 </div>
@@ -1504,7 +1611,7 @@ The overlap expresses how similar two signals \)</span>a<span class="math notran
 <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;phase&#39;</span><span class="p">)</span>
 <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Overlap&#39;</span><span class="p">)</span>
 <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$h_+$&#39;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">phase</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="n">num</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">phase</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="n">num</span><span class="o">=</span><span class="mi">6</span><span class="p">):</span>
     <span class="n">wave</span> <span class="o">=</span> <span class="n">few_gen</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">dist</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">phase</span><span class="p">)</span>
     <span class="n">t_wave</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">wave</span><span class="p">)</span><span class="o">*</span><span class="n">dt</span><span class="p">,</span><span class="n">dt</span><span class="p">)</span>
     <span class="n">O</span> <span class="o">=</span> <span class="n">overlap</span><span class="p">(</span><span class="n">base_sig</span><span class="o">.</span><span class="n">real</span><span class="p">,</span><span class="n">wave</span><span class="o">.</span><span class="n">real</span><span class="p">,</span><span class="n">dt</span><span class="p">)</span>
@@ -1517,7 +1624,28 @@ The overlap expresses how similar two signals \)</span>a<span class="math notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/391a631a6cca57ac6c2d7c88d49a6bf9276e942ce564210e7e6e45cbc969be6e.png" src="_images/391a631a6cca57ac6c2d7c88d49a6bf9276e942ce564210e7e6e45cbc969be6e.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/qb/rd70hvq510n36l7vtbm3ms9r0000gn/T/ipykernel_92783/627637405.py:1: MatplotlibDeprecationWarning: The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
+  cmap = matplotlib.cm.get_cmap(&#39;inferno&#39;)
+</pre></div>
+</div>
+<img alt="_images/d14b64a10e354da9238bb8b90460cf7c825ef6b48dc0b84ee58ea28449f0b49d.png" src="_images/d14b64a10e354da9238bb8b90460cf7c825ef6b48dc0b84ee58ea28449f0b49d.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cupy</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">425</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">cupy</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;cupy&#39;
+</pre></div>
+</div>
 </div>
 </div>
 <div class="cell docutils container">
@@ -1530,11 +1658,10 @@ The overlap expresses how similar two signals \)</span>a<span class="math notran
 <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span>  <span class="c1"># polar viewing angle in source frame</span>
 <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span>  <span class="c1"># azimuthal viewing angle in source frame</span>
 <span class="n">dt</span> <span class="o">=</span> <span class="mf">10.0</span>
-<span class="n">T</span> <span class="o">=</span> <span class="mf">0.01</span>
 
 <span class="n">cmap</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;inferno&#39;</span><span class="p">)</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">axs</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$\log_</span><span class="si">{10}</span><span class="s1">\delta e$&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$log_</span><span class="si">{10}</span><span class="s1">\delta e$&#39;</span><span class="p">)</span>
 <span class="n">axs</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Overlap&#39;</span><span class="p">)</span>
 <span class="n">vec</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="n">num</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># Here we will add small perturbations to parameters </span>
 <span class="n">logd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span>
@@ -1554,7 +1681,15 @@ The overlap expresses how similar two signals \)</span>a<span class="math notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ee0be0bafba60c3df4925b38684a049f96bd252b99f403008b3eaf5eee429c2d.png" src="_images/ee0be0bafba60c3df4925b38684a049f96bd252b99f403008b3eaf5eee429c2d.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:12: SyntaxWarning: invalid escape sequence &#39;\l&#39;
+&lt;&gt;:12: SyntaxWarning: invalid escape sequence &#39;\l&#39;
+/var/folders/qb/rd70hvq510n36l7vtbm3ms9r0000gn/T/ipykernel_92783/891148712.py:12: SyntaxWarning: invalid escape sequence &#39;\l&#39;
+  axs.set_xlabel(&#39;$\log_{10}\delta e$&#39;)
+/var/folders/qb/rd70hvq510n36l7vtbm3ms9r0000gn/T/ipykernel_92783/891148712.py:10: MatplotlibDeprecationWarning: The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
+  cmap = matplotlib.cm.get_cmap(&#39;inferno&#39;)
+</pre></div>
+</div>
+<img alt="_images/c30e3b617de427fc19ec15cba75e47766440987dff2afb78656146cfb2859bad.png" src="_images/c30e3b617de427fc19ec15cba75e47766440987dff2afb78656146cfb2859bad.png" />
 </div>
 </div>
 </section>
@@ -1850,24 +1985,7 @@ The overlap expresses how similar two signals \)</span>a<span class="math notran
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">PowerSpectralDensity</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    PSD obtained from: https://arxiv.org/pdf/1803.01944.pdf</span>
-<span class="sd">    </span>
-<span class="sd">    Removed galactic confusion noise.</span>
-<span class="sd">    &quot;&quot;&quot;</span>        
-    
-    <span class="n">L</span> <span class="o">=</span> <span class="mf">2.5</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span>   <span class="c1"># Length of LISA arm</span>
-    <span class="n">f0</span> <span class="o">=</span> <span class="mf">19.09</span><span class="o">*</span><span class="mi">10</span><span class="o">**-</span><span class="mi">3</span>    
-    
-    <span class="n">Poms</span> <span class="o">=</span> <span class="p">((</span><span class="mf">1.5</span><span class="o">*</span><span class="mi">10</span><span class="o">**-</span><span class="mi">11</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="mi">10</span><span class="o">**-</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="n">f</span><span class="p">)</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># Optical Metrology Sensor</span>
-    <span class="n">Pacc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="mi">10</span><span class="o">**-</span><span class="mi">15</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="mi">10</span><span class="o">**-</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="mi">10</span><span class="o">*</span><span class="n">f</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">f</span><span class="o">/</span><span class="p">(</span><span class="mi">8</span><span class="o">*</span><span class="mi">10</span><span class="o">**-</span><span class="mi">3</span><span class="p">))</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># Acceleration Noise </span>
-
-    <span class="n">PSD</span> <span class="o">=</span> <span class="p">((</span><span class="mi">10</span><span class="o">/</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">L</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">Poms</span> <span class="o">+</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">Pacc</span><span class="p">)</span><span class="o">/</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">f</span><span class="p">))</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="p">(</span><span class="n">f</span><span class="o">/</span><span class="n">f0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="c1"># PSD</span>
-
-    <span class="k">return</span> <span class="n">PSD</span>
-
-<span class="k">def</span> <span class="nf">inner_product_FD</span><span class="p">(</span><span class="n">a_f</span><span class="p">,</span><span class="n">b_f</span><span class="p">,</span><span class="n">df</span><span class="p">,</span> <span class="n">PSD</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inner_product_FD</span><span class="p">(</span><span class="n">a_f</span><span class="p">,</span><span class="n">b_f</span><span class="p">,</span><span class="n">df</span><span class="p">,</span> <span class="n">PSD</span><span class="p">):</span>
     <span class="k">return</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span> <span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">a_f</span><span class="p">)</span> <span class="o">*</span> <span class="n">b_f</span> <span class="o">*</span> <span class="n">df</span> <span class="o">/</span> <span class="n">PSD</span><span class="p">)</span> <span class="p">)</span>
 
 <span class="n">PSD</span> <span class="o">=</span> <span class="n">PowerSpectralDensity</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="n">N_t</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:])</span>
@@ -3016,7 +3134,7 @@ of each equation above.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#emri-parameter-space">EMRI Parameter space</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#schwarzschild-eccentric-trajectories-and-waveforms">Schwarzschild Eccentric Trajectories and Waveforms</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#trajectory-module">Trajectory Module</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#let-us-being-by-analysing-a-basic-trajectory">Let us being by analysing a basic trajectory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#let-us-begin-by-analysing-a-basic-trajectory">Let us begin by analysing a basic trajectory</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-0">Exercise 0</a><ul class="nav section-nav flex-column">
@@ -3042,8 +3160,11 @@ of each equation above.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-domain-representation-of-waveforms">Time Domain Representation of Waveforms</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-acceleration">GPU acceleration</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#emri-waveforms-in-different-domains">EMRI Waveforms in different domains</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-domain">Time Domain</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fourier-domain">Fourier Domain</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-full-signal">The full signal</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-exercise">Optional Exercise</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fourier-domain-signal-to-noise-ratio-and-overlaps">Fourier Domain, Signal to noise ratio and Overlaps.</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-5">Exercise 5</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-6">Exercise 6</a></li>
 </ul>
