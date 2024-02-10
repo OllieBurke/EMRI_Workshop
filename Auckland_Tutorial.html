@@ -304,7 +304,6 @@ document.write(`
 
 <span class="o">!</span>python<span class="w">  </span>-m<span class="w"> </span>unittest<span class="w"> </span>discover<span class="w"> </span>./FastEMRIWaveforms
 
-
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;./FastEMRIWaveforms/&#39;</span><span class="p">)</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;/usr/local/lib/python3.10/site-packages/few-1.5.4-py3.10-linux-x86_64.egg/&#39;</span><span class="p">)</span>
@@ -326,9 +325,7 @@ document.write(`
 <li><p>What is an Extreme Mass Ratio Inspiral?</p></li>
 <li><p>How is an EMRI Waveform built? What are the parameters of an EMRI Waveform?</p></li>
 <li><p>EMRI Trajectories</p></li>
-<li><p>EMRI Amplitudes and harmonic content</p></li>
-<li><p>EMRI Waveforms</p></li>
-<li><p>How to modify a trajectory and build your own waveform</p></li>
+<li><p>EMRI Waveforms in the time, frequency and time-frequency domains.</p></li>
 </ol>
 <section id="what-is-an-extreme-mass-ratio-inspiral">
 <h2>What is an Extreme Mass Ratio Inspiral?<a class="headerlink" href="#what-is-an-extreme-mass-ratio-inspiral" title="Permalink to this heading">#</a></h2>
@@ -349,20 +346,20 @@ document.write(`
 </section>
 <section id="emri-waveforms">
 <h2>EMRI Waveforms<a class="headerlink" href="#emri-waveforms" title="Permalink to this heading">#</a></h2>
-<p>EMRI waveforms are represented by the complex time-domain dimensionless strain <span class="math notranslate nohighlight">\(h(t) = h_+ - ih_\times\)</span>, where <span class="math notranslate nohighlight">\(h_+\)</span> and <span class="math notranslate nohighlight">\(h_\times\)</span> are the normal transverse-traceless gravitational wave polarizations. For large distances from the source (<span class="math notranslate nohighlight">\(d_{L}\rightarrow \infty\)</span>), <span class="math notranslate nohighlight">\(h\)</span> is given in the source frame by:
-\begin{equation}\label{eq:main_wave}
-h = \frac{\mu}{d_L}\sum_{lmkn} A_{lmkn}(t) , S_{lmkn}(\theta,\phi) , \exp[-i\Phi_{mkn}(t)].
+<p>EMRI waveforms are represented by the complex time-domain dimensionless strain <span class="math notranslate nohighlight">\(h(t) = h_+ - ih_\times\)</span>, where <span class="math notranslate nohighlight">\(h_+\)</span> and <span class="math notranslate nohighlight">\(h_\times\)</span> are the usual transverse-traceless gravitational wave polarizations. For large distances from the source (<span class="math notranslate nohighlight">\(d_{L}\rightarrow \infty\)</span>), <span class="math notranslate nohighlight">\(h\)</span> is given in the source frame by:
+\begin{equation}
+h = \frac{\mu}{d_L}\sum_{lmkn} A_{lmkn}(t) , S_{lmkn}(\theta,\phi) , \exp(-i\Phi_{mkn}(t)).
 \end{equation}
 Here <span class="math notranslate nohighlight">\(\mu\)</span> is the mass of the secondary body, <span class="math notranslate nohighlight">\(d_{L}\)</span> the luminosity distance to the source, <span class="math notranslate nohighlight">\(t\)</span> is the time of arrival of the gravitational wave at the solar system baricenter, and <span class="math notranslate nohighlight">\((l,m,k,n)\)</span> are the indices describing the frequency-domain harmonic mode decomposition (or simply “harmonic” or “mode”):</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(l\)</span> denotes the orbital angular momentum mode index and can take the value <span class="math notranslate nohighlight">\(l=2,3,...\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(m\)</span> denotes the azimuthal mode index and can take the values from <span class="math notranslate nohighlight">\(-l\)</span> up to <span class="math notranslate nohighlight">\(l\)</span>. For example for l=2, <span class="math notranslate nohighlight">\(m=-2, -1, 0, 1, 2\)</span>.</p></li>
-<li><p><span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(n\)</span> denote the polar and radial mode indices and can take values from <span class="math notranslate nohighlight">\(-\infty\)</span> up to <span class="math notranslate nohighlight">\(+\infty\)</span>. But in practice they are restriced to values around zero, for instance between <span class="math notranslate nohighlight">\(-30\)</span> up to <span class="math notranslate nohighlight">\(30\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(n\)</span> denote the polar and radial mode indices and can take values from <span class="math notranslate nohighlight">\(-\infty\)</span> up to <span class="math notranslate nohighlight">\(+\infty\)</span>. But in practice they are restriced to values around zero, for instance between <span class="math notranslate nohighlight">\(-30\)</span> up to <span class="math notranslate nohighlight">\(30\)</span>. In this tutorial there will be no <span class="math notranslate nohighlight">\(k\)</span> modes since our inspirals are restricted to the equatorial plane of the central hole.</p></li>
 </ul>
 <p>For LIGO sources, where the two objects have comparable masses, the strongest mode is the <span class="math notranslate nohighlight">\((l=2,m=2,k=0,n=0)\)</span>.
 See <a class="reference external" href="https://arxiv.org/abs/gr-qc/0509101">Drasco and Hughes 2006</a> and <a class="reference external" href="https://arxiv.org/pdf/2102.02713.pdf">Hughes+ 2021</a> for a derivation of the gravitational waveform.</p>
-<section id="each-harmonics-is-characterized-by-three-important-functions-these-will-be-also-different-modules-in-the-code">
-<h3>Each harmonics is characterized by three important functions (these will be also different modules in the code):<a class="headerlink" href="#each-harmonics-is-characterized-by-three-important-functions-these-will-be-also-different-modules-in-the-code" title="Permalink to this heading">#</a></h3>
+<section id="each-harmonic-is-characterized-by-three-important-functions">
+<h3>Each harmonic is characterized by three important functions:<a class="headerlink" href="#each-harmonic-is-characterized-by-three-important-functions" title="Permalink to this heading">#</a></h3>
 <ol class="arabic simple">
 <li><p>The oscillatory part <span class="math notranslate nohighlight">\(\exp[-i\Phi_{mkn}(t)]\)</span> is determined by the phase <span class="math notranslate nohighlight">\(\Phi_{mkn}=m\Phi_\varphi + k \Phi_\theta + n\Phi_r\)</span>. The phases <span class="math notranslate nohighlight">\(\Phi_{\varphi,\theta,r}\)</span> are determined solving for the EMRI trajectory, i.e. the following system of ordinary differential equations:
 \begin{align}
@@ -375,15 +372,13 @@ with initial condition <span class="math notranslate nohighlight">\(\{\Phi_{\var
 </ol>
 <ol class="arabic simple" start="2">
 <li><p>The amplitude <span class="math notranslate nohighlight">\(A_{lmkn}(t)\)</span> which quantifies the size of each harmonic <span class="math notranslate nohighlight">\((l,m,k,n)\)</span>. These are determined using the orbital parameters <span class="math notranslate nohighlight">\(A_{lmkn}(p(t), e(t), x_I(t))\)</span>. See in the plot below that orbits with higher eccentricity <span class="math notranslate nohighlight">\(e_{0} = 0.7\)</span> require significantly many more harmonics than orbits with lower eccentricity <span class="math notranslate nohighlight">\(e_{0} = 0.1\)</span>. In each plot, the semi-latus rectum has been fixed to <span class="math notranslate nohighlight">\(p_{0} = 10\)</span> and <span class="math notranslate nohighlight">\(x_{I} = \cos(\iota_{0}) = 0.5\)</span>.</p></li>
-</ol>
-<p>!(<a class="github reference external" href="https://github.com/OllieBurke/EMRI_Workshop/blob/main/docs/images/FEW_arch.pdf">OllieBurke/EMRI_Workshop</a>)</p>
-<ol class="arabic simple" start="3">
 <li><p>The angular function <span class="math notranslate nohighlight">\(S_{lmkn}(\theta,\phi)\)</span> which describes how the amplitude is modulated depending on the source-frame polar viewing angle <span class="math notranslate nohighlight">\(\theta\)</span>, the source-frame azimuthal viewing angle <span class="math notranslate nohighlight">\(\phi\)</span>. For Schwarzchild black holes these functions reduce to the -2 spin weighted spherical harmonics <span class="math notranslate nohighlight">\(Y_{lm}\)</span>.</p></li>
 </ol>
+<p><img alt="" src="https://github.com/OllieBurke/EMRI_Workshop/blob/main/docs/images/amplitude.jpg?raw=true" /></p>
 </section>
 <section id="general-remarks">
 <h3>General Remarks<a class="headerlink" href="#general-remarks" title="Permalink to this heading">#</a></h3>
-<p>Notice the correspondence of the mode index with the three different degrees of freedom: <span class="math notranslate nohighlight">\(m\rightarrow \varphi\)</span> (azimuthal), <span class="math notranslate nohighlight">\(k\rightarrow \theta\)</span> (polar), <span class="math notranslate nohighlight">\(n\rightarrow r\)</span> (radial). Each mode (or harmonic) is characterized by the mode frequency <span class="math notranslate nohighlight">\(\omega_{mkn}=m\Omega_\varphi + k \Omega_\theta + n \Omega_r\)</span> which is the derivative of the phase <span class="math notranslate nohighlight">\(\Phi_{mkn}\)</span>. On short time-scales, the gravitational wave of an EMRI can be thought as a Fourier series with coefficients <span class="math notranslate nohighlight">\(\sum_l A_{lmnk} S_{lmkn}\)</span> and frequencies <span class="math notranslate nohighlight">\(\omega_{mkn}\)</span>.</p>
+<p>Notice the correspondence of the mode index with the three different degrees of freedom: <span class="math notranslate nohighlight">\(m\rightarrow \varphi\)</span> (azimuthal), <span class="math notranslate nohighlight">\(k\rightarrow \theta\)</span> (polar), <span class="math notranslate nohighlight">\(n\rightarrow r\)</span> (radial). Each mode is characterized by the mode frequency <span class="math notranslate nohighlight">\(\omega_{mkn}=m\Omega_\varphi + k \Omega_\theta + n \Omega_r\)</span> which is the derivative of the phase <span class="math notranslate nohighlight">\(\Phi_{mkn}\)</span>. On short time-scales, the gravitational wave of an EMRI can be thought as a Fourier series with coefficients <span class="math notranslate nohighlight">\(\sum_l A_{lmnk} S_{lmkn}\)</span> and frequencies <span class="math notranslate nohighlight">\(\omega_{mkn}\)</span>. The quantities <span class="math notranslate nohighlight">\(\Omega_{\varphi, \theta, r}\)</span> are fundamental frequencies in the azimuthal, polar and radial coordinates:  <span class="math notranslate nohighlight">\((\varphi, \theta, r)\)</span>.</p>
 <p>Theoretical parameter ranges:</p>
 <ul class="simple">
 <li><p>the eccentricity ranges between 0 and 1, for <span class="math notranslate nohighlight">\(e=0\)</span> the orbits are circular;</p></li>
@@ -397,11 +392,11 @@ with initial condition <span class="math notranslate nohighlight">\(\{\Phi_{\var
 <h2>EMRI Parameter space<a class="headerlink" href="#emri-parameter-space" title="Permalink to this heading">#</a></h2>
 <p>After we outlined the building blocks to create an EMRI waveform, let us now understand how these are organized in the Fast EMRI Waveform code. The waveform code takes as input two sets of parameters:</p>
 <ul class="simple">
-<li><p>the intrinsic parameters <span class="math notranslate nohighlight">\((M,\mu,a,p_0,e_0,(x_{I})_0,\Phi_{\varphi 0},\Phi_{\theta 0},\Phi_{r 0})\)</span>, which are used to construct the waveform in the source frame; Notice that the last six parameters here serve as initial conditions for the coupled set of ODEs defined earlier, with <span class="math notranslate nohighlight">\(M\)</span> and <span class="math notranslate nohighlight">\(\mu\)</span> determining the most crucial feature of the EMRI: The mass ratio <span class="math notranslate nohighlight">\(\epsilon = \mu/M\)</span>. The intrinsic parameters govern the evolution of the signal as a function of frequency.</p></li>
+<li><p>The intrinsic parameters <span class="math notranslate nohighlight">\((M,\mu,a,p_0,e_0,(x_{I})_0,\Phi_{\varphi 0},\Phi_{\theta 0},\Phi_{r 0})\)</span>, which are used to construct the waveform in the source frame; Notice that the last six parameters here serve as initial conditions for the coupled set of ODEs defined earlier, with <span class="math notranslate nohighlight">\(M\)</span> and <span class="math notranslate nohighlight">\(\mu\)</span> determining the most crucial feature of the EMRI: The mass ratio <span class="math notranslate nohighlight">\(\epsilon = \mu/M\)</span>. The intrinsic parameters govern the evolution of the signal as a function of frequency.</p></li>
 <li><p>the extrinsic parameters <span class="math notranslate nohighlight">\((d_L,\theta_S,\phi_S,\theta_K,\phi_K)\)</span>, which define how the waveform is viewed in a given reference frame. The extrinsic parameters feature more in the amplitude of the waveform.</p></li>
 </ul>
 <p>The intrinsic parameters are then passed into the trajectory module which computes the sparse time evolution of the phases <span class="math notranslate nohighlight">\(\Phi_{\varphi}(t),\Phi_{\theta}(t),\Phi_{r}(t)\)</span> and orbital elements <span class="math notranslate nohighlight">\(p(t),e(t),x_I(t)\)</span>. The phases are used to assemble the oscillatory part, whereas the orbital elements are passed to the amplitude module which computes <span class="math notranslate nohighlight">\(A(p(t),e(t),x_I(t))\)</span>. The angular function is computed using the extrinsic parameters. Then the summation module (Waveform build) takes as input the functions <span class="math notranslate nohighlight">\(\exp[-i\Phi_{mkn}(t)], A_{lmkn}(t)\)</span> and <span class="math notranslate nohighlight">\(S_{lmkn}(\theta,\phi)\)</span> and outputs the waveform strain <span class="math notranslate nohighlight">\(h\)</span>.</p>
-<p><img alt="FEW_arch.pdf" src="FEW_arch.pdf" /></p>
+<p><img alt="FEW_arch" src="https://github.com/OllieBurke/EMRI_Workshop/blob/main/docs/images/FEW_arch.jpg?raw=true" /></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we import here all the modules and packages we need</span>
@@ -410,7 +405,12 @@ with initial condition <span class="math notranslate nohighlight">\(\{\Phi_{\var
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">few.trajectory.inspiral</span> <span class="kn">import</span> <span class="n">EMRIInspiral</span>
 <span class="kn">from</span> <span class="nn">few.amplitude.romannet</span> <span class="kn">import</span> <span class="n">RomanAmplitude</span>
@@ -450,6 +450,8 @@ with initial condition <span class="math notranslate nohighlight">\(\{\Phi_{\var
     <span class="s2">&quot;use_gpu&quot;</span><span class="p">:</span> <span class="n">use_gpu</span>  <span class="c1"># GPU is available in this class</span>
 <span class="p">}</span>
 
+
+
 <span class="c1"># keyword arguments for Ylm generator (GetYlms)</span>
 <span class="n">Ylm_kwargs</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;assume_positive_m&quot;</span><span class="p">:</span> <span class="kc">False</span>  <span class="c1"># if we assume positive m, it will generate negative m for all m&gt;0</span>
@@ -465,8 +467,8 @@ with initial condition <span class="math notranslate nohighlight">\(\{\Phi_{\var
 </div>
 </div>
 </section>
-<section id="schwarzschild-eccentric-waveforms">
-<h2>Schwarzschild Eccentric Waveforms<a class="headerlink" href="#schwarzschild-eccentric-waveforms" title="Permalink to this heading">#</a></h2>
+<section id="schwarzschild-eccentric-trajectories-and-waveforms">
+<h2>Schwarzschild Eccentric Trajectories and Waveforms<a class="headerlink" href="#schwarzschild-eccentric-trajectories-and-waveforms" title="Permalink to this heading">#</a></h2>
 <p>In this tutorial we will restrict to EMRI systems in which the central object is a non-spinning black hole. The case of a spinning black hole is presented at the end of the notebook in the additional materials.</p>
 </section>
 <section id="trajectory-module">
@@ -540,7 +542,7 @@ p(t), e(t), x_I(t), \Phi_\varphi(t), \Phi_\theta(t), \Phi_r(t)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/52e5b6a5b3c258f347ee3617ffb87969fb25e2148b441fd4071ebf97aa3ab028.png" src="_images/52e5b6a5b3c258f347ee3617ffb87969fb25e2148b441fd4071ebf97aa3ab028.png" />
+<img alt="_images/af55bf73293b331ea24626d2ef648a37be6b90eedbeb4cdb41ff2af433eadbda.png" src="_images/af55bf73293b331ea24626d2ef648a37be6b90eedbeb4cdb41ff2af433eadbda.png" />
 </div>
 </div>
 </section>
@@ -609,37 +611,28 @@ p(t), e(t), x_I(t), \Phi_\varphi(t), \Phi_\theta(t), \Phi_r(t)
 
 <span class="c1"># Compute trajectory of smaller body: p(t), e(t), xI(t), Phi_phi(t), Phi_theta(t), Phi_r(t)</span>
 
-<span class="n">M_vec</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">N_plots</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">M_vec</span><span class="p">)</span>
+<span class="c1"># M_vec = 10**np.arange(4,7,1)</span>
+<span class="c1"># N_plots = len(M_vec)</span>
 
-<span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">N_plots</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
-<span class="n">i</span><span class="o">=</span><span class="mi">0</span>
-<span class="k">for</span> <span class="n">M</span> <span class="ow">in</span> <span class="n">M_vec</span><span class="p">:</span>
-    <span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">xI</span><span class="p">,</span> <span class="n">Phi_phi</span><span class="p">,</span> <span class="n">Phi_theta</span><span class="p">,</span> <span class="n">Phi_r</span> <span class="o">=</span> <span class="n">traj</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span>
-                                                  <span class="n">Phi_phi0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-                                                  <span class="n">Phi_theta0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-                                                  <span class="n">Phi_r0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-                                                  <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="o">/</span><span class="mi">60</span><span class="o">/</span><span class="mi">60</span><span class="o">/</span><span class="mi">24</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;M = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">M</span><span class="p">))</span>
-    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;time [days]&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">18</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;semi-latus rectum $p$&#39;</span><span class="p">,</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">18</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Primary mass = </span><span class="si">{}</span><span class="s1"> $M_\odot$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">M</span><span class="p">),</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="c1"># fig,ax = plt.subplots(1,N_plots, figsize = (12,4))</span>
+<span class="c1"># i=0</span>
+<span class="c1"># for M in M_vec:</span>
+<span class="c1">#     t, p, e, xI, Phi_phi, Phi_theta, Phi_r = [INSERT YOUR CODE HERE] </span>
+    
+<span class="c1">#     ax[i].plot(t/60/60/24,p,label = &quot;M = {}&quot;.format(M))</span>
+<span class="c1">#     ax[i].set_xlabel(r&#39;time [days]&#39;, fontsize = 18)</span>
+<span class="c1">#     ax[i].set_ylabel(r&#39;semi-latus rectum $p$&#39;,fontsize = 18)</span>
+<span class="c1">#     ax[i].set_title(r&#39;Primary mass = {} $M_\odot$&#39;.format(M),fontsize = 14)</span>
+<span class="c1">#     ax[i].legend()</span>
+<span class="c1">#     ax[i].grid()</span>
     
 
-    <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-
-<span class="c1"># p_sep = [INSERT YOUR CODE HERE] </span>
-<span class="c1"># print(&quot;Separatrix is at &quot;,p_sep)</span>
-<span class="c1"># print(&quot;Final point in semi-latus rectum is&quot;, p[-1])</span>
+<span class="c1">#     i+=1</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/447ff4e03604870c4b8721868380b0b2558cc3161fd33841a1b6e71b9fd35afc.png" src="_images/447ff4e03604870c4b8721868380b0b2558cc3161fd33841a1b6e71b9fd35afc.png" />
+<img alt="_images/54217a89f878171ca98b99cc88a583fe3d6f270786b0ece8581360ef4c4b012c.png" src="_images/54217a89f878171ca98b99cc88a583fe3d6f270786b0ece8581360ef4c4b012c.png" />
 </div>
 </div>
 <section id="quasi-keplerian-parameters-p-e">
@@ -647,22 +640,47 @@ p(t), e(t), x_I(t), \Phi_\varphi(t), \Phi_\theta(t), \Phi_r(t)
 <p>We want to remark that <span class="math notranslate nohighlight">\(p\)</span> and <span class="math notranslate nohighlight">\(e\)</span> are quasi-Keplerian parameters and gauge dependent quantities (they depend on the choice of coordinate system). They “converge” to the Newtonian equivalent parameters in the weak field regime (far away in radial coordinate <span class="math notranslate nohighlight">\(r\)</span> from the black hole). Below we show a plot of ellipsis based on these parameters at diferent stages of the evolution. This is useful to get a sense of the evolution of the orbit but you should not interpret these ellipsis as real orbits!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set initial parameters for Schwarzschild orbit</span>
+<span class="n">M</span> <span class="o">=</span> <span class="mf">1e6</span>   <span class="c1"># Primary mass  (solar masses)</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="mf">1e1</span>  <span class="c1"># Secondary mass  (solar masses)</span>
+<span class="n">p0</span> <span class="o">=</span> <span class="mf">10.5</span> <span class="c1"># range [separatrix, 45]</span>
+<span class="n">e0</span> <span class="o">=</span> <span class="mf">0.3</span>  <span class="c1"># range [0.0, 0.7]</span>
+
+<span class="c1"># run trajectory</span>
+<span class="c1"># must include for generic inputs, will fix a = 0 and x = 1.0</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">x</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+<span class="c1"># additional information </span>
+<span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">dt</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="c1"># initial time step, </span>
+              <span class="n">T</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="c1"># Time duration in years</span>
+              <span class="n">err</span><span class="o">=</span><span class="mf">1e-10</span> <span class="c1"># integrator error -- used as a tolerance to solve coupled ODEs above</span>
+             <span class="p">)</span>
+
+<span class="c1"># Compute trajectory of smaller body: p(t), e(t), xI(t), Phi_phi(t), Phi_theta(t), Phi_r(t)</span>
+<span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">xI</span><span class="p">,</span> <span class="n">Phi_phi</span><span class="p">,</span> <span class="n">Phi_theta</span><span class="p">,</span> <span class="n">Phi_r</span> <span class="o">=</span> <span class="n">traj</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span>
+                                              <span class="n">Phi_phi0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                                              <span class="n">Phi_theta0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                                              <span class="n">Phi_r0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                                              <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib</span>
 <span class="n">cmap</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;Spectral&#39;</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">),</span><span class="mi">20</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">),</span><span class="mi">12</span><span class="p">):</span>
     <span class="n">pp</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
     <span class="n">ee</span> <span class="o">=</span> <span class="n">e</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
-    <span class="n">Csi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+    <span class="n">Csi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
     <span class="n">rr</span> <span class="o">=</span> <span class="n">pp</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">ee</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">Csi</span><span class="p">))</span>
     <span class="n">xx</span> <span class="o">=</span> <span class="n">rr</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">Csi</span><span class="p">)</span>
     <span class="n">yy</span> <span class="o">=</span> <span class="n">rr</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">Csi</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">cmap</span><span class="p">(</span><span class="n">ii</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)),</span><span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;time = </span><span class="si">{</span><span class="n">t</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="n">YRSID_SI</span><span class="p">)</span><span class="si">:</span><span class="s1">.2e</span><span class="si">}</span><span class="s1"> years&#39;</span> <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">ii</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;MBH&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$r\cos(\xi)$&#39;</span><span class="p">,</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$r\sin(\xi)$&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Illustrative depiction of orbits&#39;</span><span class="p">,</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">25</span><span class="p">)</span>
@@ -671,7 +689,23 @@ p(t), e(t), x_I(t), \Phi_\varphi(t), \Phi_\theta(t), \Phi_r(t)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b9eb33ef18f27a931c0f77018f032fd306a2c1d7ffc8420c2273845a55f32a81.png" src="_images/b9eb33ef18f27a931c0f77018f032fd306a2c1d7ffc8420c2273845a55f32a81.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/qb/rd70hvq510n36l7vtbm3ms9r0000gn/T/ipykernel_92783/1717558844.py:26: MatplotlibDeprecationWarning: The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
+  cmap = matplotlib.cm.get_cmap(&#39;Spectral&#39;)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 114
+12 114
+24 114
+36 114
+48 114
+60 114
+72 114
+84 114
+96 114
+108 114
+</pre></div>
+</div>
+<img alt="_images/4bc56d9f07100933337eb1dfa132c817593e6453e62ded14a3fa69e3d5627d0f.png" src="_images/4bc56d9f07100933337eb1dfa132c817593e6453e62ded14a3fa69e3d5627d0f.png" />
 </div>
 </div>
 </section>
@@ -735,7 +769,7 @@ p(t), e(t), x_I(t), \Phi_\varphi(t), \Phi_\theta(t), \Phi_r(t)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/02a4af2defb2a276b1d56884fc81234bb4e4662f42467e9ac659213b047a7a08.png" src="_images/02a4af2defb2a276b1d56884fc81234bb4e4662f42467e9ac659213b047a7a08.png" />
+<img alt="_images/5f428f3fe90b4fdddcddf503c73c97774c7244370456102571fc6f9d72ad45bf.png" src="_images/5f428f3fe90b4fdddcddf503c73c97774c7244370456102571fc6f9d72ad45bf.png" />
 </div>
 </div>
 <section id="trajectory-duration-as-a-function-of-mass-ratio-eccentricity-semi-latus-rectum">
@@ -810,7 +844,7 @@ For a mass-ratio of epsilon = 1e-07, time duration is T = 396.74518326623223 yea
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/157bc94a7514a75040287f7bf1e7e0bb26ecc143c8642ca05a4379fcaaf21a0b.png" src="_images/157bc94a7514a75040287f7bf1e7e0bb26ecc143c8642ca05a4379fcaaf21a0b.png" />
+<img alt="_images/44972ab052d0c9903cc61accb354447a56904e35e1d84522f5a0745fa0ef7ccb.png" src="_images/44972ab052d0c9903cc61accb354447a56904e35e1d84522f5a0745fa0ef7ccb.png" />
 </div>
 </div>
 </section>
@@ -1022,7 +1056,17 @@ T_{\text{observation}} \sim 1/\epsilon
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/616a6b224da7f0ff2435e56715a87325d4e16ff0d02347abd3043f85ccee9012.png" src="_images/616a6b224da7f0ff2435e56715a87325d4e16ff0d02347abd3043f85ccee9012.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:27: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+&lt;&gt;:28: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+&lt;&gt;:27: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+&lt;&gt;:28: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+/var/folders/qb/rd70hvq510n36l7vtbm3ms9r0000gn/T/ipykernel_92783/1454408438.py:27: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+  plt.plot(t1/YRSID_SI,Phi_phi1/(2*np.pi), label=f&#39;mu={mu1}, M={M1/1e6} x $10^6$, $\epsilon$ = {mu1/M1}&#39;)
+/var/folders/qb/rd70hvq510n36l7vtbm3ms9r0000gn/T/ipykernel_92783/1454408438.py:28: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+  plt.plot(t2/YRSID_SI,Phi_phi2/(2*np.pi), label=f&#39;mu={mu2}, M={M2/1e6} x $10^6$, $\epsilon$ = {mu2/M2}&#39;)
+</pre></div>
+</div>
+<img alt="_images/e277da65dbb48362aa2e908765bb09e2f42718317bc10b89abf3126387e2644c.png" src="_images/e277da65dbb48362aa2e908765bb09e2f42718317bc10b89abf3126387e2644c.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Final number of cycles of system 1 with mu = 10.0 and M = 1000000.0 is N_cyles = 51298.48461545311
 Final number of cycles of system 2 with mu = 5 and M = 500000.0 is N_cycles = 51298.48113547578
 </pre></div>
@@ -1080,7 +1124,17 @@ $<span class="math notranslate nohighlight">\(
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7a935719b5a8441c8d7f2f22aa069e8955ee8f6c367e0edd51420db4c6b0d39e.png" src="_images/7a935719b5a8441c8d7f2f22aa069e8955ee8f6c367e0edd51420db4c6b0d39e.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:35: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+&lt;&gt;:36: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+&lt;&gt;:35: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+&lt;&gt;:36: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+/var/folders/qb/rd70hvq510n36l7vtbm3ms9r0000gn/T/ipykernel_92783/2150444768.py:35: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+  plt.plot(t1/YRSID_SI,OmegaPhi1/(2*np.pi), label=f&#39;mu={mu1}, M={M1/1e6} x $10^6$, $\epsilon$ = {mu1/M1}&#39;)
+/var/folders/qb/rd70hvq510n36l7vtbm3ms9r0000gn/T/ipykernel_92783/2150444768.py:36: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+  plt.plot(t2/YRSID_SI,OmegaPhi2/(2*np.pi), label=f&#39;mu={mu2}, M={M2/1e6} x $10^6$, $\epsilon$ = {mu2/M2}&#39;)
+</pre></div>
+</div>
+<img alt="_images/83866fe2fb8c901fee038e97c2688be4b64d2dcf4beb30e5ed6e921f89d4d6b2.png" src="_images/83866fe2fb8c901fee038e97c2688be4b64d2dcf4beb30e5ed6e921f89d4d6b2.png" />
 </div>
 </div>
 </section>
@@ -1122,7 +1176,7 @@ $<span class="math notranslate nohighlight">\(
 </div>
 <section id="fundamental-frequencies-and-harmonics">
 <h3>Fundamental frequencies and harmonics<a class="headerlink" href="#fundamental-frequencies-and-harmonics" title="Permalink to this heading">#</a></h3>
-<p>An EMRI Waveform can thought as a Fourier series where the frequencies <span class="math notranslate nohighlight">\(\omega_{mnk}\)</span> are given by
+<p>Over short time-scales, an EMRI Waveform can thought as a Fourier series where the frequencies <span class="math notranslate nohighlight">\(\omega_{mnk}\)</span> are given by
 $<span class="math notranslate nohighlight">\(
 \omega_{mnk} = m \Omega_\varphi + n \Omega_r + k \Omega_\theta
 \)</span>$
@@ -1169,21 +1223,56 @@ Therefore is possible to plot the frequency evolution of each harmonic given a t
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/885f52221e447b5e73beed68d32d45790c8f2526653778f91a631f1ce1592eb0.png" src="_images/885f52221e447b5e73beed68d32d45790c8f2526653778f91a631f1ce1592eb0.png" />
+<img alt="_images/7ebcedea052debb0fa2c2f5c080551a652d08e7434283eae3b9ebcb2357b95a8.png" src="_images/7ebcedea052debb0fa2c2f5c080551a652d08e7434283eae3b9ebcb2357b95a8.png" />
 </div>
 </div>
-<p>The system with smaller MBH mass spans more frequencies and evolves more quickly than the system with larger MBH mass. This piece of code will be exceptionally useful for a later exercise. Understand here that, for the <span class="math notranslate nohighlight">\(\phi\)</span> angular frequency <span class="math notranslate nohighlight">\(m\Omega_{\phi}\)</span>, we can determine up to what mode in <span class="math notranslate nohighlight">\(m\)</span> we are sensitive to when analysing EMRI waveforms.</p>
+<p>The system with smaller MBH mass spans more frequencies and evolves more quickly than the system with larger MBH mass. This piece of code will be exceptionally useful for a later exercise. Understand here that, for the <span class="math notranslate nohighlight">\(\phi\)</span> angular frequency <span class="math notranslate nohighlight">\(\Omega_{\phi}\)</span>, we can determine up to what mode in <span class="math notranslate nohighlight">\(m\)</span> we are sensitive to when analysing EMRI waveforms.</p>
 </section>
 </section>
-<section id="schwarzchild-waveforms-in-the-source-frame">
-<h2>Schwarzchild Waveforms in the source frame<a class="headerlink" href="#schwarzchild-waveforms-in-the-source-frame" title="Permalink to this heading">#</a></h2>
-<p>Here we show how to get the final waveform using the input parameters.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="schwarzchild-waveforms-in-the-source-frame">
+<h1>Schwarzchild Waveforms in the source frame<a class="headerlink" href="#schwarzchild-waveforms-in-the-source-frame" title="Permalink to this heading">#</a></h1>
+<p>So far in this tutorial we have focused on how to generate the trajectory of the smaller body around a massive black hole given an initial set of input parameters. Now, given a set of input parameters that determine a trajectory, we will focus on how to generate the final source frame Schwarzschild waveform. The rest of this tutorial will focus on time domain, frequency domain and time-frequency domain representations of EMRI waveforms. There will also be a few extra, more data analysis focused exercises as one progresses through the tutorial.</p>
+<p>We begin with the time-domain representation of an EMRI waveform.</p>
+<section id="time-domain-representation-of-waveforms">
+<h2>Time Domain Representation of Waveforms<a class="headerlink" href="#time-domain-representation-of-waveforms" title="Permalink to this heading">#</a></h2>
+<p>At large luminosity distances from the source, the source-frame EMRI waveform is given by
+\begin{equation}
+h_{+} - ih_{\times} = \frac{\mu}{d_L}\sum_{lmn} A_{lmn}(p(t),e(t),x_{I}(t)) , S_{lmn}(\theta,\phi) , \exp(-i\Phi_{mn}(t)).
+\end{equation}</p>
+<p><em>Note:</em> We will not give a detailed tutorial on the pieces that determine the harmonic content of the amplitudes <span class="math notranslate nohighlight">\(A_{lmn}\)</span> or the spin weighted spherical harmonics <span class="math notranslate nohighlight">\(S_{lmn}\)</span>. That’s outside the scope of this work though, if people are curious, feel free to talk to me.</p>
+</section>
+<section id="gpu-acceleration">
+<h2>GPU acceleration<a class="headerlink" href="#gpu-acceleration" title="Permalink to this heading">#</a></h2>
+<p>From a data analysis perspective, we require EMRI waveforms that can be generated in around one second. This is due to the immense number of waveform generations required for parameter estimation algorithms, which is likely only a fraction of the amount required for the actual search phase! The speed of EMRI waveforms depend on two crucial ingredients. One is how quickly the trajectory can be built and the other is how quickly the individual harmonics (pairs of modes eg. (l,m,n) = (2,2,0) ) can all be summed. For orbits with significant eccentricities, the numbers of harmonics can be huge (in the thousands)!</p>
+<p>The trajectories are quickly computed by integrating on a sparse grid that becomes more fine as the separatrix is approached. The waveforms are quickly generated by exploting GPUs to parallelise the sum over <span class="math notranslate nohighlight">\((l,m,n)\)</span>. Compared to single CPUs, speed ups of order <span class="math notranslate nohighlight">\(\sim 2500\)</span> are observed when compared to a single GPU. In this tutorial, using google collab, we will use google collabs basic GPU version.</p>
+<p><img alt="image.png" src="https://github.com/OllieBurke/EMRI_Workshop/blob/main/docs/images/gpu.jpg?raw=true" /></p>
+<p>The next few cells will focus on generating the EMRI waveform in the time domain.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">few_gen</span> <span class="o">=</span> <span class="n">FastSchwarzschildEccentricFlux</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We first define a few key word arguments to help our EMRI generator understand precisely what we want. </span>
+
+<span class="c1"># GPU accelerated waveforms, this is an absolute game changer. </span>
+<span class="n">use_gpu</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># keyword arguments for inspiral generator (RunSchwarzEccFluxInspiral)</span>
+<span class="n">inspiral_kwargs</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;DENSE_STEPPING&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>  <span class="c1"># we want a sparsely sampled trajectory</span>
+        <span class="s2">&quot;max_init_len&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e3</span><span class="p">),</span>  <span class="c1"># all of the trajectories will be well under len = 1000</span>
+    <span class="p">}</span>
+
+<span class="c1"># keyword arguments for summation generator (InterpolatedModeSum)</span>
+<span class="n">sum_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;use_gpu&quot;</span><span class="p">:</span> <span class="n">use_gpu</span><span class="p">,</span>  <span class="c1"># GPU is availabel for this type of summation</span>
+    <span class="s2">&quot;pad_output&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+
+<span class="n">few_gen</span> <span class="o">=</span> <span class="n">FastSchwarzschildEccentricFlux</span><span class="p">(</span>
     <span class="n">inspiral_kwargs</span><span class="o">=</span><span class="n">inspiral_kwargs</span><span class="p">,</span>
-    <span class="n">amplitude_kwargs</span><span class="o">=</span><span class="n">amplitude_kwargs</span><span class="p">,</span>
-    <span class="n">Ylm_kwargs</span><span class="o">=</span><span class="n">Ylm_kwargs</span><span class="p">,</span>
+    <span class="c1"># amplitude_kwargs=amplitude_kwargs,</span>
+    <span class="c1"># Ylm_kwargs=Ylm_kwargs,</span>
     <span class="n">sum_kwargs</span><span class="o">=</span><span class="n">sum_kwargs</span><span class="p">,</span>
     <span class="n">use_gpu</span><span class="o">=</span><span class="n">use_gpu</span><span class="p">,</span>
 <span class="p">)</span>
@@ -1207,7 +1296,7 @@ Therefore is possible to plot the frequency evolution of each harmonic given a t
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/546fc5daa2e74b4e6f527bf83734db052a2a4a64d7faeb4c7988919110f8ac11.png" src="_images/546fc5daa2e74b4e6f527bf83734db052a2a4a64d7faeb4c7988919110f8ac11.png" />
+<img alt="_images/04d02f00819c618f762ceb84b838b3325373b488aa222eeadf8c0601a5d670af.png" src="_images/04d02f00819c618f762ceb84b838b3325373b488aa222eeadf8c0601a5d670af.png" />
 </div>
 </div>
 </section>
@@ -1634,16 +1723,8 @@ The overlap expresses how similar two signals \)</span>a<span class="math notran
 <h1>Frequency domain EMRI waveform<a class="headerlink" href="#frequency-domain-emri-waveform" title="Permalink to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">few</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">few.waveform</span> <span class="kn">import</span> <span class="n">GenerateEMRIWaveform</span>
-<span class="c1"># frequency domain</span>
-<span class="n">few_gen</span> <span class="o">=</span> <span class="n">GenerateEMRIWaveform</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># frequency domain</span>
+<span class="n">fd_gen</span> <span class="o">=</span> <span class="n">GenerateEMRIWaveform</span><span class="p">(</span>
     <span class="s2">&quot;FastSchwarzschildEccentricFlux&quot;</span><span class="p">,</span>
     <span class="n">sum_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pad_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s2">&quot;fd&quot;</span><span class="p">,</span> <span class="n">odd_len</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
     <span class="n">return_list</span><span class="o">=</span><span class="kc">True</span>
@@ -1658,59 +1739,190 @@ The overlap expresses how similar two signals \)</span>a<span class="math notran
 </pre></div>
 </div>
 </div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define the injection parameters</span>
+
+<span class="n">M</span> <span class="o">=</span> <span class="mf">1e6</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="mf">1e1</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">p0</span> <span class="o">=</span> <span class="mf">9.6</span>
+<span class="n">e0</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span>  <span class="c1"># polar viewing angle in source frame</span>
+<span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span>  <span class="c1"># azimuthal viewing angle in source frame</span>
+
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">10.0</span>
+
+<span class="n">x_I</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># will be ignored in Schwarzschild waveform</span>
+
+<span class="n">qK</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span>  <span class="c1"># polar spin angle</span>
+<span class="n">phiK</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span>  <span class="c1"># azimuthal viewing angle</span>
+<span class="n">qS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span>  <span class="c1"># polar sky angle</span>
+<span class="n">phiS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span>  <span class="c1"># azimuthal viewing angle</span>
+
+<span class="n">dist</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># distance</span>
+<span class="c1"># initial phases</span>
+
+<span class="n">Phi_phi0</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">Phi_theta0</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">Phi_r0</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">Tobs</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="c1"># observation time, if the inspiral is shorter, the it will be zero padded</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">10.0</span> <span class="c1"># time interval</span>
+
+<span class="n">waveform_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;T&quot;</span><span class="p">:</span> <span class="n">Tobs</span><span class="p">,</span>
+    <span class="s2">&quot;dt&quot;</span><span class="p">:</span> <span class="n">dt</span><span class="p">,</span>
+    <span class="s2">&quot;eps&quot;</span><span class="p">:</span> <span class="mf">1e-6</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First let&#39;s try to generate a full year long EMRI waveform in the time domain and look at the periodigram </span>
+
+<span class="n">hp_td</span><span class="p">,</span> <span class="n">hx_td</span> <span class="o">=</span> <span class="n">td_gen</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="n">x_I</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">qK</span><span class="p">,</span> <span class="n">phiK</span><span class="p">,</span> <span class="n">qS</span><span class="p">,</span> <span class="n">phiS</span><span class="p">,</span> <span class="n">Phi_phi0</span><span class="p">,</span> <span class="n">Phi_theta0</span><span class="p">,</span> <span class="n">Phi_r0</span><span class="p">,</span> <span class="o">**</span><span class="n">waveform_kwargs</span><span class="p">)</span>
+<span class="n">t_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">Tobs</span><span class="o">*</span><span class="n">YRSID_SI</span><span class="p">,</span><span class="n">dt</span><span class="p">)</span>
+<span class="n">N_t</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">hp_td</span><span class="p">)</span>
+
+<span class="n">freq_bin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="n">N_t</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+
+<span class="n">hp_fft</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">hp_td</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_range</span><span class="o">/</span><span class="mi">60</span><span class="o">/</span><span class="mi">60</span><span class="o">/</span><span class="mi">24</span><span class="p">,</span><span class="n">hp_td</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Time [days]&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$h_</span><span class="si">{p}</span><span class="s1">(t)$&#39;</span><span class="p">,</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Time domain&#39;</span><span class="p">,</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">freq_bin</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="nb">abs</span><span class="p">(</span><span class="n">hp_fft</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mf">1e-5</span><span class="p">,</span><span class="mf">1e-1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Frequency [Hz]&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$|h_</span><span class="si">{p}</span><span class="s1">(f)|^2$&#39;</span><span class="p">,</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Frequency domain&#39;</span><span class="p">,</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">folders</span><span class="o">/</span><span class="n">qb</span><span class="o">/</span><span class="n">rd70hvq510n36l7vtbm3ms9r0000gn</span><span class="o">/</span><span class="n">T</span><span class="o">/</span><span class="n">ipykernel_44542</span><span class="o">/</span><span class="mf">3673188726.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="s2">&quot;FastSchwarzschildEccentricFlux&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="n">sum_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pad_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s2">&quot;fd&quot;</span><span class="p">,</span> <span class="n">odd_len</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-<span class="ne">----&gt; </span><span class="mi">6</span>     <span class="n">return_list</span><span class="o">=</span><span class="kc">True</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> 
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Frequency domain&#39;)
+</pre></div>
+</div>
+<img alt="_images/62f5fadba462c7ea4e49865e0e58b42bc841984c193e0279f695af2178e54f16.png" src="_images/62f5fadba462c7ea4e49865e0e58b42bc841984c193e0279f695af2178e54f16.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now let&#39;s generate the waveform directly in the frequency domain a</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hp_fd</span><span class="p">,</span> <span class="n">hx_fd</span> <span class="o">=</span> <span class="n">fd_gen</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="n">x_I</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">qK</span><span class="p">,</span> <span class="n">phiK</span><span class="p">,</span> <span class="n">qS</span><span class="p">,</span> <span class="n">phiS</span><span class="p">,</span> <span class="n">Phi_phi0</span><span class="p">,</span> <span class="n">Phi_theta0</span><span class="p">,</span> <span class="n">Phi_r0</span><span class="p">,</span> <span class="o">**</span><span class="n">waveform_kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">freqs</span> <span class="o">=</span> <span class="n">fd_gen</span><span class="o">.</span><span class="n">waveform_generator</span><span class="o">.</span><span class="n">create_waveform</span><span class="o">.</span><span class="n">frequency</span>
+<span class="n">df</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">freqs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
-<span class="nn">/opt/homebrew/anaconda3/envs/few_env/lib/python3.7/site-packages/few-1.4.6-py3.7-macosx-10.9-x86_64.egg/few/waveform.py</span> in <span class="ni">__init__</span><span class="nt">(self, waveform_class, frame, return_list, *args, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">85</span>             <span class="k">try</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">86</span>                 <span class="n">waveform</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()[</span><span class="n">waveform_class</span><span class="p">]</span>
-<span class="ne">---&gt; </span><span class="mi">87</span>                 <span class="bp">self</span><span class="o">.</span><span class="n">waveform_generator</span> <span class="o">=</span> <span class="n">waveform</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">88</span>             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">89</span>                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">freq_bin</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dt</span> <span class="o">*</span> <span class="n">hp_fft</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;TD into FD&#39;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="n">N_t</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:],</span> <span class="nb">abs</span><span class="p">(</span><span class="n">hp_fd</span><span class="p">[</span><span class="n">N_t</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:])</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;pure FD&#39;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s1">&#39;orange&#39;</span><span class="p">)</span>
 
-<span class="nn">/opt/homebrew/anaconda3/envs/few_env/lib/python3.7/site-packages/few-1.4.6-py3.7-macosx-10.9-x86_64.egg/few/waveform.py</span> in <span class="ni">__init__</span><span class="nt">(self, inspiral_kwargs, amplitude_kwargs, sum_kwargs, Ylm_kwargs, use_gpu, *args, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">829</span>             <span class="n">use_gpu</span><span class="o">=</span><span class="n">use_gpu</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">830</span>             <span class="o">*</span><span class="n">args</span><span class="p">,</span>
-<span class="ne">--&gt; </span><span class="mi">831</span>             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">832</span>         <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">833</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mf">1e-5</span><span class="p">,</span><span class="mf">1e-1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Frequencies [Hz]&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Periodigram $|\tilde</span><span class="si">{h}</span><span class="s1">(f)|^2$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Comparison between waveform models&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/7ab6237a718c5894fdaba12e3807fc0943f88975f718387621ab25f8cc4bc873.png" src="_images/7ab6237a718c5894fdaba12e3807fc0943f88975f718387621ab25f8cc4bc873.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">PowerSpectralDensity</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    PSD obtained from: https://arxiv.org/pdf/1803.01944.pdf</span>
+<span class="sd">    </span>
+<span class="sd">    Removed galactic confusion noise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>        
+    
+    <span class="n">L</span> <span class="o">=</span> <span class="mf">2.5</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span>   <span class="c1"># Length of LISA arm</span>
+    <span class="n">f0</span> <span class="o">=</span> <span class="mf">19.09</span><span class="o">*</span><span class="mi">10</span><span class="o">**-</span><span class="mi">3</span>    
+    
+    <span class="n">Poms</span> <span class="o">=</span> <span class="p">((</span><span class="mf">1.5</span><span class="o">*</span><span class="mi">10</span><span class="o">**-</span><span class="mi">11</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="mi">10</span><span class="o">**-</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="n">f</span><span class="p">)</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># Optical Metrology Sensor</span>
+    <span class="n">Pacc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="mi">10</span><span class="o">**-</span><span class="mi">15</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="mi">10</span><span class="o">**-</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="mi">10</span><span class="o">*</span><span class="n">f</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">f</span><span class="o">/</span><span class="p">(</span><span class="mi">8</span><span class="o">*</span><span class="mi">10</span><span class="o">**-</span><span class="mi">3</span><span class="p">))</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># Acceleration Noise </span>
 
-<span class="nn">/opt/homebrew/anaconda3/envs/few_env/lib/python3.7/site-packages/few-1.4.6-py3.7-macosx-10.9-x86_64.egg/few/waveform.py</span> in <span class="ni">__init__</span><span class="nt">(self, inspiral_module, amplitude_module, sum_module, inspiral_kwargs, amplitude_kwargs, sum_kwargs, Ylm_kwargs, mode_selector_kwargs, use_gpu, num_threads, normalize_amps)</span>
-<span class="g g-Whitespace">    </span><span class="mi">442</span> 
-<span class="g g-Whitespace">    </span><span class="mi">443</span>         <span class="c1"># summation generator</span>
-<span class="ne">--&gt; </span><span class="mi">444</span>         <span class="bp">self</span><span class="o">.</span><span class="n">create_waveform</span> <span class="o">=</span> <span class="n">sum_module</span><span class="p">(</span><span class="o">**</span><span class="n">sum_kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">445</span> 
-<span class="g g-Whitespace">    </span><span class="mi">446</span>         <span class="c1"># angular harmonics generation</span>
+    <span class="n">PSD</span> <span class="o">=</span> <span class="p">((</span><span class="mi">10</span><span class="o">/</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">L</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">Poms</span> <span class="o">+</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">Pacc</span><span class="p">)</span><span class="o">/</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">f</span><span class="p">))</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="p">(</span><span class="n">f</span><span class="o">/</span><span class="n">f0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="c1"># PSD</span>
 
-<span class="nn">/opt/homebrew/anaconda3/envs/few_env/lib/python3.7/site-packages/few-1.4.6-py3.7-macosx-10.9-x86_64.egg/few/summation/interpolatedmodesum.py</span> in <span class="ni">__init__</span><span class="nt">(self, *args, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">318</span>         <span class="n">ParallelModuleBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">319</span>         <span class="n">SchwarzschildEccentric</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">320</span>         <span class="n">SummationBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">321</span> 
-<span class="g g-Whitespace">    </span><span class="mi">322</span>         <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+    <span class="k">return</span> <span class="n">PSD</span>
 
-<span class="nn">/opt/homebrew/anaconda3/envs/few_env/lib/python3.7/site-packages/few-1.4.6-py3.7-macosx-10.9-x86_64.egg/few/utils/baseclasses.py</span> in <span class="ni">__init__</span><span class="nt">(self, output_type, pad_output, *args, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">768</span>             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">769</span>                 <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> waveform domain not available. Choices are &#39;td&#39; (time domain) or &#39;tf&#39; (time-frequency).&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-<span class="ne">--&gt; </span><span class="mi">770</span>                     <span class="n">output_type</span>
-<span class="g g-Whitespace">    </span><span class="mi">771</span>                 <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">772</span>             <span class="p">)</span>
+<span class="k">def</span> <span class="nf">inner_product_FD</span><span class="p">(</span><span class="n">a_f</span><span class="p">,</span><span class="n">b_f</span><span class="p">,</span><span class="n">df</span><span class="p">,</span> <span class="n">PSD</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span> <span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">a_f</span><span class="p">)</span> <span class="o">*</span> <span class="n">b_f</span> <span class="o">*</span> <span class="n">df</span> <span class="o">/</span> <span class="n">PSD</span><span class="p">)</span> <span class="p">)</span>
 
-<span class="ne">ValueError</span>: fd waveform domain not available. Choices are &#39;td&#39; (time domain) or &#39;tf&#39; (time-frequency).
+<span class="n">PSD</span> <span class="o">=</span> <span class="n">PowerSpectralDensity</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="n">N_t</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:])</span>
+
+<span class="n">SNR2_FD_model</span> <span class="o">=</span> <span class="n">inner_product_FD</span><span class="p">(</span><span class="n">hp_fd</span><span class="p">[</span><span class="n">N_t</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:],</span> <span class="n">hp_fd</span><span class="p">[</span><span class="n">N_t</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:],</span> <span class="n">df</span><span class="p">,</span> <span class="n">PSD</span><span class="p">)</span>
+<span class="n">SNR2_TD_model</span> <span class="o">=</span> <span class="n">inner_product_FD</span><span class="p">(</span><span class="n">dt</span><span class="o">*</span><span class="n">hp_fft</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">dt</span><span class="o">*</span><span class="n">hp_fft</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">df</span><span class="p">,</span> <span class="n">PSD</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Approximate SNR of the system using frequency domain model&quot;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">SNR2_FD_model</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Approximate SNR of the system using time domain model&quot;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">SNR2_TD_model</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Not bad.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Approximate SNR of the system using frequency domain model 62.94559020915831
+Approximate SNR of the system using time domain model 62.94704940634981
+
+Not bad.
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="end-of-tutorial">
-<h1>End of Tutorial<a class="headerlink" href="#end-of-tutorial" title="Permalink to this heading">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="exercise">
+<h1>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h1>
+<p>Now using the overlap function defined by</p>
+<div class="math notranslate nohighlight">
+\[ \mathcal{O}(a,b) = \frac{(a|b)}{\sqrt{(a|a)(b|b)}}, \ \ \text{with inner product:} \ \ (a|b) = 4\int_{0}^{\infty}\frac{\tilde{a}(f)\tilde{b}^{\star}(f)}{S_{n}(f)}\]</div>
+<p>try and show that the two waveform models <code class="docutils literal notranslate"><span class="pre">fd_gen</span></code> and <code class="docutils literal notranslate"><span class="pre">td_gen</span></code> are near equivalent for the parameters given above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your turn! </span>
+
+<span class="n">ab</span> <span class="o">=</span> <span class="n">inner_product_FD</span><span class="p">(</span><span class="n">hp_fd</span><span class="p">[</span><span class="n">N_t</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:],</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">hp_fft</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">df</span><span class="p">,</span> <span class="n">PSD</span><span class="p">)</span>
+<span class="n">aa</span> <span class="o">=</span> <span class="n">inner_product_FD</span><span class="p">(</span><span class="n">hp_fd</span><span class="p">[</span><span class="n">N_t</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:],</span> <span class="n">hp_fd</span><span class="p">[</span><span class="n">N_t</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:],</span> <span class="n">df</span><span class="p">,</span> <span class="n">PSD</span><span class="p">)</span>
+<span class="n">bb</span> <span class="o">=</span> <span class="n">inner_product_FD</span><span class="p">(</span><span class="n">dt</span> <span class="o">*</span> <span class="n">hp_fft</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">hp_fft</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">df</span><span class="p">,</span> <span class="n">PSD</span><span class="p">)</span>
+
+<span class="n">overlap</span> <span class="o">=</span> <span class="n">ab</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">aa</span> <span class="o">*</span> <span class="n">bb</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Overlap between two models is = &quot;</span><span class="p">,</span> <span class="n">overlap</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Seems quite reasonable&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overlap between two models is =  0.9988982779433383
+Seems quite reasonable
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="end-of-tutorial-well-done">
+<h1>End of Tutorial… Well done!<a class="headerlink" href="#end-of-tutorial-well-done" title="Permalink to this heading">#</a></h1>
 <section id="extra-material-augmented-analytic-kludge-with-5pn-trajectory">
 <h2>Extra Material: Augmented Analytic Kludge with 5PN trajectory<a class="headerlink" href="#extra-material-augmented-analytic-kludge-with-5pn-trajectory" title="Permalink to this heading">#</a></h2>
 <p>We have now implemented a new version of the Augmented Analytic Kludge with 5PN trajectories.</p>
@@ -2536,9 +2748,15 @@ of each equation above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0d5f6775f39ad6bde5523b09d209f41c4b8a6261665076230d70016973a5c710.png" src="_images/0d5f6775f39ad6bde5523b09d209f41c4b8a6261665076230d70016973a5c710.png" />
-<img alt="_images/1221042a8431de430b50c37a9616d69a776c3d7c46ec7b21e23397dfe2f9cd32.png" src="_images/1221042a8431de430b50c37a9616d69a776c3d7c46ec7b21e23397dfe2f9cd32.png" />
-<img alt="_images/b5bfcb3c311449613d07cacc50fc8c20d1216258f5d3c5d1aed96f8332cbeed6.png" src="_images/b5bfcb3c311449613d07cacc50fc8c20d1216258f5d3c5d1aed96f8332cbeed6.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:86: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+&lt;&gt;:86: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+/var/folders/qb/rd70hvq510n36l7vtbm3ms9r0000gn/T/ipykernel_92783/1070559048.py:86: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+  plt.xlabel(&#39;$M/\epsilon$&#39;)
+</pre></div>
+</div>
+<img alt="_images/e6d19a5d782813c33ef2d35d122c214300b8a297a9aa6d48a7fe7062113c05df.png" src="_images/e6d19a5d782813c33ef2d35d122c214300b8a297a9aa6d48a7fe7062113c05df.png" />
+<img alt="_images/2fe12f4291357e52efe125ff0baa261e9f55adb8412e65949a303cb9b77412fa.png" src="_images/2fe12f4291357e52efe125ff0baa261e9f55adb8412e65949a303cb9b77412fa.png" />
+<img alt="_images/e51bdb34a55b303aaeaf216e92a9f905ae2a7e7618b30736edd17960ce178672.png" src="_images/e51bdb34a55b303aaeaf216e92a9f905ae2a7e7618b30736edd17960ce178672.png" />
 </div>
 </div>
 </section>
@@ -2580,89 +2798,11 @@ of each equation above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/63620bea61bd789b2f1f7c643f4926c093c2b65ca3ec803a167a5c483d1ce4cd.png" src="_images/63620bea61bd789b2f1f7c643f4926c093c2b65ca3ec803a167a5c483d1ce4cd.png" />
+<img alt="_images/d9ca7a895fca9216f3db141ad458e05220aa5005ec228516c61ca4487396f755.png" src="_images/d9ca7a895fca9216f3db141ad458e05220aa5005ec228516c61ca4487396f755.png" />
 </div>
 </div>
-</section>
 <section id="ex-3">
-<h2>Ex 3<a class="headerlink" href="#ex-3" title="Permalink to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># run trajectory</span>
-<span class="c1"># must include for generic inputs, will fix a = 0 and x = 1.0</span>
-<span class="n">a</span> <span class="o">=</span> <span class="mf">0.0</span>
-<span class="n">x</span> <span class="o">=</span> <span class="mf">1.0</span>
-<span class="n">p0</span> <span class="o">=</span> <span class="mf">10.0</span> <span class="c1"># range [separatrix, 45]</span>
-<span class="n">e0</span> <span class="o">=</span> <span class="mf">0.3</span> <span class="c1"># range [0.0, 0.7]</span>
-
-<span class="c1"># set initial parameters</span>
-<span class="n">M</span> <span class="o">=</span> <span class="mf">1e6</span>
-<span class="n">mu</span> <span class="o">=</span> <span class="mf">1e1</span>
-<span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;T&#39;</span><span class="p">]</span><span class="o">=</span><span class="mf">400.0</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">e0</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span><span class="n">num</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
-    <span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">xI</span><span class="p">,</span> <span class="n">Phi_phi</span><span class="p">,</span> <span class="n">Phi_theta</span><span class="p">,</span> <span class="n">Phi_r</span> <span class="o">=</span> <span class="n">traj</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span>
-                                                  <span class="n">Phi_phi0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-                                                  <span class="n">Phi_theta0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-                                                  <span class="n">Phi_r0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-                                                  <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="n">OmegaPhi</span><span class="p">,</span> <span class="n">OmegaTheta</span><span class="p">,</span> <span class="n">OmegaR</span> <span class="o">=</span> <span class="n">get_fundamental_frequencies</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-    <span class="c1"># we need to divide by the total Mass and convert to seconds</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">OmegaPhi</span> <span class="o">/</span><span class="n">OmegaR</span> <span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;e0=</span><span class="si">{</span><span class="n">e0</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> 
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">OmegaPhi</span> <span class="o">/</span><span class="n">OmegaTheta</span><span class="p">)</span> 
-
-
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\Omega_\varphi/\Omega_r$ [1/s]&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t [s]&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/28ac82da003b7ecc79a3f8fd0779b527ab768bf943ddff8d6f3eb59f36c7c5de.png" src="_images/28ac82da003b7ecc79a3f8fd0779b527ab768bf943ddff8d6f3eb59f36c7c5de.png" />
-</div>
-</div>
-</section>
-<section id="ex-4">
-<h2>Ex 4<a class="headerlink" href="#ex-4" title="Permalink to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">amp</span> <span class="o">=</span> <span class="n">RomanAmplitude</span><span class="p">()</span>
-
-<span class="n">teuk_modes</span> <span class="o">=</span> <span class="n">amp</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
-
-<span class="n">ll</span><span class="o">=</span><span class="mi">5</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">mm</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">ll</span><span class="p">,</span><span class="n">ll</span><span class="p">):</span>
-    <span class="n">nn</span><span class="o">=</span><span class="mi">0</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">teuk_modes</span><span class="p">[:,</span> <span class="n">amp</span><span class="o">.</span><span class="n">special_index_map</span><span class="p">[(</span><span class="n">ll</span><span class="p">,</span><span class="n">mm</span><span class="p">,</span><span class="n">nn</span><span class="p">)]]),</span><span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;(l,m,n)=(</span><span class="si">{</span><span class="n">ll</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">mm</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">nn</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;|A|&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">nn</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">):</span>
-    <span class="n">ll</span><span class="o">=</span><span class="mi">2</span>
-    <span class="n">mm</span><span class="o">=</span><span class="mi">2</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">teuk_modes</span><span class="p">[:,</span> <span class="n">amp</span><span class="o">.</span><span class="n">special_index_map</span><span class="p">[(</span><span class="n">ll</span><span class="p">,</span><span class="n">mm</span><span class="p">,</span><span class="n">nn</span><span class="p">)]]),</span><span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;(l,m,n)=(</span><span class="si">{</span><span class="n">ll</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">mm</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">nn</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;|A|&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/3a399b5f1354edea0ccca37090dae997c99128feab8d355401fa75fda85b0721.png" src="_images/3a399b5f1354edea0ccca37090dae997c99128feab8d355401fa75fda85b0721.png" />
-<img alt="_images/b3acf792d718ea5c4fb739a1f6800c1437cc6644037deda97481ff9ed4f23e6b.png" src="_images/b3acf792d718ea5c4fb739a1f6800c1437cc6644037deda97481ff9ed4f23e6b.png" />
-</div>
-</div>
-<section id="ex-5">
-<h3>Ex 5<a class="headerlink" href="#ex-5" title="Permalink to this heading">#</a></h3>
+<h3>Ex 3<a class="headerlink" href="#ex-3" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># parameters</span>
@@ -2819,172 +2959,6 @@ of each equation above.</p>
 </div>
 </div>
 </section>
-<section id="ex-8">
-<h3>Ex 8<a class="headerlink" href="#ex-8" title="Permalink to this heading">#</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BeyondPN</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="n">epsilon</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">par</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># additional parameter</span>
-
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-
-        <span class="c1"># mass ratio</span>
-        <span class="n">epsilon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span>
-
-        <span class="c1"># extract the four evolving parameters</span>
-        <span class="n">p</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">Phi_phi</span><span class="p">,</span> <span class="n">Phi_r</span> <span class="o">=</span> <span class="n">y</span>
-
-        
-        <span class="c1"># guard against bad integration steps</span>
-        <span class="k">if</span> <span class="n">e</span> <span class="o">&gt;=</span> <span class="mf">1.0</span> <span class="ow">or</span> <span class="n">e</span> <span class="o">&lt;</span> <span class="mf">1e-6</span> <span class="ow">or</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="mf">6.0</span> <span class="ow">or</span> <span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="mi">6</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span> <span class="n">e</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
-        
-        <span class="c1"># perform elliptic calculations</span>
-        <span class="n">EllipE</span> <span class="o">=</span> <span class="n">ellipe</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">e</span><span class="o">/</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="mf">6.0</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">e</span><span class="p">))</span>
-        <span class="n">EllipK</span> <span class="o">=</span> <span class="n">ellipk</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">e</span><span class="o">/</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="mf">6.0</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">e</span><span class="p">))</span>
-        <span class="n">EllipPi1</span> <span class="o">=</span> <span class="n">ellippi</span><span class="p">(</span><span class="mi">16</span><span class="o">*</span><span class="n">e</span><span class="o">/</span><span class="p">(</span><span class="mf">12.0</span> <span class="o">+</span> <span class="mi">8</span><span class="o">*</span><span class="n">e</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">e</span><span class="o">*</span><span class="n">e</span> <span class="o">-</span> <span class="mi">8</span><span class="o">*</span><span class="n">p</span> <span class="o">+</span> <span class="n">p</span><span class="o">*</span><span class="n">p</span><span class="p">),</span> <span class="mi">4</span><span class="o">*</span><span class="n">e</span><span class="o">/</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="mf">6.0</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">e</span><span class="p">))</span>
-        <span class="n">EllipPi2</span> <span class="o">=</span> <span class="n">ellippi</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">e</span><span class="o">*</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="mi">4</span><span class="p">)</span><span class="o">/</span><span class="p">((</span><span class="mf">1.0</span><span class="o">+</span><span class="n">e</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="mf">6.0</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">e</span><span class="p">)),</span> <span class="mi">4</span><span class="o">*</span><span class="n">e</span><span class="o">/</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="mf">6.0</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">e</span><span class="p">))</span>
-
-        <span class="c1"># Azimuthal frequency</span>
-        <span class="n">Omega_phi</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="mf">1.5</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">Sqrt</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">Power</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mi">8</span> <span class="o">+</span> <span class="p">((</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">EllipPi2</span><span class="o">*</span><span class="p">(</span><span class="mi">6</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">e</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">3</span> <span class="o">+</span> <span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span> <span class="o">-</span> <span class="p">(</span><span class="n">EllipE</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span> <span class="o">+</span> <span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">e</span> <span class="o">+</span> <span class="n">p</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span>
-              <span class="p">(</span><span class="n">EllipK</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">28</span> <span class="o">+</span> <span class="mi">4</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">12</span><span class="o">*</span><span class="n">p</span> <span class="o">+</span> <span class="n">Power</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span><span class="o">/</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span> <span class="o">+</span> <span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="n">p</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span><span class="o">*</span><span class="n">EllipK</span> <span class="o">+</span> <span class="n">EllipPi2</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">e</span> <span class="o">+</span> <span class="n">p</span><span class="p">)))</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">EllipK</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span> <span class="o">+</span> <span class="n">p</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">EllipPi1</span><span class="o">*</span><span class="n">p</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">e</span> <span class="o">+</span> <span class="n">p</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">e</span> <span class="o">-</span> <span class="n">p</span><span class="p">)))</span><span class="o">/</span>
-            <span class="p">(</span><span class="n">EllipK</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span><span class="mi">2</span><span class="p">))))</span>
-
-        <span class="c1"># Post-Newtonian calculations</span>
-        <span class="n">yPN</span> <span class="o">=</span> <span class="n">Power</span><span class="p">(</span><span class="n">Omega_phi</span><span class="p">,</span><span class="mf">2.</span><span class="o">/</span><span class="mf">3.</span><span class="p">)</span>
-
-        <span class="n">EdotPN</span> <span class="o">=</span> <span class="p">(</span><span class="mi">96</span> <span class="o">+</span> <span class="mi">292</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">37</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mf">15.</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="mf">3.5</span><span class="p">))</span> <span class="o">*</span> <span class="nb">pow</span><span class="p">(</span><span class="n">yPN</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-        <span class="n">LdotPN</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">(</span><span class="mi">8</span> <span class="o">+</span> <span class="mi">7</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span><span class="o">/</span><span class="p">(</span><span class="mf">5.</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="nb">pow</span><span class="p">(</span><span class="n">yPN</span><span class="p">,</span> <span class="mf">7.</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span>
-
-        <span class="c1"># flux: here I modified the fluxes with the new parameter</span>
-        <span class="n">Edot</span> <span class="o">=</span> <span class="o">-</span><span class="n">epsilon</span><span class="o">*</span><span class="p">(</span><span class="n">EdotPN</span><span class="p">)</span> 
-        <span class="n">Ldot</span> <span class="o">=</span> <span class="o">-</span><span class="n">epsilon</span><span class="o">*</span><span class="p">(</span><span class="n">LdotPN</span><span class="p">)</span>
-
-
-        <span class="c1"># time derivatives</span>
-        <span class="n">pdot</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">Edot</span><span class="o">*</span><span class="n">Sqrt</span><span class="p">((</span><span class="mi">4</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">Power</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">3</span> <span class="o">+</span> <span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">p</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mi">3</span> <span class="o">+</span> <span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="mf">1.5</span><span class="p">)</span> <span class="o">+</span> <span class="n">Ldot</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">Sqrt</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span> <span class="o">-</span> <span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">p</span><span class="p">)))</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">Power</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
-        <span class="n">edot</span> <span class="o">=</span> <span class="o">-</span><span class="p">((</span><span class="n">Edot</span><span class="o">*</span><span class="n">Sqrt</span><span class="p">((</span><span class="mi">4</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">Power</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">3</span> <span class="o">+</span> <span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">p</span><span class="p">))</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="mf">1.5</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">18</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="o">-</span> <span class="mi">3</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span> <span class="o">+</span> <span class="n">p</span><span class="p">)</span> <span class="o">-</span> <span class="mi">9</span><span class="o">*</span><span class="n">p</span> <span class="o">+</span> <span class="n">Power</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="n">Ldot</span><span class="o">*</span><span class="n">Sqrt</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span> <span class="o">-</span> <span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">12</span> <span class="o">+</span> <span class="mi">4</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">8</span><span class="o">*</span><span class="n">p</span> <span class="o">+</span> <span class="n">Power</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span><span class="o">/</span><span class="p">(</span><span class="n">e</span><span class="o">*</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">Power</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="n">p</span><span class="p">))</span>
-        
-        <span class="n">pdot</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">par</span> <span class="o">*</span> <span class="n">p</span>
-        <span class="n">edot</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">par</span> <span class="o">*</span> <span class="n">e</span>
-        
-        <span class="n">Phi_phi_dot</span> <span class="o">=</span> <span class="n">Omega_phi</span><span class="p">;</span>
-
-        <span class="n">Phi_r_dot</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span><span class="o">*</span><span class="n">Sqrt</span><span class="p">((</span><span class="o">-</span><span class="mi">6</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">e</span> <span class="o">+</span> <span class="n">p</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">Power</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span><span class="o">*</span><span class="n">Pi</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">8</span><span class="o">*</span><span class="n">EllipK</span> <span class="o">+</span> <span class="p">((</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">EllipPi2</span><span class="o">*</span><span class="p">(</span><span class="mi">6</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">e</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">3</span> <span class="o">+</span> <span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span> <span class="o">-</span> <span class="p">(</span><span class="n">EllipE</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span> <span class="o">+</span> <span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">e</span> <span class="o">+</span> <span class="n">p</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span>
-        <span class="p">(</span><span class="n">EllipK</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">28</span> <span class="o">+</span> <span class="mi">4</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">12</span><span class="o">*</span><span class="n">p</span> <span class="o">+</span> <span class="n">Power</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span><span class="o">/</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">Power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span> <span class="o">+</span> <span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="n">p</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span><span class="o">*</span><span class="n">EllipK</span> <span class="o">+</span> <span class="n">EllipPi2</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">e</span> <span class="o">+</span> <span class="n">p</span><span class="p">)))</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">Power</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">EllipK</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span> <span class="o">+</span> <span class="n">p</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">EllipPi1</span><span class="o">*</span><span class="n">p</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">e</span> <span class="o">+</span> <span class="n">p</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">e</span> <span class="o">-</span> <span class="n">p</span><span class="p">)))</span><span class="o">/</span><span class="n">Power</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
-
-        <span class="n">dydt</span> <span class="o">=</span> <span class="p">[</span><span class="n">pdot</span><span class="p">,</span> <span class="n">edot</span><span class="p">,</span> <span class="n">Phi_phi_dot</span><span class="p">,</span> <span class="n">Phi_r_dot</span><span class="p">]</span>
-
-        <span class="k">return</span> <span class="n">dydt</span>
-
-<span class="c1"># this is the actual class that implements a PN trajectory. It uses the PN class in the integrator.</span>
-<span class="k">class</span> <span class="nc">BeyondPnTrajectory</span><span class="p">(</span><span class="n">TrajectoryBase</span><span class="p">):</span>
-    
-    <span class="c1"># for common interface with *args and **kwargs</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">pass</span>
-    
-    <span class="c1"># required by the trajectory base class</span>
-    <span class="k">def</span> <span class="nf">get_inspiral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-
-        <span class="c1"># set up quantities and integrator</span>
-        <span class="n">y0</span> <span class="o">=</span> <span class="p">[</span><span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
-
-        <span class="c1"># dimensionless final time</span>
-        <span class="n">T</span> <span class="o">=</span> <span class="n">T</span> <span class="o">*</span> <span class="n">YRSID_SI</span> <span class="o">/</span> <span class="p">(</span><span class="n">M</span> <span class="o">*</span> <span class="n">MTSUN_SI</span><span class="p">)</span>
-        
-        <span class="c1"># factor to convert back to seconds</span>
-        <span class="n">Msec</span> <span class="o">=</span> <span class="n">M</span> <span class="o">*</span> <span class="n">MTSUN_SI</span>
-        
-        <span class="c1"># mass ratio</span>
-        <span class="n">epsilon</span> <span class="o">=</span> <span class="n">mu</span><span class="o">/</span><span class="n">M</span>
-        
-        <span class="c1"># we define the right hand side of the ODE</span>
-        <span class="n">rhs</span> <span class="o">=</span> <span class="n">BeyondPN</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
-        
-        <span class="c1"># scipy integrator</span>
-        <span class="n">integrator</span> <span class="o">=</span> <span class="n">DOP853</span><span class="p">(</span><span class="n">rhs</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">)</span>
-
-        <span class="n">t_out</span><span class="p">,</span> <span class="n">p_out</span><span class="p">,</span> <span class="n">e_out</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
-        <span class="n">Phi_phi_out</span><span class="p">,</span> <span class="n">Phi_r_out</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
-        <span class="n">t_out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
-        <span class="n">p_out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p0</span><span class="p">)</span>
-        <span class="n">e_out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e0</span><span class="p">)</span>
-        <span class="n">Phi_phi_out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
-        <span class="n">Phi_r_out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
-
-        <span class="c1"># run the integrator down to T or separatrix</span>
-        <span class="n">run</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">while</span> <span class="n">integrator</span><span class="o">.</span><span class="n">t</span> <span class="o">&lt;</span> <span class="n">T</span> <span class="ow">and</span> <span class="n">run</span><span class="p">:</span>
-            
-            <span class="n">integrator</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-
-            <span class="n">p</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">Phi_phi</span><span class="p">,</span> <span class="n">Phi_r</span> <span class="o">=</span> <span class="n">integrator</span><span class="o">.</span><span class="n">y</span>
-            <span class="n">t_out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">integrator</span><span class="o">.</span><span class="n">t</span> <span class="o">*</span> <span class="n">Msec</span><span class="p">)</span>
-            <span class="n">p_out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-            <span class="n">e_out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="n">Phi_phi_out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Phi_phi</span><span class="p">)</span>
-            <span class="n">Phi_r_out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Phi_r</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="mi">6</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">e</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="p">:</span>
-                <span class="n">run</span> <span class="o">=</span> <span class="kc">False</span>
-
-        <span class="c1"># read out data. It must return length 6 tuple</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">t_out</span><span class="p">)</span>
-        <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">p_out</span><span class="p">)</span>
-        <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">e_out</span><span class="p">)</span>
-        <span class="n">Phi_phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Phi_phi_out</span><span class="p">)</span>
-        <span class="n">Phi_r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Phi_r_out</span><span class="p">)</span>
-        
-        <span class="c1"># need to add polar info </span>
-        <span class="n">Phi_theta</span> <span class="o">=</span> <span class="n">Phi_phi</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># by construction</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">Phi_theta</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">Phi_phi</span><span class="p">,</span> <span class="n">Phi_theta</span><span class="p">,</span> <span class="n">Phi_r</span><span class="p">)</span>
-
-<span class="n">M</span> <span class="o">=</span> <span class="mf">1e6</span>
-<span class="n">mu</span> <span class="o">=</span> <span class="mf">1e1</span>
-<span class="n">p0</span> <span class="o">=</span> <span class="mf">10.0</span>
-<span class="n">e0</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="n">T</span> <span class="o">=</span> <span class="mf">2.0</span>
-<span class="n">beta</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># we provided a new parameter</span>
-
-<span class="c1"># define the trajectory</span>
-<span class="n">traj_new</span> <span class="o">=</span> <span class="n">PnTrajectory</span><span class="p">()</span>
-
-<span class="n">zero_beta</span> <span class="o">=</span> <span class="n">traj_new</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
-
-<span class="n">p</span> <span class="o">=</span> <span class="n">zero_beta</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">e</span> <span class="o">=</span> <span class="n">zero_beta</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> 
-
-<span class="c1"># new traj</span>
-<span class="n">beyond_traj</span> <span class="o">=</span> <span class="n">BeyondPnTrajectory</span><span class="p">()</span>
-<span class="n">beta</span><span class="o">=</span><span class="mf">1e-2</span>
-<span class="n">nonzero_beta</span> <span class="o">=</span> <span class="n">beyond_traj</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nonzero_beta</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">nonzero_beta</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;flux&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;pn&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;e&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;dt&#39;: 10.0, &#39;max_init_len&#39;: 1000, &#39;err&#39;: 1e-10, &#39;DENSE_STEPPING&#39;: 0, &#39;use_rk4&#39;: False}
-(0.0,)
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fdff63fa810&gt;
-</pre></div>
-</div>
-<img alt="_images/66e8cf1ac01827201a6a778861a605028901a38b62121a1667db0009e2d05347.png" src="_images/66e8cf1ac01827201a6a778861a605028901a38b62121a1667db0009e2d05347.png" />
-</div>
-</div>
-</section>
 </section>
 </section>
 
@@ -3035,12 +3009,12 @@ of each equation above.</p>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">EMRI Waveforms in a nutshell</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-an-extreme-mass-ratio-inspiral">What is an Extreme Mass Ratio Inspiral?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#emri-waveforms">EMRI Waveforms</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#each-harmonics-is-characterized-by-three-important-functions-these-will-be-also-different-modules-in-the-code">Each harmonics is characterized by three important functions (these will be also different modules in the code):</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#each-harmonic-is-characterized-by-three-important-functions">Each harmonic is characterized by three important functions:</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#general-remarks">General Remarks</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#emri-parameter-space">EMRI Parameter space</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#schwarzschild-eccentric-waveforms">Schwarzschild Eccentric Waveforms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#schwarzschild-eccentric-trajectories-and-waveforms">Schwarzschild Eccentric Trajectories and Waveforms</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#trajectory-module">Trajectory Module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#let-us-being-by-analysing-a-basic-trajectory">Let us being by analysing a basic trajectory</a></li>
 </ul>
@@ -3062,7 +3036,11 @@ of each equation above.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fundamental-frequencies-and-harmonics">Fundamental frequencies and harmonics</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#schwarzchild-waveforms-in-the-source-frame">Schwarzchild Waveforms in the source frame</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#schwarzchild-waveforms-in-the-source-frame">Schwarzchild Waveforms in the source frame</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-domain-representation-of-waveforms">Time Domain Representation of Waveforms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-acceleration">GPU acceleration</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#emri-waveforms-in-different-domains">EMRI Waveforms in different domains</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-domain">Time Domain</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fourier-domain">Fourier Domain</a><ul class="nav section-nav flex-column">
@@ -3077,7 +3055,8 @@ of each equation above.</p>
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#frequency-domain-emri-waveform">Frequency domain EMRI waveform</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#end-of-tutorial">End of Tutorial</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">Exercise</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#end-of-tutorial-well-done">End of Tutorial… Well done!</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extra-material-augmented-analytic-kludge-with-5pn-trajectory">Extra Material: Augmented Analytic Kludge with 5PN trajectory</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pn-trajectory">5PN Trajectory</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-the-new-aak-with-the-generic-waveform-generator">Generating the new AAK with the generic waveform generator</a></li>
@@ -3099,13 +3078,10 @@ of each equation above.</p>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#solutions">Solutions</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ex-1">Ex 1</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ex-2">Ex 2</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ex-3">Ex 3</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ex-4">Ex 4</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ex-5">Ex 5</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ex-2">Ex 2</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ex-3">Ex 3</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ex-6">Ex 6</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ex-7">Ex 7</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ex-8">Ex 8</a></li>
 </ul>
 </li>
 </ul>
