@@ -10,9 +10,17 @@ If you were successfull, you should have made it to a google collab notebook.
 
 To get access to the GPUs, follow the steps carefully:
 
-1. First locate the **Connect** button on the ![alt](docs/images/Initial_connect_screen.jpg)
-2. ![alt](docs/images/select_runtime.jpg)
-3. ![alt](docs/images/actually_select_gpu.jpg)
+1. First locate the **Connect** button. Click it
+ ![alt](docs/images/Initial_connect_screen.jpg)
+2. Then select **change runtime type** 
+![alt](docs/images/select_runtime.jpg)
+3. Finally, select those T4 GPUs!
+![alt](docs/images/actually_select_gpu.jpg)
+
+## Getting started
+
+1. Execute the first cell
+2. Pray it works. If it crashes, just execute it again. Brute force is key here. 
 
 
 
