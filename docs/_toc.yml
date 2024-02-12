@@ -2,4 +2,4 @@
 # Learn more at https://jupyterbook.org/customize/toc.html
 
 format: jb-book
-root: Auckland_Tutorial_GPU
+root: book/Auckland_Tutorial_GPU
