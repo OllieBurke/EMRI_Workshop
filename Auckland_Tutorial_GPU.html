@@ -329,7 +329,7 @@ document.write(`
 </ol>
 <section id="authors">
 <h2>Authors<a class="headerlink" href="#authors" title="Permalink to this heading">#</a></h2>
-<p>Lorenzo Speri: <a class="reference external" href="mailto:lorenzo&#46;speri&#37;&#52;&#48;aei&#46;mpg&#46;de">lorenzo<span>&#46;</span>speri<span>&#64;</span>aei<span>&#46;</span>mpg<span>&#46;</span>de</a> , <strong>Lorenzo wrote the original tutorial</strong></p>
+<p>Lorenzo Speri: <a class="reference external" href="mailto:lorenzo&#46;speri&#37;&#52;&#48;aei&#46;mpg&#46;de">lorenzo<span>&#46;</span>speri<span>&#64;</span>aei<span>&#46;</span>mpg<span>&#46;</span>de</a> , <strong>Lorenzo wrote the original tutorial <a class="reference external" href="https://github.com/lorenzsp/GRAPPA_EMRI_tutorial">here</a></strong></p>
 <p>Ollie Burke: <a class="reference external" href="mailto:ollie&#46;burke&#37;&#52;&#48;l2it&#46;in2p3&#46;fr">ollie<span>&#46;</span>burke<span>&#64;</span>l2it<span>&#46;</span>in2p3<span>&#46;</span>fr</a> , <strong>I have modified the tutorial to allow for GPU acceleration + more data analysis posed questions</strong></p>
 </section>
 <section id="what-is-an-extreme-mass-ratio-inspiral">
@@ -351,11 +351,12 @@ document.write(`
 </section>
 <section id="emri-waveforms">
 <h2>EMRI Waveforms<a class="headerlink" href="#emri-waveforms" title="Permalink to this heading">#</a></h2>
-<p>EMRI waveforms are represented by the complex time-domain dimensionless strain <span class="math notranslate nohighlight">\(h(t) = h_+ - ih_\times\)</span>, where <span class="math notranslate nohighlight">\(h_+\)</span> and <span class="math notranslate nohighlight">\(h_\times\)</span> are the usual transverse-traceless gravitational wave polarizations. For large distances from the source (<span class="math notranslate nohighlight">\(d_{L}\rightarrow \infty\)</span>), <span class="math notranslate nohighlight">\(h\)</span> is given in the source frame by:
-\begin{equation}
-h = \frac{\mu}{d_L}\sum_{lmkn} A_{lmkn}(t) , S_{lmkn}(\theta,\phi) , \exp(-i\Phi_{mkn}(t)).
-\end{equation}
-Here <span class="math notranslate nohighlight">\(\mu\)</span> is the mass of the secondary body, <span class="math notranslate nohighlight">\(d_{L}\)</span> the luminosity distance to the source, <span class="math notranslate nohighlight">\(t\)</span> is the time of arrival of the gravitational wave at the solar system baricenter, and <span class="math notranslate nohighlight">\((l,m,k,n)\)</span> are the indices describing the frequency-domain harmonic mode decomposition (or simply “harmonic” or “mode”):</p>
+<p>EMRI waveforms are represented by the complex time-domain dimensionless strain <span class="math notranslate nohighlight">\(h(t) = h_+ - ih_\times\)</span>, where <span class="math notranslate nohighlight">\(h_+\)</span> and <span class="math notranslate nohighlight">\(h_\times\)</span> are the usual transverse-traceless gravitational wave polarizations. For large distances from the source (<span class="math notranslate nohighlight">\(d_{L}\rightarrow \infty\)</span>), <span class="math notranslate nohighlight">\(h\)</span> is given in the source frame by:</p>
+<div class="math notranslate nohighlight">
+\[
+    h = \frac{\mu}{d_L}\sum_{lmkn} A_{lmkn}(t) \, S_{lmkn}(\theta,\phi) \, \exp(-i\Phi_{mkn}(t)).
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(\mu\)</span> is the mass of the secondary body, <span class="math notranslate nohighlight">\(d_{L}\)</span> the luminosity distance to the source, <span class="math notranslate nohighlight">\(t\)</span> is the time of arrival of the gravitational wave at the solar system baricenter, and <span class="math notranslate nohighlight">\((l,m,k,n)\)</span> are the indices describing the frequency-domain harmonic mode decomposition (or simply “harmonic” or “mode”):</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(l\)</span> denotes the orbital angular momentum mode index and can take the value <span class="math notranslate nohighlight">\(l=2,3,...\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(m\)</span> denotes the azimuthal mode index and can take the values from <span class="math notranslate nohighlight">\(-l\)</span> up to <span class="math notranslate nohighlight">\(l\)</span>. For example for l=2, <span class="math notranslate nohighlight">\(m=-2, -1, 0, 1, 2\)</span>.</p></li>
@@ -366,15 +367,19 @@ See <a class="reference external" href="https://arxiv.org/abs/gr-qc/0509101">Dra
 <section id="each-harmonic-is-characterized-by-three-important-functions">
 <h3>Each harmonic is characterized by three important functions:<a class="headerlink" href="#each-harmonic-is-characterized-by-three-important-functions" title="Permalink to this heading">#</a></h3>
 <ol class="arabic simple">
-<li><p>The oscillatory part <span class="math notranslate nohighlight">\(\exp[-i\Phi_{mkn}(t)]\)</span> is determined by the phase <span class="math notranslate nohighlight">\(\Phi_{mkn}=m\Phi_\varphi + k \Phi_\theta + n\Phi_r\)</span>. The phases <span class="math notranslate nohighlight">\(\Phi_{\varphi,\theta,r}\)</span> are determined solving for the EMRI trajectory, i.e. the following system of ordinary differential equations:
-\begin{align}
-\frac{d}{dt}p &amp;= \epsilon , f^{(1)}<em>p(a, p, e, x_I) + \mathcal{O}(\epsilon^2)\
-\frac{d}{dt}e &amp;= \epsilon , f^{(1)}<em>e(a, p, e, x_I) + \mathcal{O}(\epsilon^2)\
-\frac{d}{dt}x_I &amp;= \epsilon , f^{(0)}</em>{x_I}(a, p, e, x_I) + \mathcal{O}(\epsilon^2)\
-\frac{d}{dt}\Phi</em>{\varphi,\theta,r} &amp;= \Omega_{\varphi, \theta, r}(a, p, e, x_I)/M + \mathcal{O}(\epsilon)
-\end{align}
-with initial condition <span class="math notranslate nohighlight">\(\{\Phi_{\varphi0},\Phi_{\theta0},\Phi_{r0},p_0,e_0,x_{I0}\}\)</span>. The frequencies <span class="math notranslate nohighlight">\(\Omega_{r,\theta,\phi}\)</span> describe the fundamental frequencies of a Kerr geodesic orbit and in the Newtonian limit (weak field) they all converge to the Keplerian frequency. These frequencies are determined using the dimensionless spin of the MBH, <span class="math notranslate nohighlight">\(a\)</span>, and the quasi-Keplerian orbital parameters of <span class="math notranslate nohighlight">\(p\)</span> (semi-latus rectum; hereafter separation), <span class="math notranslate nohighlight">\(e\)</span> (eccentricity), and <span class="math notranslate nohighlight">\(\cos{I} \equiv x_I\)</span> (cosine of the angle <span class="math notranslate nohighlight">\(I\)</span> which describes the orbit’s inclination from the equatorial plane). The rate of change of <span class="math notranslate nohighlight">\(p,e,x_I\)</span> (left hand side of the first 3 equations) is obtained using the orbital-element fluxes <span class="math notranslate nohighlight">\(f_{p,e,x_I}\)</span>, which account for the gravitational wave emission, and the mass ratio <span class="math notranslate nohighlight">\(\epsilon = \mu/M\)</span>. For <span class="math notranslate nohighlight">\(\epsilon \rightarrow 0\)</span> we reach the test-particle limit, and the orbital elements do not vay over time. The extra contributions due to second order in the mass-ratio squared arise from the second-order self force, which is currently a very active field of research. For more information, see <a class="reference external" href="https://arxiv.org/abs/1805.10385">Barack and Pound</a>.</p></li>
+<li><p>The oscillatory part <span class="math notranslate nohighlight">\(\exp[-i\Phi_{mkn}(t)]\)</span> is determined by the phase <span class="math notranslate nohighlight">\(\Phi_{mkn}=m\Phi_\varphi + k \Phi_\theta + n\Phi_r\)</span>. The phases <span class="math notranslate nohighlight">\(\Phi_{\varphi,\theta,r}\)</span> are determined solving for the EMRI trajectory, i.e. the following system of ordinary differential equations:</p></li>
 </ol>
+<div class="math notranslate nohighlight">
+\[
+    \frac{d}{dt}p = \epsilon \, f^{(1)}_p(a, p, e, x_I) + \mathcal{O}(\epsilon^2) \]</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$$\frac{d}{dt}e = \epsilon \, f^{(1)}_e(a, p, e, x_I) + \mathcal{O}(\epsilon^2) $$
+$$\frac{d}{dt}x_I = \epsilon \, f^{(0)}_{x_I}(a, p, e, x_I) + \mathcal{O}(\epsilon^2)$$
+</pre></div>
+</div>
+<div class="math notranslate nohighlight">
+\[\frac{d}{dt}\Phi_{\varphi,\theta,r} = \Omega_{\varphi, \theta, r}(a, p, e, x_I)/M + \mathcal{O}(\epsilon)
+\]</div>
+<p>with initial condition <span class="math notranslate nohighlight">\(\{\Phi_{\varphi0},\Phi_{\theta0},\Phi_{r0},p_0,e_0,x_{I0}\}\)</span>. The frequencies <span class="math notranslate nohighlight">\(\Omega_{r,\theta,\phi}\)</span> describe the fundamental frequencies of a Kerr geodesic orbit and in the Newtonian limit (weak field) they all converge to the Keplerian frequency. These frequencies are determined using the dimensionless spin of the MBH, <span class="math notranslate nohighlight">\(a\)</span>, and the quasi-Keplerian orbital parameters of <span class="math notranslate nohighlight">\(p\)</span> (semi-latus rectum; hereafter separation), <span class="math notranslate nohighlight">\(e\)</span> (eccentricity), and <span class="math notranslate nohighlight">\(\cos{I} \equiv x_I\)</span> (cosine of the angle <span class="math notranslate nohighlight">\(I\)</span> which describes the orbit’s inclination from the equatorial plane). The rate of change of <span class="math notranslate nohighlight">\(p,e,x_I\)</span> (left hand side of the first 3 equations) is obtained using the orbital-element fluxes <span class="math notranslate nohighlight">\(f_{p,e,x_I}\)</span>, which account for the gravitational wave emission, and the mass ratio <span class="math notranslate nohighlight">\(\epsilon = \mu/M\)</span>. For <span class="math notranslate nohighlight">\(\epsilon \rightarrow 0\)</span> we reach the test-particle limit, and the orbital elements do not vay over time. The extra contributions due to second order in the mass-ratio squared arise from the second-order self force, which is currently a very active field of research. For more information, see <a class="reference external" href="https://arxiv.org/abs/1805.10385">Barack and Pound</a>.</p>
 <ol class="arabic simple" start="2">
 <li><p>The amplitude <span class="math notranslate nohighlight">\(A_{lmkn}(t)\)</span> which quantifies the size of each harmonic <span class="math notranslate nohighlight">\((l,m,k,n)\)</span>. These are determined using the orbital parameters <span class="math notranslate nohighlight">\(A_{lmkn}(p(t), e(t), x_I(t))\)</span>. See in the plot below that orbits with higher eccentricity <span class="math notranslate nohighlight">\(e_{0} = 0.7\)</span> require significantly many more harmonics than orbits with lower eccentricity <span class="math notranslate nohighlight">\(e_{0} = 0.1\)</span>. In each plot, the semi-latus rectum has been fixed to <span class="math notranslate nohighlight">\(p_{0} = 10\)</span> and <span class="math notranslate nohighlight">\(x_{I} = \cos(\iota_{0}) = 0.5\)</span>.</p></li>
 <li><p>The angular function <span class="math notranslate nohighlight">\(S_{lmkn}(\theta,\phi)\)</span> which describes how the amplitude is modulated depending on the source-frame polar viewing angle <span class="math notranslate nohighlight">\(\theta\)</span>, the source-frame azimuthal viewing angle <span class="math notranslate nohighlight">\(\phi\)</span>. For Schwarzchild black holes these functions reduce to the -2 spin weighted spherical harmonics <span class="math notranslate nohighlight">\(Y_{lm}\)</span>.</p></li>
@@ -478,10 +483,11 @@ with initial condition <span class="math notranslate nohighlight">\(\{\Phi_{\var
 <section id="trajectory-module">
 <h2>Trajectory Module<a class="headerlink" href="#trajectory-module" title="Permalink to this heading">#</a></h2>
 <p>The trajectory module generates orbital <span class="math notranslate nohighlight">\(\{p(t),e(t), x_{I}(t)\}\)</span> and phase <span class="math notranslate nohighlight">\(\{\Phi_\varphi(t), \Phi_\theta(t), \Phi_r(t)\}\)</span> trajectories for an EMRI orbit defined by the coordinate-time evolving quantities:</p>
-<p>\begin{equation}
+<div class="math notranslate nohighlight">
+\[
 p(t), e(t), x_I(t), \Phi_\varphi(t), \Phi_\theta(t), \Phi_r(t)
-\end{equation}</p>
-<p>with initial inputs <span class="math notranslate nohighlight">\(M, \mu, p_0, e_0, (x_{I})_{0}, \iota_0, \Phi_{\varphi0}, \Phi_{\theta0}, \Phi_{r 0}\)</span>. We remark here that <span class="math notranslate nohighlight">\(x_{I} = \cos(\iota (t))\)</span> for <span class="math notranslate nohighlight">\(\iota\)</span> the inclination angle of the body with respect to the equatorial plane (see image below). The trajectory is evolved for a user defined time of <span class="math notranslate nohighlight">\(T\)</span> years or until the last-stable orbit, defined by the separatrix <span class="math notranslate nohighlight">\(p_{sep}\)</span> is reached. If the specified duration <span class="math notranslate nohighlight">\(T\)</span> is longer than the time taken to reach the separatrix, then the orbit will terminate at <span class="math notranslate nohighlight">\(p(t_{\text{sep}}) = p_{\text{sep}}\)</span>. At a single point in time, the orbit can be thought of as</p>
+\]</div>
+<p>with initial inputs <span class="math notranslate nohighlight">\(M, \mu, p_0, e_0, (x_{I})_{0}, \iota_0, \Phi_{\varphi0}, \Phi_{\theta0}, \Phi_{r 0}\)</span>. We remark here that <span class="math notranslate nohighlight">\(x_{I} = \cos(\iota (t))\)</span> for <span class="math notranslate nohighlight">\(\iota\)</span> the inclination angle of the body with respect to the equatorial plane (see image below). The trajectory is evolved for a user defined time of <span class="math notranslate nohighlight">\(T\)</span> years or until the last-stable orbit, defined by the separatrix <span class="math notranslate nohighlight">\(p_{sep}\)</span> is reached. If the specified duration <span class="math notranslate nohighlight">\(T\)</span> is longer than the time taken to reach the separatrix, then the orbit will terminate at <span class="math notranslate nohighlight">\(p(t_{\text{sep}}) = p_{\text{sep}}\)</span>. At a single point in time, the orbit can be pictures like</p>
 <div style="text-align:center;">
 <img src="https://github.com/OllieBurke/EMRI_Workshop/blob/main/docs/images/Orbit.jpg?raw=true" width="700" height="700">
 </div>
@@ -752,12 +758,16 @@ p(t), e(t), x_I(t), \Phi_\varphi(t), \Phi_\theta(t), \Phi_r(t)
 </div>
 <section id="trajectory-duration-as-a-function-of-mass-ratio-eccentricity-semi-latus-rectum">
 <h3>Trajectory duration as a function of mass ratio, eccentricity, semi-latus rectum<a class="headerlink" href="#trajectory-duration-as-a-function-of-mass-ratio-eccentricity-semi-latus-rectum" title="Permalink to this heading">#</a></h3>
-<p>In Exercise 0 above we saw that the length of the trajectory, in time, is very sensitive to the mass-ratio of the system. The coupled ODEs
-\begin{align}
-\frac{d}{dt}p &amp;= \epsilon , f^{(1)}_p(a, p, e, x_I) + \mathcal{O}(\epsilon^2)\
-\frac{d}{dt}e &amp;= \epsilon , f^{(1)}_e(a, p, e, x_I) + \mathcal{O}(\epsilon^2)\
-\end{align}
-show that <span class="math notranslate nohighlight">\(\dot{p} \sim \dot{e} \sim \epsilon\)</span>. It should then be expected that the rate of change of the orbital parameters <span class="math notranslate nohighlight">\(p(t)\)</span> and <span class="math notranslate nohighlight">\(e(t)\)</span> is directly proportional to the size of the mass-ratio of the system. We will investigate this below.</p>
+<p>In Exercise 0 above we saw that the length of the trajectory, in time, is very sensitive to the mass-ratio of the system. The coupled ODEs</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{d}{dt}p = \epsilon \, f^{(1)}_p(a, p, e, x_I) + \mathcal{O}(\epsilon^2)
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\frac{d}{dt}e = \epsilon \, f^{(1)}_e(a, p, e, x_I) + \mathcal{O}(\epsilon^2)
+\]</div>
+<p>show that <span class="math notranslate nohighlight">\(\dot{p} \sim \dot{e} \sim \epsilon\)</span>. It should then be expected that the rate of change of the orbital parameters <span class="math notranslate nohighlight">\(p(t)\)</span> and <span class="math notranslate nohighlight">\(e(t)\)</span> is directly proportional to the size of the mass-ratio of the system. We will investigate this below.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set initial parameters</span>
@@ -818,9 +828,10 @@ show that <span class="math notranslate nohighlight">\(\dot{p} \sim \dot{e} \sim
 <section id="discussion-of-plot-above">
 <h3>Discussion of plot above<a class="headerlink" href="#discussion-of-plot-above" title="Permalink to this heading">#</a></h3>
 <p>In each trajectory calculation, the initial semi-latus rectum is fixed. The only quantity that is changing is the mass ratio <span class="math notranslate nohighlight">\(\epsilon = \mu/M\)</span>. As <span class="math notranslate nohighlight">\(\epsilon\)</span> decreases, the trajectory evolution time increases. The time of evolut ion is thus inversely proportional to the mass-ratio of the system. We thus see that</p>
-<p>\begin{equation}
+<div class="math notranslate nohighlight">
+\[
 T_{\text{observation}} \sim 1/\epsilon
-\end{equation}</p>
+\]</div>
 <p>Notice that for <span class="math notranslate nohighlight">\(\epsilon = 10^{-7}\)</span>, with the parameters given above, it would have taken 396 years to plunge. Whereas with a mass-ratio of <span class="math notranslate nohighlight">\(\epsilon = 10^{-4}\)</span>, it would have only taken 144 days.</p>
 <p>Cool.</p>
 </section>
@@ -1023,10 +1034,11 @@ T_{\text{observation}} \sim 1/\epsilon
 </div>
 </div>
 </div>
-<p>The two systems have the same mass ratio and the same final number of cycles. However, the number of cycles accumulated per second is different. An EMRI system with larger MBH “more slowly” than a system with smaller <code class="docutils literal notranslate"><span class="pre">M</span></code>.  Notice that the frequencies are related to the time derivative of the number of cycles
-$<span class="math notranslate nohighlight">\(
-\frac{d}{dt} \mathcal{N}_\varphi = \frac{1}{2 \pi}\frac{d}{dt} \Phi_\varphi = \frac{1}{2 \pi} \Omega_\varphi
-\)</span>$</p>
+<p>The two systems have the same mass ratio and the same final number of cycles. However, the number of cycles accumulated per second is different. An EMRI system with larger MBH “more slowly” than a system with smaller <code class="docutils literal notranslate"><span class="pre">M</span></code>.  Notice that the frequencies are related to the time derivative of the number of cycles</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{d}{dt} \mathcal{N}_\varphi = \frac{1}{2 \pi}\frac{d}{dt} \Phi_\varphi = \frac{1}{2 \pi} \Omega_\varphi\, .
+\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># run trajectory</span>
@@ -1113,11 +1125,12 @@ $<span class="math notranslate nohighlight">\(
 </div>
 <section id="fundamental-frequencies-and-harmonics">
 <h3>Fundamental frequencies and harmonics<a class="headerlink" href="#fundamental-frequencies-and-harmonics" title="Permalink to this heading">#</a></h3>
-<p>Over short time-scales, an EMRI Waveform can thought as a Fourier series where the frequencies <span class="math notranslate nohighlight">\(\omega_{mnk}\)</span> are given by
-$<span class="math notranslate nohighlight">\(
+<p>Over short time-scales, an EMRI Waveform can thought as a Fourier series where the frequencies <span class="math notranslate nohighlight">\(\omega_{mnk}\)</span> are given by</p>
+<div class="math notranslate nohighlight">
+\[
 \omega_{mnk} = m \Omega_\varphi + n \Omega_r + k \Omega_\theta
-\)</span>$
-Therefore is possible to plot the frequency evolution of each harmonic given a trajectory. This can be useful to understand which frequency range each harmonic spans.</p>
+\]</div>
+<p>Therefore is possible to plot the frequency evolution of each harmonic given a trajectory. This can be useful to understand which frequency range each harmonic spans.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># run trajectory</span>
@@ -1171,10 +1184,11 @@ Therefore is possible to plot the frequency evolution of each harmonic given a t
 <p>We begin with the time-domain representation of an EMRI waveform.</p>
 <section id="time-domain-representation-of-waveforms">
 <h2>Time Domain Representation of Waveforms<a class="headerlink" href="#time-domain-representation-of-waveforms" title="Permalink to this heading">#</a></h2>
-<p>At large luminosity distances from the source, the source-frame EMRI waveform is given by
-\begin{equation}
-h_{+} - ih_{\times} = \frac{\mu}{d_L}\sum_{lmn} A_{lmn}(p(t),e(t),x_{I}(t)) , S_{lmn}(\theta,\phi) , \exp(-i\Phi_{mn}(t)).
-\end{equation}</p>
+<p>At large luminosity distances from the source, the source-frame EMRI waveform is given by</p>
+<div class="math notranslate nohighlight">
+\[
+    h_{+} - ih_{\times} = \frac{\mu}{d_L}\sum_{lmn} A_{lmn}(p(t),e(t),x_{I}(t)) \, S_{lmn}(\theta,\phi) \, \exp(-i\Phi_{mn}(t)).
+\]</div>
 <p><em>Note:</em> We will not give a detailed tutorial on the pieces that determine the harmonic content of the amplitudes <span class="math notranslate nohighlight">\(A_{lmn}\)</span> or the spin weighted spherical harmonics <span class="math notranslate nohighlight">\(S_{lmn}\)</span>. That’s outside the scope of this work though, if people are curious, feel free to talk to me.</p>
 </section>
 <section id="gpu-acceleration">
@@ -1400,12 +1414,13 @@ h_{+} - ih_{\times} = \frac{\mu}{d_L}\sum_{lmn} A_{lmn}(p(t),e(t),x_{I}(t)) , S_
 $<span class="math notranslate nohighlight">\(
 (a (t)|b (t)) =4 \Re \int _{0} ^\infty \frac{\tilde{a} ^* (f) \tilde{b} (f) }{S_n (f)} \, {\rm d} f \, .
 \)</span><span class="math notranslate nohighlight">\(
-where the tilde indicates the Fourier transform, the symbol \)</span>^*<span class="math notranslate nohighlight">\( indicates the complex conjugation, and \)</span>S_n (f)<span class="math notranslate nohighlight">\( is the one-sided noise power spectral density, which can be interpreted as the size of the root mean square fluctuations at a given frequency \)</span>\Delta n <em>{\text{rms}} \sim \sqrt{S_n(f) \Delta f}<span class="math notranslate nohighlight">\(. From a practical point of view the spectral density represents our information on the detector sensitivity and the aforementioned inner product can be used to quantify the Signal to Noise Ratio (SNR) of a waveform \)</span>h(t)<span class="math notranslate nohighlight">\(:
-\)</span><span class="math notranslate nohighlight">\(
+where the tilde indicates the Fourier transform, the symbol \)</span>^*<span class="math notranslate nohighlight">\( indicates the complex conjugation, and \)</span>S_n (f)<span class="math notranslate nohighlight">\( is the one-sided noise power spectral density, which can be interpreted as the size of the root mean square fluctuations at a given frequency \)</span>\Delta n _{\text{rms}} \sim \sqrt{S_n(f) \Delta f}<span class="math notranslate nohighlight">\(. From a practical point of view the spectral density represents our information on the detector sensitivity and the aforementioned inner product can be used to quantify the Signal to Noise Ratio (SNR) of a waveform \)</span>h(t)$:</p>
+<div class="math notranslate nohighlight">
+\[
 {\rm SNR}^2 =(h (t)|h (t)) =4 \Re \int _{0} ^\infty \frac{|\tilde{h} (f)| }{S_n (f)} \, {\rm d} f \approx 4 \Re \sum_{i=0}^{N/2 - 1}\frac{|\tilde{h}(f_{i})|^2}{S_{n}(f_{i})}\Delta f\, .
-\)</span><span class="math notranslate nohighlight">\(
-for \)</span>\Delta f<span class="math notranslate nohighlight">\( the spacing between frequencies defined by \)</span>\Delta f = 1/N\Delta t = 1/T</em>{\text{observation}}<span class="math notranslate nohighlight">\(.
-EMRIs are usually considered to be detectable for \)</span>SNR\gtrsim 15$ or so</p>
+\]</div>
+<p>for <span class="math notranslate nohighlight">\(\Delta f\)</span> the spacing between frequencies defined by <span class="math notranslate nohighlight">\(\Delta f = 1/N\Delta t = 1/T_{\text{observation}}\)</span>.
+EMRIs are usually considered to be detectable for <span class="math notranslate nohighlight">\(SNR\gtrsim 15\)</span> or so</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inner_product</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">dt</span><span class="p">):</span>
@@ -1634,11 +1649,12 @@ The overlap expresses how similar two signals \)</span>a<span class="math notran
 <section id="the-likelihood-function">
 <h2>The Likelihood Function<a class="headerlink" href="#the-likelihood-function" title="Permalink to this heading">#</a></h2>
 <p>As we saw in the previous exercise, the waveforms emitted from EMRI signals are immensely sensitive to perturbations in their parameters. If we were to detect and recover the parameters of an EMRI, we would find that our ability to measure their parameters would be unparalleled by any other gravitational wave source. We now wish to make this statement a little bit more concrete.</p>
-<p>For a known form of the PSD, we define the likelihood function
-\begin{equation}
+<p>For a known form of the PSD, we define the likelihood function</p>
+<div class="math notranslate nohighlight">
+\[
 \log p(d|\boldsymbol{\theta}) \approx - \frac{1}{2}(h_{e} - h(\boldsymbol{\theta}) | h_{e} - h(\boldsymbol{\theta}))
-\end{equation}
-for <span class="math notranslate nohighlight">\(h_{e}\)</span> the exact waveform model and <span class="math notranslate nohighlight">\(h(\boldsymbol{\theta})\)</span> some model template we wish to use to infer the parameters of the true waveform model. The dimension of the full EMRI parameter space is <span class="math notranslate nohighlight">\(\sim 14\)</span> dimensions and stochastic algorithms are normally used to estimate these parameters. We do not have time for this here, so instead we will show how sensitive the likelihood function is to a single parameter, let’s say the eccentricity <span class="math notranslate nohighlight">\(e\)</span>.</p>
+\]</div>
+<p>for <span class="math notranslate nohighlight">\(h_{e}\)</span> the exact waveform model and <span class="math notranslate nohighlight">\(h(\boldsymbol{\theta})\)</span> some model template we wish to use to infer the parameters of the true waveform model. The dimension of the full EMRI parameter space is <span class="math notranslate nohighlight">\(\sim 14\)</span> dimensions and stochastic algorithms are normally used to estimate these parameters. We do not have time for this here, so instead we will show how sensitive the likelihood function is to a single parameter, let’s say the eccentricity <span class="math notranslate nohighlight">\(e\)</span>.</p>
 <p>In the cell below, we will plot the log-likelihood.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1685,11 +1701,12 @@ for <span class="math notranslate nohighlight">\(h_{e}\)</span> the exact wavefo
 <p>If you look at the x axes, you will see that the likelihood is Gaussian in nature and is peaked at the true value <span class="math notranslate nohighlight">\(e_{0} = 0.3\)</span>. Due to how incredibly sensitive the EMRI waveform is to the initial eccentricity, we see that the likelihood quickly tapers off  and then very quickly tapers towards zero.</p>
 <section id="cheap-way-to-estimate-precision-in-parameters-fisher-matrix">
 <h2>Cheap way to estimate precision in parameters: Fisher Matrix<a class="headerlink" href="#cheap-way-to-estimate-precision-in-parameters-fisher-matrix" title="Permalink to this heading">#</a></h2>
-<p>Instead of plotting the likelihood, there is a very cheap way to estimate our ability to measure parameters of EMRIs. One can compute the Fisher information matrix
-\begin{equation}
+<p>Instead of plotting the likelihood, there is a very cheap way to estimate our ability to measure parameters of EMRIs. One can compute the Fisher information matrix</p>
+<div class="math notranslate nohighlight">
+\[
 \Gamma_{ij} = (\partial_{i}h | \partial_{j}h) = 4\mathbb{R}\int_{0}^{\infty}\frac{1}{S_{n}(f)}\bigg\rvert \frac{\partial \tilde{h}}{\partial \theta^{i}} \frac{\partial \tilde{h}^{\star}}{\partial \theta^{j}}\bigg\rvert^{2} df
-\end{equation}
-The diagonal elements of the inverse Fisher matrix gives a guide on how well one can measure the parameters of the system. We give an example of how a Fisher matrix and estimate for the <span class="math notranslate nohighlight">\(1\sigma\)</span> precision of the eccentricity below.</p>
+\]</div>
+<p>The diagonal elements of the inverse Fisher matrix gives a guide on how well one can measure the parameters of the system. We give an example of how a Fisher matrix and estimate for the <span class="math notranslate nohighlight">\(1\sigma\)</span> precision of the eccentricity below.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">de</span> <span class="o">=</span> <span class="mf">1e-7</span>  <span class="c1"># Set step size for numerical derivative</span>
@@ -1734,9 +1751,10 @@ The diagonal elements of the inverse Fisher matrix gives a guide on how well one
 <h1>Exercise 5<a class="headerlink" href="#exercise-5" title="Permalink to this heading">#</a></h1>
 <p>Using the Fisher matrix formalism, try to understand how well we can measure the primary mass <span class="math notranslate nohighlight">\(M\)</span> for the EMRI given above. If you get bored, try and investigate the other parameters as well.</p>
 <p>Using the Fisher matrix, prove that the fisher information on the distance can be written as</p>
-<p>\begin{equation}
+<div class="math notranslate nohighlight">
+\[
 \Gamma_{d_{L}d_{L}} = \frac{\rho^{2}}{d_{L}^{2}}
-\end{equation}</p>
+\]</div>
 <p>where <span class="math notranslate nohighlight">\(\rho^{2} = (h|h)\)</span> is the optimal matched-filtering SNR. Then verify that, indeed, we can measure <span class="math notranslate nohighlight">\(\Delta d_{L} = d_{L}/\rho.\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2041,11 +2059,18 @@ The diagonal elements of the inverse Fisher matrix gives a guide on how well one
 fundamental frequencies along the trajectory at each point are then calculated from the orbital parameters and the spin value given by <a class="reference external" href="https://arxiv.org/abs/gr-qc/0202090%3E">Schmidt (2002)</a>.</p>
 <p>These frequencies along the trajectory are then used to map to the frequency basis of the <a class="reference external" href="https://arxiv.org/abs/gr-qc/0310125">Analytic Kludge</a>. This mapping takes the form of time evolving large mass and spin parameters, as
 well as the use of phases and frequencies in <span class="math notranslate nohighlight">\(\alpha, \Phi, \gamma\)</span>:</p>
-<p>\begin{align}
-\Phi &amp;= \Phi_\phi, \
-\gamma &amp;= \Phi_\phi + \Phi_\theta, \
-\alpha &amp;= \Phi_\phi + \Phi_\theta + \Phi_r. \
-\end{align}</p>
+<div class="math notranslate nohighlight">
+\[
+\Phi = \Phi_\phi,
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\gamma = \Phi_\phi + \Phi_\theta
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\alpha = \Phi_\phi + \Phi_\theta + \Phi_r.
+\]</div>
 <p>The frequencies in that basis are found by taking the time derivatives
 of each equation above.</p>
 <p><strong>Please note:</strong> the 5PN trajectory and AAK waveform take the parameter <span class="math notranslate nohighlight">\(Y\equiv\cos{\iota}=L/\sqrt{L^2 + Q}\)</span> rather than <span class="math notranslate nohighlight">\(x_I\)</span> as is accepted for relativistic waveforms and in the generic waveform interface discussed above. The generic waveform interface directly converts <span class="math notranslate nohighlight">\(x_I\)</span> to <span class="math notranslate nohighlight">\(Y\)</span>.</p>
@@ -2862,9 +2887,10 @@ of each equation above.</p>
 <h2>Exercise 5<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h2>
 <p>Using the Fisher matrix formalism, try to understand how well we can measure the primary mass <span class="math notranslate nohighlight">\(M\)</span> for the EMRI given above.</p>
 <p>Using the Fisher matrix, prove that the fisher information on the distance can be written as</p>
-<p>\begin{equation}
+<div class="math notranslate nohighlight">
+\[
 \Gamma_{d_{L}d_{L}} = \frac{\rho^{2}}{d_{L}^{2}}
-\end{equation}</p>
+\]</div>
 <p>where <span class="math notranslate nohighlight">\(\rho^{2} = (h|h)\)</span> is the optimal matched-filtering SNR. Then verify that, indeed, we can measure <span class="math notranslate nohighlight">\(\Delta d_{L} = d_{L}/\rho\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2892,10 +2918,12 @@ of each equation above.</p>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="analytical-solution">
 <h1>Analytical solution<a class="headerlink" href="#analytical-solution" title="Permalink to this heading">#</a></h1>
-<p>We need to calculate $<span class="math notranslate nohighlight">\(\Gamma_{d_{L}d_{L}} = 4\mathcal{R}\int_{0}^{\infty} \frac{1}{S_{n}(f)}\bigg\rvert \partial_{d_{L}}\tilde{h}\bigg\rvert^{2} df.\)</span>$</p>
+<p>We need to calculate</p>
+<div class="math notranslate nohighlight">
+\[\Gamma_{d_{L}d_{L}} = 4\mathcal{R}\int_{0}^{\infty} \frac{1}{S_{n}(f)}\rvert \partial_{d_{L}}\tilde{h}\rvert^{2} df.\]</div>
 <p>Notice that since <span class="math notranslate nohighlight">\(\tilde{h}(f) \sim 1/d_{L}\)</span>, we have that <span class="math notranslate nohighlight">\(\partial_{d_{L}}\tilde{h}(f) \sim -\frac{1}{d_{L}^2}\)</span>. We thus have that
 $<span class="math notranslate nohighlight">\( \partial_{d_{L}}\tilde{h}(f) = -\frac{1}{d_{L}}\tilde{h}(f) \Longrightarrow |\partial_{d_{L}}\tilde{h}(f)|^2 = \left(\frac{1}{d_{L}}\right)^2 |\tilde{h}(f)|^2 \)</span><span class="math notranslate nohighlight">\( This implies that
-\)</span><span class="math notranslate nohighlight">\( \Gamma_{d_{L}d_{L}} = 4\mathcal{R}\int_{0}^{\infty} \frac{1}{S_{n}(f)}\big\rvert \partial_{d_{L}}\tilde{h}\big\rvert^{2} df = \left(\frac{1}{d_{L}}\right)^2 \cdot 4\mathcal{R}\int_{0}^{\infty} \frac{1}{S_{n}(f)}\big\rvert \tilde{h}(f)\big\rvert^{2} df = \left(\frac{(h|h)^2}{d^2_{L}}\right) = \frac{\rho^2}{d_{L}^2}\)</span>$</p>
+\)</span><span class="math notranslate nohighlight">\( \Gamma_{d_{L}d_{L}} = 4\mathcal{R}\int_{0}^{\infty} \frac{1}{S_{n}(f)}\big\rvert \partial_{d_{L}}\tilde{h}\big\rvert^{2} df = \left(\frac{1}{d_{L}}\right)^2 \cdot 4\mathcal{R}\int_{0}^{\infty} \frac{1}{S_{n}(f)}\big\rvert \tilde{h}(f)\big\rvert^{2} df = \left(\frac{(h|h)}{d_{L}}\right)^2 = \frac{\rho^2}{d_{L}^2}\)</span>$</p>
 <p>The result then follows that <span class="math notranslate nohighlight">\(\Delta d_{L} = (\Gamma^{-1}_{d_{L}d_{L}})^{1/2} = \frac{d_{L}}{\rho} \)</span> as required.</p>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="id8">
