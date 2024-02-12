@@ -2,4 +2,4 @@
 # Learn more at https://jupyterbook.org/customize/toc.html
 
 format: jb-book
-root: book/Auckland_Tutorial_GPU
+root: book/EMRI_workshop_book.ipynb
