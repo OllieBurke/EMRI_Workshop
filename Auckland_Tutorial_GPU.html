@@ -294,64 +294,37 @@ document.write(`
                   
   <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-q<span class="w"> </span>condacolab
-<span class="kn">import</span> <span class="nn">condacolab</span>
-<span class="n">condacolab</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">subprocess</span>
 
-<span class="o">!</span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/BlackHolePerturbationToolkit/FastEMRIWaveforms.git
-<span class="o">!</span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>gcc_linux-64<span class="w"> </span>gxx_linux-64<span class="w"> </span>wget<span class="w"> </span>gsl<span class="w"> </span><span class="nv">lapack</span><span class="o">=</span><span class="m">3</span>.6.1<span class="w"> </span>hdf5<span class="w"> </span>numpy<span class="w"> </span>Cython<span class="w"> </span>scipy<span class="w"> </span>tqdm<span class="w"> </span>jupyter<span class="w"> </span>ipython<span class="w"> </span>h5py<span class="w"> </span>requests<span class="w"> </span>matplotlib<span class="w"> </span>python
-<span class="o">!</span><span class="nb">cd</span><span class="w"> </span>FastEMRIWaveforms<span class="p">;</span><span class="w"> </span>python<span class="w"> </span>setup.py<span class="w"> </span>install<span class="p">;</span>
+<span class="c1"># Define the commands</span>
+<span class="n">commands</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;pip install -q condacolab&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;git clone https://github.com/BlackHolePerturbationToolkit/FastEMRIWaveforms.git&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;conda install -c conda-forge gcc_linux-64 gxx_linux-64 wget gsl lapack=3.6.1 hdf5 numpy Cython scipy tqdm jupyter ipython h5py requests matplotlib python&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;(cd FastEMRIWaveforms; python setup.py install;)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;python -m unittest discover ./FastEMRIWaveforms&quot;</span>
+<span class="p">]</span>
 
-<span class="o">!</span>python<span class="w">  </span>-m<span class="w"> </span>unittest<span class="w"> </span>discover<span class="w"> </span>./FastEMRIWaveforms
-
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;./FastEMRIWaveforms/&#39;</span><span class="p">)</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;/usr/local/lib/python3.10/site-packages/few-1.5.4-py3.10-linux-x86_64.egg/&#39;</span><span class="p">)</span>
-
-<span class="kn">import</span> <span class="nn">few</span>
-<span class="kn">from</span> <span class="nn">few.trajectory.inspiral</span> <span class="kn">import</span> <span class="n">EMRIInspiral</span>
+<span class="c1"># Execute each command and print one line at a time</span>
+<span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">commands</span><span class="p">:</span>
+    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">output</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="ow">and</span> <span class="n">process</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[33mWARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv[0m[33m
-[0m✨🍰✨ Everything looks OK!
-fatal: destination path &#39;FastEMRIWaveforms&#39; already exists and is not an empty directory.
-Channels:
- - conda-forge
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Channels:
+- conda-forge
 Platform: linux-64
-Collecting package metadata (repodata.json): - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ done
-Solving environment: / - \ | / - \ | / - \ | / done
-
+Collecting package metadata (repodata.json): ...working... done
+Solving environment: ...working... done
 # All requested packages already installed.
-
 running install
-/usr/local/lib/python3.10/site-packages/setuptools/_distutils/cmd.py:66: SetuptoolsDeprecationWarning: setup.py install is deprecated.
-!!
-
-        ********************************************************************************
-        Please avoid running ``setup.py`` directly.
-        Instead, use pypa/build, pypa/installer or other
-        standards-based tools.
-
-        See https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html for details.
-        ********************************************************************************
-
-!!
-  self.initialize_options()
-/usr/local/lib/python3.10/site-packages/setuptools/_distutils/cmd.py:66: EasyInstallDeprecationWarning: easy_install command is deprecated.
-!!
-
-        ********************************************************************************
-        Please avoid running ``setup.py`` and ``easy_install``.
-        Instead, use pypa/build, pypa/installer or other
-        standards-based tools.
-
-        See https://github.com/pypa/setuptools/issues/917 for details.
-        ********************************************************************************
-
-!!
-  self.initialize_options()
 running bdist_egg
 running egg_info
 writing few.egg-info/PKG-INFO
@@ -364,361 +337,98 @@ installing library code to build/bdist.linux-x86_64/egg
 running install_lib
 running build_py
 copying few/_version.py -&gt; build/lib.linux-x86_64-cpython-310/few
-copying few/utils/constants.py -&gt; build/lib.linux-x86_64-cpython-310/few/utils
 copying few/utils/odeoptions.py -&gt; build/lib.linux-x86_64-cpython-310/few/utils
+copying few/utils/constants.py -&gt; build/lib.linux-x86_64-cpython-310/few/utils
 running build_ext
 Compiling src/pymatmul_cpu.pyx because it changed.
 [1/1] Cythonizing src/pymatmul_cpu.pyx
-/usr/local/lib/python3.10/site-packages/Cython/Compiler/Main.py:381: FutureWarning: Cython directive &#39;language_level&#39; not set, using &#39;3str&#39; for now (Py3). This has changed from earlier releases! File: /content/FastEMRIWaveforms/src/pymatmul_cpu.pyx
-  tree = Parsing.p_module(s, pxd, full_module_name)
 building &#39;pymatmul_cpu&#39; extension
 gcc -pthread -B /usr/local/compiler_compat -Wno-unused-result -Wsign-compare -DNDEBUG -fwrapv -O2 -Wall -fPIC -O2 -isystem /usr/local/include -fPIC -O2 -isystem /usr/local/include -fPIC -I/usr/local/lib/python3.10/site-packages/numpy/core/include -Iinclude -I/usr/local/include/python3.10 -c src/matmul.cpp -o build/temp.linux-x86_64-cpython-310/src/matmul.o -std=c++11
-In file included from [01m[Kinclude/global.h:7[m[K,
-                 from [01m[Kinclude/matmul.hh:5[m[K,
-                 from [01m[Ksrc/matmul.cpp:19[m[K:
-[01m[Kinclude/cuda_complex.hpp:[m[K In function ‘[01m[Kgcmplx::complex&lt;_Tp&gt; gcmplx::acosh(const gcmplx::complex&lt;_Tp&gt;&amp;)[m[K’:
-[01m[Kinclude/cuda_complex.hpp:1028:12:[m[K [01;35m[Kwarning: [m[Ksuggest explicit braces to avoid ambiguous ‘[01m[Kelse[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdangling-else-Wdangling-else]8;;[m[K]
- 1028 |         if [01;35m[K([m[Kstd::isinf(__x.imag()))
-      |            [01;35m[K^[m[K
 gcc -pthread -B /usr/local/compiler_compat -Wno-unused-result -Wsign-compare -DNDEBUG -fwrapv -O2 -Wall -fPIC -O2 -isystem /usr/local/include -fPIC -O2 -isystem /usr/local/include -fPIC -I/usr/local/lib/python3.10/site-packages/numpy/core/include -Iinclude -I/usr/local/include/python3.10 -c src/pymatmul_cpu.cpp -o build/temp.linux-x86_64-cpython-310/src/pymatmul_cpu.o -std=c++11
-In file included from [01m[K/usr/local/lib/python3.10/site-packages/numpy/core/include/numpy/ndarraytypes.h:1929[m[K,
-                 from [01m[K/usr/local/lib/python3.10/site-packages/numpy/core/include/numpy/ndarrayobject.h:12[m[K,
-                 from [01m[K/usr/local/lib/python3.10/site-packages/numpy/core/include/numpy/arrayobject.h:5[m[K,
-                 from [01m[Ksrc/pymatmul_cpu.cpp:1243[m[K:
-[01m[K/usr/local/lib/python3.10/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:17:2:[m[K [01;35m[Kwarning: [m[K#warning &quot;Using deprecated NumPy API, disable it with &quot; &quot;#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION&quot; [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wcpp-Wcpp]8;;[m[K]
-   17 | #[01;35m[Kwarning[m[K &quot;Using deprecated NumPy API, disable it with &quot; \
-      |  [01;35m[K^~~~~~~[m[K
-In file included from [01m[Kinclude/global.h:7[m[K,
-                 from [01m[Kinclude/matmul.hh:5[m[K,
-                 from [01m[Ksrc/pymatmul_cpu.cpp:1248[m[K:
-[01m[Kinclude/cuda_complex.hpp:[m[K In function ‘[01m[Kgcmplx::complex&lt;_Tp&gt; gcmplx::acosh(const gcmplx::complex&lt;_Tp&gt;&amp;)[m[K’:
-[01m[Kinclude/cuda_complex.hpp:1028:12:[m[K [01;35m[Kwarning: [m[Ksuggest explicit braces to avoid ambiguous ‘[01m[Kelse[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdangling-else-Wdangling-else]8;;[m[K]
- 1028 |         if [01;35m[K([m[Kstd::isinf(__x.imag()))
-      |            [01;35m[K^[m[K
 g++ -pthread -B /usr/local/compiler_compat -shared -Wl,--allow-shlib-undefined -Wl,-rpath,/usr/local/lib -Wl,-rpath-link,/usr/local/lib -L/usr/local/lib -Wl,--allow-shlib-undefined -Wl,-rpath,/usr/local/lib -Wl,-rpath-link,/usr/local/lib -L/usr/local/lib build/temp.linux-x86_64-cpython-310/src/matmul.o build/temp.linux-x86_64-cpython-310/src/pymatmul_cpu.o -lgsl -lgslcblas -llapack -llapacke -lhdf5 -lhdf5_hl -o build/lib.linux-x86_64-cpython-310/pymatmul_cpu.cpython-310-x86_64-linux-gnu.so
 building &#39;pyInspiral&#39; extension
 gcc -pthread -B /usr/local/compiler_compat -Wno-unused-result -Wsign-compare -DNDEBUG -fwrapv -O2 -Wall -fPIC -O2 -isystem /usr/local/include -fPIC -O2 -isystem /usr/local/include -fPIC -I/usr/local/lib/python3.10/site-packages/numpy/core/include -Iinclude -I/usr/local/include/python3.10 -c src/Inspiral.cc -o build/temp.linux-x86_64-cpython-310/src/Inspiral.o -std=c++11
-[01m[Ksrc/Inspiral.cc:245:[m[K [01;35m[Kwarning: [m[Kignoring ‘[01m[K#pragma unroll [m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunknown-pragmas-Wunknown-pragmas]8;;[m[K]
-  245 |             #pragma unroll
-      | 
-[01m[Ksrc/Inspiral.cc:432:[m[K [01;35m[Kwarning: [m[Kignoring ‘[01m[K#pragma unroll [m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunknown-pragmas-Wunknown-pragmas]8;;[m[K]
-  432 |         #pragma unroll
-      | 
-In file included from [01m[Kinclude/global.h:7[m[K,
-                 from [01m[Kinclude/ode.hh:5[m[K,
-                 from [01m[Kinclude/Inspiral.hh:9[m[K,
-                 from [01m[Ksrc/Inspiral.cc:41[m[K:
-[01m[Kinclude/cuda_complex.hpp:[m[K In function ‘[01m[Kgcmplx::complex&lt;_Tp&gt; gcmplx::acosh(const gcmplx::complex&lt;_Tp&gt;&amp;)[m[K’:
-[01m[Kinclude/cuda_complex.hpp:1028:12:[m[K [01;35m[Kwarning: [m[Ksuggest explicit braces to avoid ambiguous ‘[01m[Kelse[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdangling-else-Wdangling-else]8;;[m[K]
- 1028 |         if [01;35m[K([m[Kstd::isinf(__x.imag()))
-      |            [01;35m[K^[m[K
-[01m[Ksrc/Inspiral.cc:[m[K In member function ‘[01m[KInspiralHolder InspiralCarrier::run_inspiral(double, double, double, double, double, double, double, double, double, double, double, double, double, int, bool)[m[K’:
-[01m[Ksrc/Inspiral.cc:184:20:[m[K [01;35m[Kwarning: [m[Kstatement has no effect [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-value-Wunused-value]8;;[m[K]
-  184 |     [01;35m[Kparams_holder-&gt;enforce_schwarz_sep[m[K;
-      |     [01;35m[K~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~[m[K
 gcc -pthread -B /usr/local/compiler_compat -Wno-unused-result -Wsign-compare -DNDEBUG -fwrapv -O2 -Wall -fPIC -O2 -isystem /usr/local/include -fPIC -O2 -isystem /usr/local/include -fPIC -I/usr/local/lib/python3.10/site-packages/numpy/core/include -Iinclude -I/usr/local/include/python3.10 -c src/Interpolant.cc -o build/temp.linux-x86_64-cpython-310/src/Interpolant.o -std=c++11
 gcc -pthread -B /usr/local/compiler_compat -Wno-unused-result -Wsign-compare -DNDEBUG -fwrapv -O2 -Wall -fPIC -O2 -isystem /usr/local/include -fPIC -O2 -isystem /usr/local/include -fPIC -I/usr/local/lib/python3.10/site-packages/numpy/core/include -Iinclude -I/usr/local/include/python3.10 -c src/Utility.cc -o build/temp.linux-x86_64-cpython-310/src/Utility.o -std=c++11
-In file included from [01m[Kinclude/global.h:7[m[K,
-                 from [01m[Ksrc/Utility.cc:3[m[K:
-[01m[Kinclude/cuda_complex.hpp:[m[K In function ‘[01m[Kgcmplx::complex&lt;_Tp&gt; gcmplx::acosh(const gcmplx::complex&lt;_Tp&gt;&amp;)[m[K’:
-[01m[Kinclude/cuda_complex.hpp:1028:12:[m[K [01;35m[Kwarning: [m[Ksuggest explicit braces to avoid ambiguous ‘[01m[Kelse[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdangling-else-Wdangling-else]8;;[m[K]
- 1028 |         if [01;35m[K([m[Kstd::isinf(__x.imag()))
-      |            [01;35m[K^[m[K
-[01m[Ksrc/Utility.cc:[m[K In function ‘[01m[Kvoid KerrGeoMinoFrequencies(double*, double*, double*, double*, double, double, double, double)[m[K’:
-[01m[Ksrc/Utility.cc:212:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[KEpsilon0[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  212 |     double [01;35m[KEpsilon0[m[K = pow(a, 2) * (1 - pow(En, 2))/pow(L, 2);
-      |            [01;35m[K^~~~~~~~[m[K
-[01m[Ksrc/Utility.cc:[m[K In function ‘[01m[Kvoid KerrGeoEquatorialMinoFrequencies(double*, double*, double*, double*, double, double, double, double)[m[K’:
-[01m[Ksrc/Utility.cc:270:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[KEpsilon0[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  270 |     double [01;35m[KEpsilon0[m[K = pow(a, 2) * (1 - pow(En, 2))/pow(L, 2);
-      |            [01;35m[K^~~~~~~~[m[K
-[01m[Ksrc/Utility.cc:272:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Ka2zp[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  272 |     double [01;35m[Ka2zp[m[K =(pow(L, 2) + pow(a, 2) * (-1 + pow(En, 2)) * (-1))/( (-1 + pow(En, 2)) * (-1));
-      |            [01;35m[K^~~~[m[K
-[01m[Ksrc/Utility.cc:[m[K In function ‘[01m[Kdouble separatrix_polynomial_polar(double, void*)[m[K’:
-[01m[Ksrc/Utility.cc:390:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  390 |     double [01;35m[Kx[m[K = params-&gt;x;
-      |            [01;35m[K^[m[K
-[01m[Ksrc/Utility.cc:[m[K In function ‘[01m[Kdouble separatrix_polynomial_equat(double, void*)[m[K’:
-[01m[Ksrc/Utility.cc:402:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  402 |     double [01;35m[Kx[m[K = params-&gt;x;
-      |            [01;35m[K^[m[K
-[01m[Ksrc/Utility.cc:[m[K In function ‘[01m[Kdouble solver(params_holder*, double (*)(double, void*), double, double)[m[K’:
-[01m[Ksrc/Utility.cc:417:19:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kr_expected[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  417 |     double r = 0, [01;35m[Kr_expected[m[K = sqrt (5.0);
-      |                   [01;35m[K^~~~~~~~~~[m[K
 gcc -pthread -B /usr/local/compiler_compat -Wno-unused-result -Wsign-compare -DNDEBUG -fwrapv -O2 -Wall -fPIC -O2 -isystem /usr/local/include -fPIC -O2 -isystem /usr/local/include -fPIC -I/usr/local/lib/python3.10/site-packages/numpy/core/include -Iinclude -I/usr/local/include/python3.10 -c src/dIdt8H_5PNe10.cc -o build/temp.linux-x86_64-cpython-310/src/dIdt8H_5PNe10.o -std=c++11
 gcc -pthread -B /usr/local/compiler_compat -Wno-unused-result -Wsign-compare -DNDEBUG -fwrapv -O2 -Wall -fPIC -O2 -isystem /usr/local/include -fPIC -O2 -isystem /usr/local/include -fPIC -I/usr/local/lib/python3.10/site-packages/numpy/core/include -Iinclude -I/usr/local/include/python3.10 -c src/inspiralwrap.cpp -o build/temp.linux-x86_64-cpython-310/src/inspiralwrap.o -std=c++11
-In file included from [01m[K/usr/local/lib/python3.10/site-packages/numpy/core/include/numpy/ndarraytypes.h:1929[m[K,
-                 from [01m[K/usr/local/lib/python3.10/site-packages/numpy/core/include/numpy/ndarrayobject.h:12[m[K,
-                 from [01m[K/usr/local/lib/python3.10/site-packages/numpy/core/include/numpy/arrayobject.h:5[m[K,
-                 from [01m[Ksrc/inspiralwrap.cpp:1249[m[K:
-[01m[K/usr/local/lib/python3.10/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:17:2:[m[K [01;35m[Kwarning: [m[K#warning &quot;Using deprecated NumPy API, disable it with &quot; &quot;#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION&quot; [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wcpp-Wcpp]8;;[m[K]
-   17 | #[01;35m[Kwarning[m[K &quot;Using deprecated NumPy API, disable it with &quot; \
-      |  [01;35m[K^~~~~~~[m[K
-In file included from [01m[Ksrc/../include/global.h:7[m[K,
-                 from [01m[Ksrc/../include/ode.hh:5[m[K,
-                 from [01m[Ksrc/../include/Inspiral.hh:9[m[K,
-                 from [01m[Ksrc/inspiralwrap.cpp:1259[m[K:
-[01m[Ksrc/../include/cuda_complex.hpp:[m[K In function ‘[01m[Kgcmplx::complex&lt;_Tp&gt; gcmplx::acosh(const gcmplx::complex&lt;_Tp&gt;&amp;)[m[K’:
-[01m[Ksrc/../include/cuda_complex.hpp:1028:12:[m[K [01;35m[Kwarning: [m[Ksuggest explicit braces to avoid ambiguous ‘[01m[Kelse[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdangling-else-Wdangling-else]8;;[m[K]
- 1028 |         if [01;35m[K([m[Kstd::isinf(__x.imag()))
-      |            [01;35m[K^[m[K
 gcc -pthread -B /usr/local/compiler_compat -Wno-unused-result -Wsign-compare -DNDEBUG -fwrapv -O2 -Wall -fPIC -O2 -isystem /usr/local/include -fPIC -O2 -isystem /usr/local/include -fPIC -I/usr/local/lib/python3.10/site-packages/numpy/core/include -Iinclude -I/usr/local/include/python3.10 -c src/ode.cc -o build/temp.linux-x86_64-cpython-310/src/ode.o -std=c++11
-In file included from [01m[Kinclude/global.h:7[m[K,
-                 from [01m[Ksrc/ode.cc:15[m[K:
-[01m[Kinclude/cuda_complex.hpp:[m[K In function ‘[01m[Kgcmplx::complex&lt;_Tp&gt; gcmplx::acosh(const gcmplx::complex&lt;_Tp&gt;&amp;)[m[K’:
-[01m[Kinclude/cuda_complex.hpp:1028:12:[m[K [01;35m[Kwarning: [m[Ksuggest explicit braces to avoid ambiguous ‘[01m[Kelse[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdangling-else-Wdangling-else]8;;[m[K]
- 1028 |         if [01;35m[K([m[Kstd::isinf(__x.imag()))
-      |            [01;35m[K^[m[K
 g++ -pthread -B /usr/local/compiler_compat -shared -Wl,--allow-shlib-undefined -Wl,-rpath,/usr/local/lib -Wl,-rpath-link,/usr/local/lib -L/usr/local/lib -Wl,--allow-shlib-undefined -Wl,-rpath,/usr/local/lib -Wl,-rpath-link,/usr/local/lib -L/usr/local/lib build/temp.linux-x86_64-cpython-310/src/Inspiral.o build/temp.linux-x86_64-cpython-310/src/Interpolant.o build/temp.linux-x86_64-cpython-310/src/Utility.o build/temp.linux-x86_64-cpython-310/src/dIdt8H_5PNe10.o build/temp.linux-x86_64-cpython-310/src/inspiralwrap.o build/temp.linux-x86_64-cpython-310/src/ode.o -lgsl -lgslcblas -llapack -llapacke -lhdf5 -lhdf5_hl -o build/lib.linux-x86_64-cpython-310/pyInspiral.cpython-310-x86_64-linux-gnu.so
 Compiling src/pyinterp_cpu.pyx because it changed.
 [1/1] Cythonizing src/pyinterp_cpu.pyx
-/usr/local/lib/python3.10/site-packages/Cython/Compiler/Main.py:381: FutureWarning: Cython directive &#39;language_level&#39; not set, using &#39;3str&#39; for now (Py3). This has changed from earlier releases! File: /content/FastEMRIWaveforms/src/pyinterp_cpu.pyx
-  tree = Parsing.p_module(s, pxd, full_module_name)
 building &#39;pyinterp_cpu&#39; extension
 gcc -pthread -B /usr/local/compiler_compat -Wno-unused-result -Wsign-compare -DNDEBUG -fwrapv -O2 -Wall -fPIC -O2 -isystem /usr/local/include -fPIC -O2 -isystem /usr/local/include -fPIC -I/usr/local/lib/python3.10/site-packages/numpy/core/include -Iinclude -I/usr/local/include/python3.10 -c src/Utility.cc -o build/temp.linux-x86_64-cpython-310/src/Utility.o -std=c++11
-In file included from [01m[Kinclude/global.h:7[m[K,
-                 from [01m[Ksrc/Utility.cc:3[m[K:
-[01m[Kinclude/cuda_complex.hpp:[m[K In function ‘[01m[Kgcmplx::complex&lt;_Tp&gt; gcmplx::acosh(const gcmplx::complex&lt;_Tp&gt;&amp;)[m[K’:
-[01m[Kinclude/cuda_complex.hpp:1028:12:[m[K [01;35m[Kwarning: [m[Ksuggest explicit braces to avoid ambiguous ‘[01m[Kelse[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdangling-else-Wdangling-else]8;;[m[K]
- 1028 |         if [01;35m[K([m[Kstd::isinf(__x.imag()))
-      |            [01;35m[K^[m[K
-[01m[Ksrc/Utility.cc:[m[K In function ‘[01m[Kvoid KerrGeoMinoFrequencies(double*, double*, double*, double*, double, double, double, double)[m[K’:
-[01m[Ksrc/Utility.cc:212:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[KEpsilon0[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  212 |     double [01;35m[KEpsilon0[m[K = pow(a, 2) * (1 - pow(En, 2))/pow(L, 2);
-      |            [01;35m[K^~~~~~~~[m[K
-[01m[Ksrc/Utility.cc:[m[K In function ‘[01m[Kvoid KerrGeoEquatorialMinoFrequencies(double*, double*, double*, double*, double, double, double, double)[m[K’:
-[01m[Ksrc/Utility.cc:270:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[KEpsilon0[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  270 |     double [01;35m[KEpsilon0[m[K = pow(a, 2) * (1 - pow(En, 2))/pow(L, 2);
-      |            [01;35m[K^~~~~~~~[m[K
-[01m[Ksrc/Utility.cc:272:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Ka2zp[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  272 |     double [01;35m[Ka2zp[m[K =(pow(L, 2) + pow(a, 2) * (-1 + pow(En, 2)) * (-1))/( (-1 + pow(En, 2)) * (-1));
-      |            [01;35m[K^~~~[m[K
-[01m[Ksrc/Utility.cc:[m[K In function ‘[01m[Kdouble separatrix_polynomial_polar(double, void*)[m[K’:
-[01m[Ksrc/Utility.cc:390:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  390 |     double [01;35m[Kx[m[K = params-&gt;x;
-      |            [01;35m[K^[m[K
-[01m[Ksrc/Utility.cc:[m[K In function ‘[01m[Kdouble separatrix_polynomial_equat(double, void*)[m[K’:
-[01m[Ksrc/Utility.cc:402:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  402 |     double [01;35m[Kx[m[K = params-&gt;x;
-      |            [01;35m[K^[m[K
-[01m[Ksrc/Utility.cc:[m[K In function ‘[01m[Kdouble solver(params_holder*, double (*)(double, void*), double, double)[m[K’:
-[01m[Ksrc/Utility.cc:417:19:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kr_expected[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  417 |     double r = 0, [01;35m[Kr_expected[m[K = sqrt (5.0);
-      |                   [01;35m[K^~~~~~~~~~[m[K
 gcc -pthread -B /usr/local/compiler_compat -Wno-unused-result -Wsign-compare -DNDEBUG -fwrapv -O2 -Wall -fPIC -O2 -isystem /usr/local/include -fPIC -O2 -isystem /usr/local/include -fPIC -I/usr/local/lib/python3.10/site-packages/numpy/core/include -Iinclude -I/usr/local/include/python3.10 -c src/interpolate.cpp -o build/temp.linux-x86_64-cpython-310/src/interpolate.o -std=c++11
-In file included from [01m[Kinclude/global.h:7[m[K,
-                 from [01m[Ksrc/interpolate.cpp:18[m[K:
-[01m[Kinclude/cuda_complex.hpp:[m[K In function ‘[01m[Kgcmplx::complex&lt;_Tp&gt; gcmplx::acosh(const gcmplx::complex&lt;_Tp&gt;&amp;)[m[K’:
-[01m[Kinclude/cuda_complex.hpp:1028:12:[m[K [01;35m[Kwarning: [m[Ksuggest explicit braces to avoid ambiguous ‘[01m[Kelse[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdangling-else-Wdangling-else]8;;[m[K]
- 1028 |         if [01;35m[K([m[Kstd::isinf(__x.imag()))
-      |            [01;35m[K^[m[K
-[01m[Ksrc/interpolate.cpp:[m[K In function ‘[01m[Kvoid set_spline_constants(double*, double*, double*, int, int)[m[K’:
-[01m[Ksrc/interpolate.cpp:165:19:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kmode_vals[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  165 |   InterpContainer [01;35m[Kmode_vals[m[K;
-      |                   [01;35m[K^~~~~~~~~[m[K
-[01m[Ksrc/interpolate.cpp:[m[K In function ‘[01m[Kvoid fit_wrap(int, int, double*, double*, double*, double*)[m[K’:
-[01m[Ksrc/interpolate.cpp:245:9:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kinfo[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  245 |     int [01;35m[Kinfo[m[K = LAPACKE_dgtsv(LAPACK_COL_MAJOR, m, 1, &amp;a[j * m + 1], &amp;b[j * m], &amp;c[j * m], &amp;d_in[j * m], m);
-      |         [01;35m[K^~~~[m[K
-[01m[Ksrc/interpolate.cpp:[m[K In function ‘[01m[Kvoid fill_final_derivs(double*, double*, int, int)[m[K’:
-[01m[Ksrc/interpolate.cpp:272:18:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Klead_ind[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  272 |              int [01;35m[Klead_ind[m[K = interp_i*length;
-      |                  [01;35m[K^~~~~~~~[m[K
-[01m[Ksrc/interpolate.cpp:281:20:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kfinal_c1[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  281 |             double [01;35m[Kfinal_c1[m[K = c1 + 2 * c2 * x + 3 * c3 * x2;
-      |                    [01;35m[K^~~~~~~~[m[K
-[01m[Ksrc/interpolate.cpp:282:20:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kfinal_c2[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  282 |             double [01;35m[Kfinal_c2[m[K = (2. * c2 + 6. * c3 * x)/2.;
-      |                    [01;35m[K^~~~~~~~[m[K
-[01m[Ksrc/interpolate.cpp:283:20:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kfinal_c3[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  283 |             double [01;35m[Kfinal_c3[m[K = c3;
-      |                    [01;35m[K^~~~~~~~[m[K
-[01m[Ksrc/interpolate.cpp:[m[K In function ‘[01m[Kvoid interp_time_for_fd_wrap(double*, double*, double*, int*, double*, int, int, bool*)[m[K’:
-[01m[Ksrc/interpolate.cpp:397:9:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Knum_modes[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  397 |     int [01;35m[Knum_modes[m[K = int((ninterps - 4) / 2.);
-      |         [01;35m[K^~~~~~~~~[m[K
-[01m[Ksrc/interpolate.cpp:[m[K In function ‘[01m[Kvoid make_waveform(cmplx*, double*, int*, int*, int, cmplx*, double, double, int, int, int, int)[m[K’:
-[01m[Ksrc/interpolate.cpp:472:7:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Klm_i[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  472 |   int [01;35m[Klm_i[m[K, num_teuk_here;
-      |       [01;35m[K^~~~[m[K
-[01m[Ksrc/interpolate.cpp:473:10:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kre_y[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  473 |   double [01;35m[Kre_y[m[K, re_c1, re_c2, re_c3, im_y, im_c1, im_c2, im_c3;
-      |          [01;35m[K^~~~[m[K
-[01m[Ksrc/interpolate.cpp:473:16:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kre_c1[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  473 |   double re_y, [01;35m[Kre_c1[m[K, re_c2, re_c3, im_y, im_c1, im_c2, im_c3;
-      |                [01;35m[K^~~~~[m[K
-[01m[Ksrc/interpolate.cpp:473:23:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kre_c2[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  473 |   double re_y, re_c1, [01;35m[Kre_c2[m[K, re_c3, im_y, im_c1, im_c2, im_c3;
-      |                       [01;35m[K^~~~~[m[K
-[01m[Ksrc/interpolate.cpp:473:30:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kre_c3[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  473 |   double re_y, re_c1, re_c2, [01;35m[Kre_c3[m[K, im_y, im_c1, im_c2, im_c3;
-      |                              [01;35m[K^~~~~[m[K
-[01m[Ksrc/interpolate.cpp:473:37:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kim_y[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  473 |   double re_y, re_c1, re_c2, re_c3, [01;35m[Kim_y[m[K, im_c1, im_c2, im_c3;
-      |                                     [01;35m[K^~~~[m[K
-[01m[Ksrc/interpolate.cpp:473:43:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kim_c1[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  473 |   double re_y, re_c1, re_c2, re_c3, im_y, [01;35m[Kim_c1[m[K, im_c2, im_c3;
-      |                                           [01;35m[K^~~~~[m[K
-[01m[Ksrc/interpolate.cpp:473:50:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kim_c2[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  473 |   double re_y, re_c1, re_c2, re_c3, im_y, im_c1, [01;35m[Kim_c2[m[K, im_c3;
-      |                                                  [01;35m[K^~~~~[m[K
-[01m[Ksrc/interpolate.cpp:473:57:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kim_c3[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  473 |   double re_y, re_c1, re_c2, re_c3, im_y, im_c1, im_c2, [01;35m[Kim_c3[m[K;
-      |                                                         [01;35m[K^~~~~[m[K
-[01m[Ksrc/interpolate.cpp:523:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kactual_mode_index[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  523 |   int m, n, [01;35m[Kactual_mode_index[m[K;
-      |             [01;35m[K^~~~~~~~~~~~~~~~~[m[K
-[01m[Ksrc/interpolate.cpp:[m[K In function ‘[01m[Kint bessel_ik(double, cmplx, cmplx*)[m[K’:
-[01m[Ksrc/interpolate.cpp:948:10:[m[K [01;35m[Kwarning: [m[Kvariable ‘[01m[Kreflect[m[K’ set but not used [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-but-set-variable-Wunused-but-set-variable]8;;[m[K]
-  948 |     bool [01;35m[Kreflect[m[K = false;
-      |          [01;35m[K^~~~~~~[m[K
-[01m[Ksrc/interpolate.cpp:949:17:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kk[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  949 |     unsigned n, [01;35m[Kk[m[K;
-      |                 [01;35m[K^[m[K
-[01m[Ksrc/interpolate.cpp:[m[K In function ‘[01m[Kvoid make_generic_kerr_waveform_fd(cmplx*, double*, int*, int*, int*, int, double, double*, int, int, double*, int*, int*, int, cmplx*, int, bool, bool)[m[K’:
-[01m[Ksrc/interpolate.cpp:1284:24:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kf_y2[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
- 1284 |                 double [01;35m[Kf_y2[m[K = m * f_phi_y2 + n * f_r_y2;
-      |                        [01;35m[K^~~~[m[K
-[01m[Ksrc/interpolate.cpp:1295:24:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kfactor[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
- 1295 |                 double [01;35m[Kfactor[m[K;
-      |                        [01;35m[K^~~~~~[m[K
 gcc -pthread -B /usr/local/compiler_compat -Wno-unused-result -Wsign-compare -DNDEBUG -fwrapv -O2 -Wall -fPIC -O2 -isystem /usr/local/include -fPIC -O2 -isystem /usr/local/include -fPIC -I/usr/local/lib/python3.10/site-packages/numpy/core/include -Iinclude -I/usr/local/include/python3.10 -c src/pyinterp_cpu.cpp -o build/temp.linux-x86_64-cpython-310/src/pyinterp_cpu.o -std=c++11
-In file included from [01m[K/usr/local/lib/python3.10/site-packages/numpy/core/include/numpy/ndarraytypes.h:1929[m[K,
-                 from [01m[K/usr/local/lib/python3.10/site-packages/numpy/core/include/numpy/ndarrayobject.h:12[m[K,
-                 from [01m[K/usr/local/lib/python3.10/site-packages/numpy/core/include/numpy/arrayobject.h:5[m[K,
-                 from [01m[Ksrc/pyinterp_cpu.cpp:1244[m[K:
-[01m[K/usr/local/lib/python3.10/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:17:2:[m[K [01;35m[Kwarning: [m[K#warning &quot;Using deprecated NumPy API, disable it with &quot; &quot;#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION&quot; [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wcpp-Wcpp]8;;[m[K]
-   17 | #[01;35m[Kwarning[m[K &quot;Using deprecated NumPy API, disable it with &quot; \
-      |  [01;35m[K^~~~~~~[m[K
-In file included from [01m[Kinclude/global.h:7[m[K,
-                 from [01m[Kinclude/interpolate.hh:4[m[K,
-                 from [01m[Ksrc/pyinterp_cpu.cpp:1249[m[K:
-[01m[Kinclude/cuda_complex.hpp:[m[K In function ‘[01m[Kgcmplx::complex&lt;_Tp&gt; gcmplx::acosh(const gcmplx::complex&lt;_Tp&gt;&amp;)[m[K’:
-[01m[Kinclude/cuda_complex.hpp:1028:12:[m[K [01;35m[Kwarning: [m[Ksuggest explicit braces to avoid ambiguous ‘[01m[Kelse[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdangling-else-Wdangling-else]8;;[m[K]
- 1028 |         if [01;35m[K([m[Kstd::isinf(__x.imag()))
-      |            [01;35m[K^[m[K
 g++ -pthread -B /usr/local/compiler_compat -shared -Wl,--allow-shlib-undefined -Wl,-rpath,/usr/local/lib -Wl,-rpath-link,/usr/local/lib -L/usr/local/lib -Wl,--allow-shlib-undefined -Wl,-rpath,/usr/local/lib -Wl,-rpath-link,/usr/local/lib -L/usr/local/lib build/temp.linux-x86_64-cpython-310/src/Utility.o build/temp.linux-x86_64-cpython-310/src/interpolate.o build/temp.linux-x86_64-cpython-310/src/pyinterp_cpu.o -lgsl -lgslcblas -llapack -llapacke -lhdf5 -lhdf5_hl -o build/lib.linux-x86_64-cpython-310/pyinterp_cpu.cpython-310-x86_64-linux-gnu.so
 Compiling src/gpuAAKWrap_cpu.pyx because it changed.
 [1/1] Cythonizing src/gpuAAKWrap_cpu.pyx
-/usr/local/lib/python3.10/site-packages/Cython/Compiler/Main.py:381: FutureWarning: Cython directive &#39;language_level&#39; not set, using &#39;3str&#39; for now (Py3). This has changed from earlier releases! File: /content/FastEMRIWaveforms/src/gpuAAKWrap_cpu.pyx
-  tree = Parsing.p_module(s, pxd, full_module_name)
 building &#39;pycpuAAK&#39; extension
 gcc -pthread -B /usr/local/compiler_compat -Wno-unused-result -Wsign-compare -DNDEBUG -fwrapv -O2 -Wall -fPIC -O2 -isystem /usr/local/include -fPIC -O2 -isystem /usr/local/include -fPIC -I/usr/local/lib/python3.10/site-packages/numpy/core/include -Iinclude -I/usr/local/include/python3.10 -c src/Utility.cc -o build/temp.linux-x86_64-cpython-310/src/Utility.o -std=c++11
-In file included from [01m[Kinclude/global.h:7[m[K,
-                 from [01m[Ksrc/Utility.cc:3[m[K:
-[01m[Kinclude/cuda_complex.hpp:[m[K In function ‘[01m[Kgcmplx::complex&lt;_Tp&gt; gcmplx::acosh(const gcmplx::complex&lt;_Tp&gt;&amp;)[m[K’:
-[01m[Kinclude/cuda_complex.hpp:1028:12:[m[K [01;35m[Kwarning: [m[Ksuggest explicit braces to avoid ambiguous ‘[01m[Kelse[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdangling-else-Wdangling-else]8;;[m[K]
- 1028 |         if [01;35m[K([m[Kstd::isinf(__x.imag()))
-      |            [01;35m[K^[m[K
-[01m[Ksrc/Utility.cc:[m[K In function ‘[01m[Kvoid KerrGeoMinoFrequencies(double*, double*, double*, double*, double, double, double, double)[m[K’:
-[01m[Ksrc/Utility.cc:212:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[KEpsilon0[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  212 |     double [01;35m[KEpsilon0[m[K = pow(a, 2) * (1 - pow(En, 2))/pow(L, 2);
-      |            [01;35m[K^~~~~~~~[m[K
-[01m[Ksrc/Utility.cc:[m[K In function ‘[01m[Kvoid KerrGeoEquatorialMinoFrequencies(double*, double*, double*, double*, double, double, double, double)[m[K’:
-[01m[Ksrc/Utility.cc:270:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[KEpsilon0[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  270 |     double [01;35m[KEpsilon0[m[K = pow(a, 2) * (1 - pow(En, 2))/pow(L, 2);
-      |            [01;35m[K^~~~~~~~[m[K
-[01m[Ksrc/Utility.cc:272:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Ka2zp[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  272 |     double [01;35m[Ka2zp[m[K =(pow(L, 2) + pow(a, 2) * (-1 + pow(En, 2)) * (-1))/( (-1 + pow(En, 2)) * (-1));
-      |            [01;35m[K^~~~[m[K
-[01m[Ksrc/Utility.cc:[m[K In function ‘[01m[Kdouble separatrix_polynomial_polar(double, void*)[m[K’:
-[01m[Ksrc/Utility.cc:390:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  390 |     double [01;35m[Kx[m[K = params-&gt;x;
-      |            [01;35m[K^[m[K
-[01m[Ksrc/Utility.cc:[m[K In function ‘[01m[Kdouble separatrix_polynomial_equat(double, void*)[m[K’:
-[01m[Ksrc/Utility.cc:402:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  402 |     double [01;35m[Kx[m[K = params-&gt;x;
-      |            [01;35m[K^[m[K
-[01m[Ksrc/Utility.cc:[m[K In function ‘[01m[Kdouble solver(params_holder*, double (*)(double, void*), double, double)[m[K’:
-[01m[Ksrc/Utility.cc:417:19:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kr_expected[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
-  417 |     double r = 0, [01;35m[Kr_expected[m[K = sqrt (5.0);
-      |                   [01;35m[K^~~~~~~~~~[m[K
 gcc -pthread -B /usr/local/compiler_compat -Wno-unused-result -Wsign-compare -DNDEBUG -fwrapv -O2 -Wall -fPIC -O2 -isystem /usr/local/include -fPIC -O2 -isystem /usr/local/include -fPIC -I/usr/local/lib/python3.10/site-packages/numpy/core/include -Iinclude -I/usr/local/include/python3.10 -c src/gpuAAK.cpp -o build/temp.linux-x86_64-cpython-310/src/gpuAAK.o -std=c++11
-In file included from [01m[Kinclude/global.h:7[m[K,
-                 from [01m[Ksrc/gpuAAK.cpp:3[m[K:
-[01m[Kinclude/cuda_complex.hpp:[m[K In function ‘[01m[Kgcmplx::complex&lt;_Tp&gt; gcmplx::acosh(const gcmplx::complex&lt;_Tp&gt;&amp;)[m[K’:
-[01m[Kinclude/cuda_complex.hpp:1028:12:[m[K [01;35m[Kwarning: [m[Ksuggest explicit braces to avoid ambiguous ‘[01m[Kelse[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdangling-else-Wdangling-else]8;;[m[K]
- 1028 |         if [01;35m[K([m[Kstd::isinf(__x.imag()))
-      |            [01;35m[K^[m[K
 gcc -pthread -B /usr/local/compiler_compat -Wno-unused-result -Wsign-compare -DNDEBUG -fwrapv -O2 -Wall -fPIC -O2 -isystem /usr/local/include -fPIC -O2 -isystem /usr/local/include -fPIC -I/usr/local/lib/python3.10/site-packages/numpy/core/include -Iinclude -I/usr/local/include/python3.10 -c src/gpuAAKWrap_cpu.cpp -o build/temp.linux-x86_64-cpython-310/src/gpuAAKWrap_cpu.o -std=c++11
-In file included from [01m[K/usr/local/lib/python3.10/site-packages/numpy/core/include/numpy/ndarraytypes.h:1929[m[K,
-                 from [01m[K/usr/local/lib/python3.10/site-packages/numpy/core/include/numpy/ndarrayobject.h:12[m[K,
-                 from [01m[K/usr/local/lib/python3.10/site-packages/numpy/core/include/numpy/arrayobject.h:5[m[K,
-                 from [01m[Ksrc/gpuAAKWrap_cpu.cpp:1245[m[K:
-[01m[K/usr/local/lib/python3.10/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:17:2:[m[K [01;35m[Kwarning: [m[K#warning &quot;Using deprecated NumPy API, disable it with &quot; &quot;#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION&quot; [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wcpp-Wcpp]8;;[m[K]
-   17 | #[01;35m[Kwarning[m[K &quot;Using deprecated NumPy API, disable it with &quot; \
-      |  [01;35m[K^~~~~~~[m[K
-In file included from [01m[Ksrc/../include/global.h:7[m[K,
-                 from [01m[Ksrc/../include/gpuAAK.hh:4[m[K,
-                 from [01m[Ksrc/gpuAAKWrap_cpu.cpp:1255[m[K:
-[01m[Ksrc/../include/cuda_complex.hpp:[m[K In function ‘[01m[Kgcmplx::complex&lt;_Tp&gt; gcmplx::acosh(const gcmplx::complex&lt;_Tp&gt;&amp;)[m[K’:
-[01m[Ksrc/../include/cuda_complex.hpp:1028:12:[m[K [01;35m[Kwarning: [m[Ksuggest explicit braces to avoid ambiguous ‘[01m[Kelse[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdangling-else-Wdangling-else]8;;[m[K]
- 1028 |         if [01;35m[K([m[Kstd::isinf(__x.imag()))
-      |            [01;35m[K^[m[K
 g++ -pthread -B /usr/local/compiler_compat -shared -Wl,--allow-shlib-undefined -Wl,-rpath,/usr/local/lib -Wl,-rpath-link,/usr/local/lib -L/usr/local/lib -Wl,--allow-shlib-undefined -Wl,-rpath,/usr/local/lib -Wl,-rpath-link,/usr/local/lib -L/usr/local/lib build/temp.linux-x86_64-cpython-310/src/Utility.o build/temp.linux-x86_64-cpython-310/src/gpuAAK.o build/temp.linux-x86_64-cpython-310/src/gpuAAKWrap_cpu.o -lgsl -lgslcblas -llapack -llapacke -lhdf5 -lhdf5_hl -o build/lib.linux-x86_64-cpython-310/pycpuAAK.cpython-310-x86_64-linux-gnu.so
 creating build/bdist.linux-x86_64/egg
-copying build/lib.linux-x86_64-cpython-310/pyinterp_cpu.cpython-310-x86_64-linux-gnu.so -&gt; build/bdist.linux-x86_64/egg
-copying build/lib.linux-x86_64-cpython-310/pyInterp2DAmplitude.cpython-310-x86_64-linux-gnu.so -&gt; build/bdist.linux-x86_64/egg
-copying build/lib.linux-x86_64-cpython-310/pyUtility.cpython-310-x86_64-linux-gnu.so -&gt; build/bdist.linux-x86_64/egg
-copying build/lib.linux-x86_64-cpython-310/pyInspiral.cpython-310-x86_64-linux-gnu.so -&gt; build/bdist.linux-x86_64/egg
-copying build/lib.linux-x86_64-cpython-310/pyParameterMap.cpython-310-x86_64-linux-gnu.so -&gt; build/bdist.linux-x86_64/egg
-copying build/lib.linux-x86_64-cpython-310/pymatmul.cpython-310-x86_64-linux-gnu.so -&gt; build/bdist.linux-x86_64/egg
 copying build/lib.linux-x86_64-cpython-310/pyinterp.cpython-310-x86_64-linux-gnu.so -&gt; build/bdist.linux-x86_64/egg
-creating build/bdist.linux-x86_64/egg/few
-creating build/bdist.linux-x86_64/egg/few/trajectory
-copying build/lib.linux-x86_64-cpython-310/few/trajectory/__init__.py -&gt; build/bdist.linux-x86_64/egg/few/trajectory
-copying build/lib.linux-x86_64-cpython-310/few/trajectory/inspiral.py -&gt; build/bdist.linux-x86_64/egg/few/trajectory
-copying build/lib.linux-x86_64-cpython-310/few/__init__.py -&gt; build/bdist.linux-x86_64/egg/few
-creating build/bdist.linux-x86_64/egg/few/amplitude
-copying build/lib.linux-x86_64-cpython-310/few/amplitude/__init__.py -&gt; build/bdist.linux-x86_64/egg/few/amplitude
-copying build/lib.linux-x86_64-cpython-310/few/amplitude/romannet.py -&gt; build/bdist.linux-x86_64/egg/few/amplitude
-copying build/lib.linux-x86_64-cpython-310/few/amplitude/interp2dcubicspline.py -&gt; build/bdist.linux-x86_64/egg/few/amplitude
-creating build/bdist.linux-x86_64/egg/few/utils
-copying build/lib.linux-x86_64-cpython-310/few/utils/fdutils.py -&gt; build/bdist.linux-x86_64/egg/few/utils
-copying build/lib.linux-x86_64-cpython-310/few/utils/baseclasses.py -&gt; build/bdist.linux-x86_64/egg/few/utils
-copying build/lib.linux-x86_64-cpython-310/few/utils/utility.py -&gt; build/bdist.linux-x86_64/egg/few/utils
-copying build/lib.linux-x86_64-cpython-310/few/utils/modeselector.py -&gt; build/bdist.linux-x86_64/egg/few/utils
-copying build/lib.linux-x86_64-cpython-310/few/utils/citations.py -&gt; build/bdist.linux-x86_64/egg/few/utils
-copying build/lib.linux-x86_64-cpython-310/few/utils/constants.py -&gt; build/bdist.linux-x86_64/egg/few/utils
-copying build/lib.linux-x86_64-cpython-310/few/utils/ylm.py -&gt; build/bdist.linux-x86_64/egg/few/utils
-copying build/lib.linux-x86_64-cpython-310/few/utils/odeoptions.py -&gt; build/bdist.linux-x86_64/egg/few/utils
-copying build/lib.linux-x86_64-cpython-310/few/utils/odeprepare.py -&gt; build/bdist.linux-x86_64/egg/few/utils
-creating build/bdist.linux-x86_64/egg/few/summation
-copying build/lib.linux-x86_64-cpython-310/few/summation/interpolatedmodesum.py -&gt; build/bdist.linux-x86_64/egg/few/summation
-copying build/lib.linux-x86_64-cpython-310/few/summation/__init__.py -&gt; build/bdist.linux-x86_64/egg/few/summation
-copying build/lib.linux-x86_64-cpython-310/few/summation/directmodesum.py -&gt; build/bdist.linux-x86_64/egg/few/summation
-copying build/lib.linux-x86_64-cpython-310/few/summation/aakwave.py -&gt; build/bdist.linux-x86_64/egg/few/summation
-copying build/lib.linux-x86_64-cpython-310/few/summation/fdinterp.py -&gt; build/bdist.linux-x86_64/egg/few/summation
-copying build/lib.linux-x86_64-cpython-310/few/waveform.py -&gt; build/bdist.linux-x86_64/egg/few
-copying build/lib.linux-x86_64-cpython-310/few/_version.py -&gt; build/bdist.linux-x86_64/egg/few
+copying build/lib.linux-x86_64-cpython-310/pyInspiral.cpython-310-x86_64-linux-gnu.so -&gt; build/bdist.linux-x86_64/egg
 copying build/lib.linux-x86_64-cpython-310/pygpuAAK.cpython-310-x86_64-linux-gnu.so -&gt; build/bdist.linux-x86_64/egg
 copying build/lib.linux-x86_64-cpython-310/pySpinWeightedSpherHarm.cpython-310-x86_64-linux-gnu.so -&gt; build/bdist.linux-x86_64/egg
 copying build/lib.linux-x86_64-cpython-310/pycpuAAK.cpython-310-x86_64-linux-gnu.so -&gt; build/bdist.linux-x86_64/egg
+creating build/bdist.linux-x86_64/egg/few
+copying build/lib.linux-x86_64-cpython-310/few/_version.py -&gt; build/bdist.linux-x86_64/egg/few
+creating build/bdist.linux-x86_64/egg/few/trajectory
+copying build/lib.linux-x86_64-cpython-310/few/trajectory/__init__.py -&gt; build/bdist.linux-x86_64/egg/few/trajectory
+copying build/lib.linux-x86_64-cpython-310/few/trajectory/inspiral.py -&gt; build/bdist.linux-x86_64/egg/few/trajectory
+copying build/lib.linux-x86_64-cpython-310/few/waveform.py -&gt; build/bdist.linux-x86_64/egg/few
+creating build/bdist.linux-x86_64/egg/few/summation
+copying build/lib.linux-x86_64-cpython-310/few/summation/interpolatedmodesum.py -&gt; build/bdist.linux-x86_64/egg/few/summation
+copying build/lib.linux-x86_64-cpython-310/few/summation/aakwave.py -&gt; build/bdist.linux-x86_64/egg/few/summation
+copying build/lib.linux-x86_64-cpython-310/few/summation/directmodesum.py -&gt; build/bdist.linux-x86_64/egg/few/summation
+copying build/lib.linux-x86_64-cpython-310/few/summation/__init__.py -&gt; build/bdist.linux-x86_64/egg/few/summation
+copying build/lib.linux-x86_64-cpython-310/few/summation/fdinterp.py -&gt; build/bdist.linux-x86_64/egg/few/summation
+creating build/bdist.linux-x86_64/egg/few/amplitude
+copying build/lib.linux-x86_64-cpython-310/few/amplitude/romannet.py -&gt; build/bdist.linux-x86_64/egg/few/amplitude
+copying build/lib.linux-x86_64-cpython-310/few/amplitude/interp2dcubicspline.py -&gt; build/bdist.linux-x86_64/egg/few/amplitude
+copying build/lib.linux-x86_64-cpython-310/few/amplitude/__init__.py -&gt; build/bdist.linux-x86_64/egg/few/amplitude
+copying build/lib.linux-x86_64-cpython-310/few/__init__.py -&gt; build/bdist.linux-x86_64/egg/few
+creating build/bdist.linux-x86_64/egg/few/utils
+copying build/lib.linux-x86_64-cpython-310/few/utils/odeprepare.py -&gt; build/bdist.linux-x86_64/egg/few/utils
+copying build/lib.linux-x86_64-cpython-310/few/utils/utility.py -&gt; build/bdist.linux-x86_64/egg/few/utils
+copying build/lib.linux-x86_64-cpython-310/few/utils/odeoptions.py -&gt; build/bdist.linux-x86_64/egg/few/utils
+copying build/lib.linux-x86_64-cpython-310/few/utils/constants.py -&gt; build/bdist.linux-x86_64/egg/few/utils
+copying build/lib.linux-x86_64-cpython-310/few/utils/fdutils.py -&gt; build/bdist.linux-x86_64/egg/few/utils
+copying build/lib.linux-x86_64-cpython-310/few/utils/modeselector.py -&gt; build/bdist.linux-x86_64/egg/few/utils
+copying build/lib.linux-x86_64-cpython-310/few/utils/baseclasses.py -&gt; build/bdist.linux-x86_64/egg/few/utils
+copying build/lib.linux-x86_64-cpython-310/few/utils/citations.py -&gt; build/bdist.linux-x86_64/egg/few/utils
+copying build/lib.linux-x86_64-cpython-310/few/utils/ylm.py -&gt; build/bdist.linux-x86_64/egg/few/utils
 copying build/lib.linux-x86_64-cpython-310/pymatmul_cpu.cpython-310-x86_64-linux-gnu.so -&gt; build/bdist.linux-x86_64/egg
+copying build/lib.linux-x86_64-cpython-310/pyinterp_cpu.cpython-310-x86_64-linux-gnu.so -&gt; build/bdist.linux-x86_64/egg
+copying build/lib.linux-x86_64-cpython-310/pyUtility.cpython-310-x86_64-linux-gnu.so -&gt; build/bdist.linux-x86_64/egg
+copying build/lib.linux-x86_64-cpython-310/pymatmul.cpython-310-x86_64-linux-gnu.so -&gt; build/bdist.linux-x86_64/egg
+copying build/lib.linux-x86_64-cpython-310/pyInterp2DAmplitude.cpython-310-x86_64-linux-gnu.so -&gt; build/bdist.linux-x86_64/egg
+copying build/lib.linux-x86_64-cpython-310/pyParameterMap.cpython-310-x86_64-linux-gnu.so -&gt; build/bdist.linux-x86_64/egg
+byte-compiling build/bdist.linux-x86_64/egg/few/_version.py to _version.cpython-310.pyc
 byte-compiling build/bdist.linux-x86_64/egg/few/trajectory/__init__.py to __init__.cpython-310.pyc
 byte-compiling build/bdist.linux-x86_64/egg/few/trajectory/inspiral.py to inspiral.cpython-310.pyc
-byte-compiling build/bdist.linux-x86_64/egg/few/__init__.py to __init__.cpython-310.pyc
-byte-compiling build/bdist.linux-x86_64/egg/few/amplitude/__init__.py to __init__.cpython-310.pyc
+byte-compiling build/bdist.linux-x86_64/egg/few/waveform.py to waveform.cpython-310.pyc
+byte-compiling build/bdist.linux-x86_64/egg/few/summation/interpolatedmodesum.py to interpolatedmodesum.cpython-310.pyc
+byte-compiling build/bdist.linux-x86_64/egg/few/summation/aakwave.py to aakwave.cpython-310.pyc
+byte-compiling build/bdist.linux-x86_64/egg/few/summation/directmodesum.py to directmodesum.cpython-310.pyc
+byte-compiling build/bdist.linux-x86_64/egg/few/summation/__init__.py to __init__.cpython-310.pyc
+byte-compiling build/bdist.linux-x86_64/egg/few/summation/fdinterp.py to fdinterp.cpython-310.pyc
 byte-compiling build/bdist.linux-x86_64/egg/few/amplitude/romannet.py to romannet.cpython-310.pyc
 byte-compiling build/bdist.linux-x86_64/egg/few/amplitude/interp2dcubicspline.py to interp2dcubicspline.cpython-310.pyc
-byte-compiling build/bdist.linux-x86_64/egg/few/utils/fdutils.py to fdutils.cpython-310.pyc
-byte-compiling build/bdist.linux-x86_64/egg/few/utils/baseclasses.py to baseclasses.cpython-310.pyc
-byte-compiling build/bdist.linux-x86_64/egg/few/utils/utility.py to utility.cpython-310.pyc
-byte-compiling build/bdist.linux-x86_64/egg/few/utils/modeselector.py to modeselector.cpython-310.pyc
-byte-compiling build/bdist.linux-x86_64/egg/few/utils/citations.py to citations.cpython-310.pyc
-byte-compiling build/bdist.linux-x86_64/egg/few/utils/constants.py to constants.cpython-310.pyc
-byte-compiling build/bdist.linux-x86_64/egg/few/utils/ylm.py to ylm.cpython-310.pyc
-byte-compiling build/bdist.linux-x86_64/egg/few/utils/odeoptions.py to odeoptions.cpython-310.pyc
+byte-compiling build/bdist.linux-x86_64/egg/few/amplitude/__init__.py to __init__.cpython-310.pyc
+byte-compiling build/bdist.linux-x86_64/egg/few/__init__.py to __init__.cpython-310.pyc
 byte-compiling build/bdist.linux-x86_64/egg/few/utils/odeprepare.py to odeprepare.cpython-310.pyc
-byte-compiling build/bdist.linux-x86_64/egg/few/summation/interpolatedmodesum.py to interpolatedmodesum.cpython-310.pyc
-byte-compiling build/bdist.linux-x86_64/egg/few/summation/__init__.py to __init__.cpython-310.pyc
-byte-compiling build/bdist.linux-x86_64/egg/few/summation/directmodesum.py to directmodesum.cpython-310.pyc
-byte-compiling build/bdist.linux-x86_64/egg/few/summation/aakwave.py to aakwave.cpython-310.pyc
-byte-compiling build/bdist.linux-x86_64/egg/few/summation/fdinterp.py to fdinterp.cpython-310.pyc
-byte-compiling build/bdist.linux-x86_64/egg/few/waveform.py to waveform.cpython-310.pyc
-byte-compiling build/bdist.linux-x86_64/egg/few/_version.py to _version.cpython-310.pyc
+byte-compiling build/bdist.linux-x86_64/egg/few/utils/utility.py to utility.cpython-310.pyc
+byte-compiling build/bdist.linux-x86_64/egg/few/utils/odeoptions.py to odeoptions.cpython-310.pyc
+byte-compiling build/bdist.linux-x86_64/egg/few/utils/constants.py to constants.cpython-310.pyc
+byte-compiling build/bdist.linux-x86_64/egg/few/utils/fdutils.py to fdutils.cpython-310.pyc
+byte-compiling build/bdist.linux-x86_64/egg/few/utils/modeselector.py to modeselector.cpython-310.pyc
+byte-compiling build/bdist.linux-x86_64/egg/few/utils/baseclasses.py to baseclasses.cpython-310.pyc
+byte-compiling build/bdist.linux-x86_64/egg/few/utils/citations.py to citations.cpython-310.pyc
+byte-compiling build/bdist.linux-x86_64/egg/few/utils/ylm.py to ylm.cpython-310.pyc
 creating stub loader for pymatmul.cpython-310-x86_64-linux-gnu.so
 creating stub loader for pyinterp.cpython-310-x86_64-linux-gnu.so
 creating stub loader for pygpuAAK.cpython-310-x86_64-linux-gnu.so
@@ -755,25 +465,80 @@ removing &#39;/usr/local/lib/python3.10/site-packages/few-1.5.4-py3.10-linux-x86
 creating /usr/local/lib/python3.10/site-packages/few-1.5.4-py3.10-linux-x86_64.egg
 Extracting few-1.5.4-py3.10-linux-x86_64.egg to /usr/local/lib/python3.10/site-packages
 Adding few 1.5.4 to easy-install.pth file
-
 Installed /usr/local/lib/python3.10/site-packages/few-1.5.4-py3.10-linux-x86_64.egg
 Processing dependencies for few==1.5.4
 Finished processing dependencies for few==1.5.4
-/content/FastEMRIWaveforms/few/tests/test_aak.py:16: UserWarning: CuPy is not installed or a gpu is not available. If trying to run on a gpu, please install CuPy.
-  warnings.warn(
-/content/FastEMRIWaveforms/few/tests/test_detector_wave.py:16: UserWarning: CuPy is not installed or a gpu is not available. If trying to run on a gpu, please install CuPy.
-  warnings.warn(
-/content/FastEMRIWaveforms/few/tests/test_fd.py:26: UserWarning: CuPy is not installed or a gpu is not available. If trying to run on a gpu, please install CuPy.
-  warnings.warn(
-/content/FastEMRIWaveforms/few/tests/test_few.py:23: UserWarning: CuPy is not installed or a gpu is not available. If trying to run on a gpu, please install CuPy.
-  warnings.warn(
-./content/FastEMRIWaveforms/few/summation/aakwave.py:226: UserWarning: Inclination trajectory includes values within 1e-6 of the poles. We shift these values automatically away from poles by 1e-6.
-  warnings.warn(
-..........
-----------------------------------------------------------------------
-Ran 11 tests in 124.533s
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-q<span class="w"> </span>condacolab
+<span class="kn">import</span> <span class="nn">condacolab</span>
+<span class="n">condacolab</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
 
-OK
+<span class="o">!</span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/BlackHolePerturbationToolkit/FastEMRIWaveforms.git
+<span class="o">!</span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>gcc_linux-64<span class="w"> </span>gxx_linux-64<span class="w"> </span>wget<span class="w"> </span>gsl<span class="w"> </span><span class="nv">lapack</span><span class="o">=</span><span class="m">3</span>.6.1<span class="w"> </span>hdf5<span class="w"> </span>numpy<span class="w"> </span>Cython<span class="w"> </span>scipy<span class="w"> </span>tqdm<span class="w"> </span>jupyter<span class="w"> </span>ipython<span class="w"> </span>h5py<span class="w"> </span>requests<span class="w"> </span>matplotlib<span class="w"> </span>python<span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>/dev/tty<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span>
+<span class="o">!(</span><span class="nb">cd</span><span class="w"> </span>FastEMRIWaveforms<span class="p">;</span><span class="w"> </span>python<span class="w"> </span>setup.py<span class="w"> </span>install<span class="p">;</span><span class="o">)</span>
+
+<span class="o">!</span>python<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w"> </span>discover<span class="w"> </span>./FastEMRIWaveforms
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;./FastEMRIWaveforms/&#39;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;/usr/local/lib/python3.10/site-packages/few-1.5.4-py3.10-linux-x86_64.egg/&#39;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">few</span>
+<span class="kn">from</span> <span class="nn">few.trajectory.inspiral</span> <span class="kn">import</span> <span class="n">EMRIInspiral</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="nn">&lt;ipython-input-1-7b783036b99b&gt;</span> in <span class="ni">&lt;cell line: 6&gt;</span><span class="nt">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> 
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;git clone https://github.com/BlackHolePerturbationToolkit/FastEMRIWaveforms.git&#39;</span><span class="p">)</span>
+<span class="ne">----&gt; </span><span class="mi">6</span> <span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;conda install -c conda-forge gcc_linux-64 gxx_linux-64 wget gsl lapack=3.6.1 hdf5 numpy Cython scipy tqdm jupyter ipython h5py requests matplotlib python | tee /dev/tty | tail -n 1&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;(cd FastEMRIWaveforms; python setup.py install;)&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> 
+
+<span class="nn">/usr/local/lib/python3.10/dist-packages/google/colab/_shell.py</span> in <span class="ni">system</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">97</span>       <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;also_return_output&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+<span class="g g-Whitespace">     </span><span class="mi">98</span> 
+<span class="ne">---&gt; </span><span class="mi">99</span>     <span class="n">output</span> <span class="o">=</span> <span class="n">_system_commands</span><span class="o">.</span><span class="n">_system_compat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># pylint:disable=protected-access</span>
+<span class="g g-Whitespace">    </span><span class="mi">100</span> 
+<span class="g g-Whitespace">    </span><span class="mi">101</span>     <span class="k">if</span> <span class="n">pip_warn</span><span class="p">:</span>
+
+<span class="nn">/usr/local/lib/python3.10/dist-packages/google/colab/_system_commands.py</span> in <span class="ni">_system_compat</span><span class="nt">(shell, cmd, also_return_output)</span>
+<span class="g g-Whitespace">    </span><span class="mi">452</span>   <span class="c1"># is expected to call this function, thus adding one level of nesting to the</span>
+<span class="g g-Whitespace">    </span><span class="mi">453</span>   <span class="c1"># stack.</span>
+<span class="ne">--&gt; </span><span class="mi">454</span>   <span class="n">result</span> <span class="o">=</span> <span class="n">_run_command</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">455</span>       <span class="n">shell</span><span class="o">.</span><span class="n">var_expand</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">clear_streamed_output</span><span class="o">=</span><span class="kc">False</span>
+<span class="g g-Whitespace">    </span><span class="mi">456</span>   <span class="p">)</span>
+
+<span class="nn">/usr/local/lib/python3.10/dist-packages/google/colab/_system_commands.py</span> in <span class="ni">_run_command</span><span class="nt">(cmd, clear_streamed_output)</span>
+<span class="g g-Whitespace">    </span><span class="mi">202</span>       <span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">child_pty</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">203</span> 
+<span class="ne">--&gt; </span><span class="mi">204</span>       <span class="k">return</span> <span class="n">_monitor_process</span><span class="p">(</span><span class="n">parent_pty</span><span class="p">,</span> <span class="n">epoll</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">update_stdin_widget</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">205</span>   <span class="k">finally</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">206</span>     <span class="n">epoll</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="nn">/usr/local/lib/python3.10/dist-packages/google/colab/_system_commands.py</span> in <span class="ni">_monitor_process</span><span class="nt">(parent_pty, epoll, p, cmd, update_stdin_widget)</span>
+<span class="g g-Whitespace">    </span><span class="mi">232</span>   <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">233</span>     <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">234</span>       <span class="n">result</span> <span class="o">=</span> <span class="n">_poll_process</span><span class="p">(</span><span class="n">parent_pty</span><span class="p">,</span> <span class="n">epoll</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">decoder</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">235</span>       <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">236</span>         <span class="k">return</span> <span class="n">result</span>
+
+<span class="nn">/usr/local/lib/python3.10/dist-packages/google/colab/_system_commands.py</span> in <span class="ni">_poll_process</span><span class="nt">(parent_pty, epoll, p, cmd, decoder, state)</span>
+<span class="g g-Whitespace">    </span><span class="mi">280</span>   <span class="n">output_available</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="g g-Whitespace">    </span><span class="mi">281</span> 
+<span class="ne">--&gt; </span><span class="mi">282</span>   <span class="n">events</span> <span class="o">=</span> <span class="n">epoll</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">283</span>   <span class="n">input_events</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="g g-Whitespace">    </span><span class="mi">284</span>   <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
 </div>
 </div>
@@ -1013,7 +778,7 @@ p(t), e(t), x_I(t), \Phi_\varphi(t), \Phi_\theta(t), \Phi_r(t)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/af55bf73293b331ea24626d2ef648a37be6b90eedbeb4cdb41ff2af433eadbda.png" src="_images/af55bf73293b331ea24626d2ef648a37be6b90eedbeb4cdb41ff2af433eadbda.png" />
+<img alt="_images/dbe2b7af0a6e169fa654c3a874e5fc03602f057675efb990c84f2093595915e2.png" src="_images/dbe2b7af0a6e169fa654c3a874e5fc03602f057675efb990c84f2093595915e2.png" />
 </div>
 </div>
 </section>
@@ -1156,7 +921,7 @@ p(t), e(t), x_I(t), \Phi_\varphi(t), \Phi_\theta(t), \Phi_r(t)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ipython-input-8-037dddd6d8fc&gt;:26: MatplotlibDeprecationWarning: The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ipython-input-9-037dddd6d8fc&gt;:26: MatplotlibDeprecationWarning: The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
   cmap = matplotlib.cm.get_cmap(&#39;Spectral&#39;)
 </pre></div>
 </div>
@@ -1697,29 +1462,7 @@ h_{+} - ih_{\times} = \frac{\mu}{d_L}\sum_{lmn} A_{lmn}(p(t),e(t),x_{I}(t)) , S_
     <span class="n">use_gpu</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">xp</span> <span class="o">=</span> <span class="n">np</span>
 
-<span class="c1"># keyword arguments for inspiral generator (RunSchwarzEccFluxInspiral)</span>
-<span class="n">inspiral_kwargs</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;DENSE_STEPPING&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>  <span class="c1"># we want a sparsely sampled trajectory</span>
-        <span class="s2">&quot;max_init_len&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e3</span><span class="p">),</span>  <span class="c1"># all of the trajectories will be well under len = 1000</span>
-    <span class="p">}</span>
 
-<span class="c1"># keyword arguments for summation generator (InterpolatedModeSum)</span>
-<span class="n">sum_kwargs</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;use_gpu&quot;</span><span class="p">:</span> <span class="n">use_gpu</span><span class="p">,</span>  <span class="c1"># GPU is availabel for this type of summation</span>
-    <span class="s2">&quot;pad_output&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-<span class="p">}</span>
-
-<span class="c1"># keyword arguments for inspiral generator (RomanAmplitude)</span>
-<span class="n">amplitude_kwargs</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;max_init_len&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e3</span><span class="p">),</span>  <span class="c1"># all of the trajectories will be well under len = 1000</span>
-    <span class="s2">&quot;use_gpu&quot;</span><span class="p">:</span> <span class="n">use_gpu</span>  <span class="c1"># GPU is available in this class</span>
-<span class="p">}</span>
-
-<span class="c1"># keyword arguments for summation generator (InterpolatedModeSum)</span>
-<span class="n">sum_kwargs</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;use_gpu&quot;</span><span class="p">:</span> <span class="n">use_gpu</span><span class="p">,</span>  <span class="c1"># GPU is available for this type of summation</span>
-    <span class="s2">&quot;pad_output&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-<span class="p">}</span>
 
 <span class="n">few_gen</span> <span class="o">=</span> <span class="n">FastSchwarzschildEccentricFlux</span><span class="p">(</span>
     <span class="n">inspiral_kwargs</span><span class="o">=</span><span class="n">inspiral_kwargs</span><span class="p">,</span>
@@ -1759,7 +1502,7 @@ h_{+} - ih_{\times} = \frac{\mu}{d_L}\sum_{lmn} A_{lmn}(p(t),e(t),x_{I}(t)) , S_
 <section id="emri-waveforms-in-different-domains">
 <h2>EMRI Waveforms in different domains<a class="headerlink" href="#emri-waveforms-in-different-domains" title="Permalink to this heading">#</a></h2>
 <p>The output of FEW is a time domain waveform, i.e. the dimensionless strain as a function of time. Later on in this tutorial we will discuss a frequency domain model. We are currently working on trying to output an EMRI waveform directly in the time-frequency domain… watch this space!</p>
-<p>Let’s have a look at the waveform at different stages of the trajectory. a</p>
+<p>Let’s have a look at the waveform at different stages of the trajectory.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># parameters</span>
@@ -1966,15 +1709,7 @@ EMRIs are usually considered to be detectable for \)</span>SNR\gtrsim 15$ or so<
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">line</span> <span class="mi">13</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span>     <span class="k">return</span> <span class="n">inn_prod_np</span>
-<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="c1"># the SNR of the previous waveform is</span>
-<span class="ne">---&gt; </span><span class="mi">13</span> <span class="n">SNR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">inner_product</span><span class="p">(</span><span class="n">wave</span><span class="o">.</span><span class="n">real</span><span class="p">,</span><span class="n">wave</span><span class="o">.</span><span class="n">real</span><span class="p">,</span><span class="n">dt</span><span class="p">))</span>
-<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SNR =&quot;</span><span class="p">,</span><span class="n">SNR</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;wave&#39; is not defined
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SNR = 48.5958733252935
 </pre></div>
 </div>
 </div>
@@ -2085,11 +1820,11 @@ The overlap expresses how similar two signals \)</span>a<span class="math notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ipython-input-35-41cb972a71e3&gt;:1: MatplotlibDeprecationWarning: The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ipython-input-35-eaeae1e19e6d&gt;:1: MatplotlibDeprecationWarning: The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
   cmap = matplotlib.cm.get_cmap(&#39;inferno&#39;)
 </pre></div>
 </div>
-<img alt="_images/c987381875fec7e89da81b9c137019706aaed1d51f06eb62522c231dc4a9a122.png" src="_images/c987381875fec7e89da81b9c137019706aaed1d51f06eb62522c231dc4a9a122.png" />
+<img alt="_images/b5c50debe23399ee489506d22e145aa6eb59bdf9d4a530b0fee0db4a521b2b49.png" src="_images/b5c50debe23399ee489506d22e145aa6eb59bdf9d4a530b0fee0db4a521b2b49.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2125,7 +1860,7 @@ The overlap expresses how similar two signals \)</span>a<span class="math notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ipython-input-46-65e8eebaaf37&gt;:10: MatplotlibDeprecationWarning: The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ipython-input-36-8a86151bc9eb&gt;:10: MatplotlibDeprecationWarning: The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
   cmap = matplotlib.cm.get_cmap(&#39;inferno&#39;)
 </pre></div>
 </div>
@@ -2234,8 +1969,8 @@ for <span class="math notranslate nohighlight">\(h_{e}\)</span> the exact wavefo
 
 <span class="n">llike_vec</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">ecc_val</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">e_range</span><span class="p">):</span>
-  <span class="n">wave_iteration</span> <span class="o">=</span> <span class="n">few_gen</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">ecc_val</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">dist</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>  <span class="c1">#  </span>
-  <span class="n">diff</span> <span class="o">=</span> <span class="n">true_wave</span> <span class="o">-</span> <span class="n">wave_iteration</span> <span class="c1"># See likelihood equation above. </span>
+  <span class="n">wave_iteration</span> <span class="o">=</span> <span class="n">few_gen</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">ecc_val</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">dist</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>  <span class="c1">#</span>
+  <span class="n">diff</span> <span class="o">=</span> <span class="n">true_wave</span> <span class="o">-</span> <span class="n">wave_iteration</span> <span class="c1"># See likelihood equation above.</span>
 
   <span class="n">llike</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">inner_product</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span><span class="n">diff</span><span class="p">,</span><span class="n">dt</span><span class="p">))</span>  <span class="c1"># Compute likelihood value</span>
   <span class="n">llike_vec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">llike</span><span class="p">)</span>
@@ -2250,13 +1985,15 @@ for <span class="math notranslate nohighlight">\(h_{e}\)</span> the exact wavefo
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 30/30 [01:20&lt;00:00,  2.69s/it]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/30 [00:00&lt;?, ?it/s]/usr/local/lib/python3.10/dist-packages/cupy/fft/_fft.py:37: ComplexWarning: Casting complex values to real discards the imaginary part
+  a = a.astype(out_dtype)
+100%|██████████| 30/30 [01:21&lt;00:00,  2.71s/it]
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7b4ed071fb20&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Plot of likelihood over 1 parameter&#39;)
 </pre></div>
 </div>
-<img alt="_images/459bd08fd0a5ebfa79b4bdbbd54f3b17fbaec90a18b73c269b50b02a04c91e04.png" src="_images/459bd08fd0a5ebfa79b4bdbbd54f3b17fbaec90a18b73c269b50b02a04c91e04.png" />
+<img alt="_images/27ce1ad0c6bc2b11dab45c6f01b61c3edb119658461c769a376d15753fd8382b.png" src="_images/27ce1ad0c6bc2b11dab45c6f01b61c3edb119658461c769a376d15753fd8382b.png" />
 </div>
 </div>
 </section>
@@ -2293,7 +2030,7 @@ The diagonal elements of the inverse Fisher matrix gives a guide on how well one
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s check our result! </span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s check our result!</span>
 <span class="n">precision_e_np</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">precision_e</span><span class="p">)</span>
 
 <span class="n">approx_pdf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">e_range</span> <span class="o">-</span> <span class="n">e0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">precision_e_np</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
@@ -2305,10 +2042,10 @@ The diagonal elements of the inverse Fisher matrix gives a guide on how well one
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7b4ed0789240&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7e2113704370&gt;
 </pre></div>
 </div>
-<img alt="_images/d6cfe94ac4c4eabdfba49de61ccd8358389a95693c743687a23c76f18360c0fa.png" src="_images/d6cfe94ac4c4eabdfba49de61ccd8358389a95693c743687a23c76f18360c0fa.png" />
+<img alt="_images/d92a13dc2e71fa55fcee2c89cb33c3b707e2e7c09b581f2804a5f64354c13b6a.png" src="_images/d92a13dc2e71fa55fcee2c89cb33c3b707e2e7c09b581f2804a5f64354c13b6a.png" />
 </div>
 </div>
 <section id="nailed-it">
@@ -2342,7 +2079,7 @@ The diagonal elements of the inverse Fisher matrix gives a guide on how well one
 
 <span class="c1"># print(&quot;Precision we can expect to measure the primary mass is&quot;, precision_M)</span>
 
-<span class="c1"># Analytical solution present at the bottom of this notebook ;) </span>
+<span class="c1"># Analytical solution present at the bottom of this notebook ;)</span>
 </pre></div>
 </div>
 </div>
@@ -2355,13 +2092,13 @@ The diagonal elements of the inverse Fisher matrix gives a guide on how well one
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># parameters</span>
 <span class="n">M</span> <span class="o">=</span> <span class="mf">1e6</span>
 <span class="n">mu</span> <span class="o">=</span> <span class="mf">1e1</span>
-<span class="n">p0</span> <span class="o">=</span> <span class="mf">10.63</span>
+<span class="n">p0</span> <span class="o">=</span> <span class="mf">9.55</span>
 <span class="n">e0</span> <span class="o">=</span> <span class="mf">0.3</span>
 <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span>  <span class="c1"># polar viewing angle in source frame</span>
 <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span>  <span class="c1"># azimuthal viewing angle in source frame</span>
 <span class="n">dt</span> <span class="o">=</span> <span class="mf">10.0</span>
 
-<span class="n">wave</span> <span class="o">=</span> <span class="n">few_gen</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">dist</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>  <span class="c1"># Generate our source</span>
+<span class="n">wave</span> <span class="o">=</span> <span class="n">few_gen</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">dist</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># Generate our source</span>
 <span class="n">wave_np</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">wave</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -2379,11 +2116,11 @@ The diagonal elements of the inverse Fisher matrix gives a guide on how well one
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
-<span class="n">cb</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Zxx</span><span class="p">)),</span> <span class="n">shading</span><span class="o">=</span><span class="s1">&#39;gouraud&#39;</span><span class="p">)</span>
+<span class="n">cb</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">t</span><span class="o">/</span><span class="n">YRSID_SI</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Zxx</span><span class="p">)),</span> <span class="n">shading</span><span class="o">=</span><span class="s1">&#39;gouraud&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cb</span><span class="p">,)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;STFT Magnitude&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency [Hz]&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time [sec]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;STFT Magnitude&#39;</span><span class="p">,</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency [Hz]&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time [Years]&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">f</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -2391,7 +2128,7 @@ The diagonal elements of the inverse Fisher matrix gives a guide on how well one
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2c0976e8b59dc6a40332ee0680bf00c8d9e8ff29ca143208efdde50723323b00.png" src="_images/2c0976e8b59dc6a40332ee0680bf00c8d9e8ff29ca143208efdde50723323b00.png" />
+<img alt="_images/4907e62252eef53406651804d04db23ec637af828c9e3164e2b8cf0bc7f746f1.png" src="_images/4907e62252eef53406651804d04db23ec637af828c9e3164e2b8cf0bc7f746f1.png" />
 </div>
 </div>
 <section id="exercise-6">
@@ -2402,36 +2139,36 @@ The diagonal elements of the inverse Fisher matrix gives a guide on how well one
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># parameters</span>
 <span class="n">M</span> <span class="o">=</span> <span class="mf">1e6</span>
 <span class="n">mu</span> <span class="o">=</span> <span class="mf">1e1</span>
-<span class="n">p0</span> <span class="o">=</span> <span class="mf">10.63</span>
+<span class="n">p0</span> <span class="o">=</span> <span class="mf">9.55</span>
 <span class="n">e0</span> <span class="o">=</span> <span class="mf">0.3</span>
 <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span>  <span class="c1"># polar viewing angle in source frame</span>
 <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span>  <span class="c1"># azimuthal viewing angle in source frame</span>
 <span class="n">dt</span> <span class="o">=</span> <span class="mf">10.0</span>
 
 <span class="n">wave</span> <span class="o">=</span> <span class="n">few_gen</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">dist</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
-<span class="n">wave_np</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">wave</span><span class="p">)</span>
+<span class="n">wave_np</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">wave</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
 
-<span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">Zxx</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">stft</span><span class="p">(</span><span class="n">wave</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">dt</span><span class="p">,</span> <span class="n">nperseg</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+<span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">Zxx</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">stft</span><span class="p">(</span><span class="n">wave_np</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">dt</span><span class="p">,</span> <span class="n">nperseg</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
 
 <span class="n">time</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">Phi_phi</span><span class="p">,</span> <span class="n">Phi_theta</span><span class="p">,</span> <span class="n">Phi_r</span> <span class="o">=</span> <span class="n">traj</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
-<span class="n">OmegaPhi</span><span class="p">,</span> <span class="n">OmegaTheta</span><span class="p">,</span> <span class="n">OmegaR</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_fundamental_frequencies</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="n">OmegaPhi</span><span class="p">,</span> <span class="n">OmegaTheta</span><span class="p">,</span> <span class="n">OmegaR</span> <span class="o">=</span> <span class="n">get_fundamental_frequencies</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># fharmonics_phi = [m*OmegaPhi / (M*MTSUN_SI) / (np.pi*2) for m in range(1,10)]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fharmonics_phi</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span><span class="o">*</span><span class="n">OmegaPhi</span> <span class="o">/</span> <span class="p">(</span><span class="n">M</span><span class="o">*</span><span class="n">MTSUN_SI</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">)]</span>
 <span class="c1"># fharmonics_r = [n*OmegaR / (M*MTSUN_SI) / (np.pi*2) for n in range(1,10)]</span>
 
-<span class="n">m</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">n</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">m</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
 
 <span class="n">f_combo_r_phi</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span><span class="o">*</span><span class="n">OmegaPhi</span> <span class="o">+</span> <span class="n">n</span><span class="o">*</span><span class="n">OmegaR</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">M</span><span class="o">*</span><span class="n">MTSUN_SI</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
 <span class="n">cb</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Zxx</span><span class="p">)),</span> <span class="n">shading</span><span class="o">=</span><span class="s1">&#39;gouraud&#39;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">9</span><span class="p">):</span>
-    <span class="c1"># plt.plot(time, fharmonics_phi[j],&#39;r&#39;)</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">fharmonics_phi</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
 <span class="c1">#     plt.plot(time,fharmonics_r[j],&#39;white&#39;, linestyle=&#39;--&#39;)\</span>
 <span class="c1">#     plt.plot(time,f_combo_r_phi, c = &#39;red&#39;, linestyle = &#39;--&#39;)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cb</span><span class="p">,)</span>
@@ -2446,7 +2183,7 @@ The diagonal elements of the inverse Fisher matrix gives a guide on how well one
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/10d0ac265bd9c234c93d726d138c029349bd2868a6075613aafc7de964b724dd.png" src="_images/10d0ac265bd9c234c93d726d138c029349bd2868a6075613aafc7de964b724dd.png" />
+<img alt="_images/ef3191be21a4fb28f0283d2cc9021af5828cae6eba609306c1b6133c63483491.png" src="_images/ef3191be21a4fb28f0283d2cc9021af5828cae6eba609306c1b6133c63483491.png" />
 </div>
 </div>
 </section>
@@ -2461,15 +2198,17 @@ The diagonal elements of the inverse Fisher matrix gives a guide on how well one
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># frequency domain</span>
 <span class="n">fd_gen</span> <span class="o">=</span> <span class="n">GenerateEMRIWaveform</span><span class="p">(</span>
     <span class="s2">&quot;FastSchwarzschildEccentricFlux&quot;</span><span class="p">,</span>
-    <span class="n">sum_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pad_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s2">&quot;fd&quot;</span><span class="p">,</span> <span class="n">odd_len</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_gpu</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
-    <span class="n">return_list</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">sum_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pad_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s2">&quot;fd&quot;</span><span class="p">,</span> <span class="n">odd_len</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">return_list</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">use_gpu</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="p">)</span>
 
 <span class="c1"># time domain</span>
 <span class="n">td_gen</span> <span class="o">=</span> <span class="n">GenerateEMRIWaveform</span><span class="p">(</span>
     <span class="s2">&quot;FastSchwarzschildEccentricFlux&quot;</span><span class="p">,</span>
-    <span class="n">sum_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pad_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">odd_len</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_gpu</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
-    <span class="n">return_list</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">sum_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pad_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">odd_len</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">return_list</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">use_gpu</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -2487,8 +2226,6 @@ The diagonal elements of the inverse Fisher matrix gives a guide on how well one
 
 <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span>  <span class="c1"># polar viewing angle in source frame</span>
 <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span>  <span class="c1"># azimuthal viewing angle in source frame</span>
-
-<span class="n">dt</span> <span class="o">=</span> <span class="mf">10.0</span>
 
 <span class="n">x_I</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># will be ignored in Schwarzschild waveform</span>
 
@@ -2523,14 +2260,15 @@ The diagonal elements of the inverse Fisher matrix gives a guide on how well one
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First let&#39;s try to generate a full year long EMRI waveform in the time domain and look at the periodigram</span>
-
 <span class="n">hp_td</span><span class="p">,</span> <span class="n">hx_td</span> <span class="o">=</span> <span class="n">td_gen</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="n">x_I</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">qK</span><span class="p">,</span> <span class="n">phiK</span><span class="p">,</span> <span class="n">qS</span><span class="p">,</span> <span class="n">phiS</span><span class="p">,</span> <span class="n">Phi_phi0</span><span class="p">,</span> <span class="n">Phi_theta0</span><span class="p">,</span> <span class="n">Phi_r0</span><span class="p">,</span> <span class="o">**</span><span class="n">waveform_kwargs</span><span class="p">)</span>
+
 <span class="n">t_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">Tobs</span><span class="o">*</span><span class="n">YRSID_SI</span><span class="p">,</span><span class="n">dt</span><span class="p">)</span>
 <span class="n">N_t</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">hp_td</span><span class="p">)</span>
 
-<span class="n">freq_bin</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="n">N_t</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+<span class="n">freq_bin_np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="n">N_t</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
 
 <span class="n">hp_fft</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">hp_td</span><span class="p">)</span>
+<span class="n">hp_fft_np</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">hp_fft</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_range</span><span class="o">/</span><span class="mi">60</span><span class="o">/</span><span class="mi">60</span><span class="o">/</span><span class="mi">24</span><span class="p">,</span><span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">hp_td</span><span class="p">))</span>
@@ -2538,7 +2276,7 @@ The diagonal elements of the inverse Fisher matrix gives a guide on how well one
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$h_</span><span class="si">{p}</span><span class="s1">(t)$&#39;</span><span class="p">,</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Time domain&#39;</span><span class="p">,</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">freq_bin</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">hp_fft</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">freq_bin_np</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="nb">abs</span><span class="p">(</span><span class="n">hp_fft_np</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mf">1e-5</span><span class="p">,</span><span class="mf">1e-1</span><span class="p">])</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Frequency [Hz]&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$|h_</span><span class="si">{p}</span><span class="s1">(f)|^2$&#39;</span><span class="p">,</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
@@ -2550,7 +2288,7 @@ The diagonal elements of the inverse Fisher matrix gives a guide on how well one
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Frequency domain&#39;)
 </pre></div>
 </div>
-<img alt="_images/62f5fadba462c7ea4e49865e0e58b42bc841984c193e0279f695af2178e54f16.png" src="_images/62f5fadba462c7ea4e49865e0e58b42bc841984c193e0279f695af2178e54f16.png" />
+<img alt="_images/3dd6e5801c2ee9bddeece3e382582a93a1225b2b8d4b5ade555c127060423657.png" src="_images/3dd6e5801c2ee9bddeece3e382582a93a1225b2b8d4b5ade555c127060423657.png" />
 </div>
 </div>
 <section id="pure-frequency-domain">
@@ -2559,6 +2297,7 @@ The diagonal elements of the inverse Fisher matrix gives a guide on how well one
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hp_fd</span><span class="p">,</span> <span class="n">hx_fd</span> <span class="o">=</span> <span class="n">fd_gen</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="n">x_I</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">qK</span><span class="p">,</span> <span class="n">phiK</span><span class="p">,</span> <span class="n">qS</span><span class="p">,</span> <span class="n">phiS</span><span class="p">,</span> <span class="n">Phi_phi0</span><span class="p">,</span> <span class="n">Phi_theta0</span><span class="p">,</span> <span class="n">Phi_r0</span><span class="p">,</span> <span class="o">**</span><span class="n">waveform_kwargs</span><span class="p">)</span>
+<span class="n">hp_fd_np</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">hp_fd</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2566,10 +2305,11 @@ The diagonal elements of the inverse Fisher matrix gives a guide on how well one
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">freqs</span> <span class="o">=</span> <span class="n">fd_gen</span><span class="o">.</span><span class="n">waveform_generator</span><span class="o">.</span><span class="n">create_waveform</span><span class="o">.</span><span class="n">frequency</span>
+<span class="n">freqs_np</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">freqs</span><span class="p">)</span>
 <span class="n">df</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">freqs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">freq_bin</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dt</span> <span class="o">*</span> <span class="n">hp_fft</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;TD into FD&#39;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="n">N_t</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:],</span> <span class="nb">abs</span><span class="p">(</span><span class="n">hp_fd</span><span class="p">[</span><span class="n">N_t</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:])</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;pure FD&#39;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s1">&#39;orange&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">freq_bin_np</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dt</span> <span class="o">*</span> <span class="n">hp_fft_np</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;TD into FD&#39;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">freqs_np</span><span class="p">[</span><span class="n">N_t</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:],</span> <span class="nb">abs</span><span class="p">(</span><span class="n">hp_fd_np</span><span class="p">[</span><span class="n">N_t</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:])</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;pure FD&#39;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s1">&#39;orange&#39;</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mf">1e-5</span><span class="p">,</span><span class="mf">1e-1</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Frequencies [Hz]&quot;</span><span class="p">)</span>
@@ -2580,7 +2320,7 @@ The diagonal elements of the inverse Fisher matrix gives a guide on how well one
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7ab6237a718c5894fdaba12e3807fc0943f88975f718387621ab25f8cc4bc873.png" src="_images/7ab6237a718c5894fdaba12e3807fc0943f88975f718387621ab25f8cc4bc873.png" />
+<img alt="_images/5f4aa7114f02bd5dba69f5a238a5fc648e293911482fd3a372e077da7cfcfb7f.png" src="_images/5f4aa7114f02bd5dba69f5a238a5fc648e293911482fd3a372e077da7cfcfb7f.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2588,7 +2328,7 @@ The diagonal elements of the inverse Fisher matrix gives a guide on how well one
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inner_product_FD</span><span class="p">(</span><span class="n">a_f</span><span class="p">,</span><span class="n">b_f</span><span class="p">,</span><span class="n">df</span><span class="p">,</span> <span class="n">PSD</span><span class="p">):</span>
     <span class="k">return</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">xp</span><span class="o">.</span><span class="n">real</span> <span class="p">(</span> <span class="n">xp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="n">xp</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">a_f</span><span class="p">)</span> <span class="o">*</span> <span class="n">b_f</span> <span class="o">*</span> <span class="n">df</span> <span class="o">/</span> <span class="n">PSD</span><span class="p">)</span> <span class="p">)</span>
 
-<span class="n">PSD_cp</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">PowerSpectralDensity</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="n">N_t</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]))</span>
+<span class="n">PSD_cp</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">PowerSpectralDensity</span><span class="p">(</span><span class="n">freqs_np</span><span class="p">[</span><span class="n">N_t</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]))</span>
 
 <span class="n">SNR2_FD_model</span> <span class="o">=</span> <span class="n">inner_product_FD</span><span class="p">(</span><span class="n">hp_fd</span><span class="p">[</span><span class="n">N_t</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:],</span> <span class="n">hp_fd</span><span class="p">[</span><span class="n">N_t</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:],</span> <span class="n">df</span><span class="p">,</span> <span class="n">PSD_cp</span><span class="p">)</span>
 <span class="n">SNR2_TD_model</span> <span class="o">=</span> <span class="n">inner_product_FD</span><span class="p">(</span><span class="n">dt</span><span class="o">*</span><span class="n">hp_fft</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">dt</span><span class="o">*</span><span class="n">hp_fft</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">df</span><span class="p">,</span> <span class="n">PSD_cp</span><span class="p">)</span>
@@ -2601,8 +2341,8 @@ The diagonal elements of the inverse Fisher matrix gives a guide on how well one
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Approximate SNR of the system using frequency domain model 62.94559020915831
-Approximate SNR of the system using time domain model 62.94704940634981
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Approximate SNR of the system using frequency domain model 67.77849625474227
+Approximate SNR of the system using time domain model 67.77430179611801
 
 Not bad.
 </pre></div>
@@ -2621,18 +2361,12 @@ Not bad.
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your turn!</span>
 
 <span class="c1"># ab = inner_product_FD([INSERT YOUR CODE HERE])</span>
-<span class="c1"># aa = inner_product_FD(hp_fd[N_t//2 + 1:], hp_fd[N_t//2 + 1:], df, PSD)</span>
-<span class="c1"># bb = inner_product_FD(dt * hp_fft[1:], dt * hp_fft[1:], df, PSD)</span>
+<span class="c1"># aa = inner_product_FD(hp_fd[N_t//2 + 1:], hp_fd[N_t//2 + 1:], df, PSD_cp)</span>
+<span class="c1"># bb = inner_product_FD(dt * hp_fft[1:], dt * hp_fft[1:], df, PSD_cp)</span>
 
-<span class="c1"># overlap = [INSERT YOUR CODE HERE] </span>
+<span class="c1"># overlap = [INSERT YOUR CODE HERE]</span>
 
 <span class="c1"># print(&quot;Overlap between two models is = &quot;, overlap)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overlap between two models is =  0.9988982779433383
-Seems quite reasonable
 </pre></div>
 </div>
 </div>
@@ -2666,7 +2400,7 @@ of each equation above.</p>
 <code class="docutils literal notranslate"><span class="pre">few.waveform.SchwarzschildEccentricWaveformBase</span></code> contains. This is mainly due to the specific waveform constructions particular to the AAK/AK.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">use_gpu</span> <span class="o">=</span> <span class="kc">False</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">use_gpu</span> <span class="o">=</span> <span class="kc">True</span>
 
 <span class="c1"># keyword arguments for inspiral generator (RunKerrGenericPn5Inspiral)</span>
 <span class="n">inspiral_kwargs</span> <span class="o">=</span> <span class="p">{</span>
@@ -2680,7 +2414,7 @@ of each equation above.</p>
     <span class="s2">&quot;pad_output&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="n">wave_generator</span> <span class="o">=</span> <span class="n">Pn5AAKWaveform</span><span class="p">(</span><span class="n">inspiral_kwargs</span><span class="o">=</span><span class="n">inspiral_kwargs</span><span class="p">,</span> <span class="n">sum_kwargs</span><span class="o">=</span><span class="n">sum_kwargs</span><span class="p">,</span> <span class="n">use_gpu</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">wave_generator</span> <span class="o">=</span> <span class="n">Pn5AAKWaveform</span><span class="p">(</span><span class="n">inspiral_kwargs</span><span class="o">=</span><span class="n">inspiral_kwargs</span><span class="p">,</span> <span class="n">sum_kwargs</span><span class="o">=</span><span class="n">sum_kwargs</span><span class="p">,</span> <span class="n">use_gpu</span><span class="o">=</span><span class="n">use_gpu</span><span class="p">)</span>
 
 <span class="c1"># set initial parameters</span>
 <span class="n">M</span> <span class="o">=</span> <span class="mf">1e6</span>
@@ -2706,6 +2440,9 @@ of each equation above.</p>
 
 <span class="n">waveform</span> <span class="o">=</span> <span class="n">wave_generator</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="n">Y0</span><span class="p">,</span> <span class="n">qS</span><span class="p">,</span> <span class="n">phiS</span><span class="p">,</span> <span class="n">qK</span><span class="p">,</span> <span class="n">phiK</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span>
                           <span class="n">Phi_phi0</span><span class="o">=</span><span class="n">Phi_phi0</span><span class="p">,</span> <span class="n">Phi_theta0</span><span class="o">=</span><span class="n">Phi_theta0</span><span class="p">,</span> <span class="n">Phi_r0</span><span class="o">=</span><span class="n">Phi_r0</span><span class="p">,</span> <span class="n">mich</span><span class="o">=</span><span class="n">mich</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="n">T</span><span class="p">)</span>
+
+<span class="n">waveform_real_np</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">waveform</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
+<span class="n">waveform_imag_np</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">waveform</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2713,39 +2450,41 @@ of each equation above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">waveform</span><span class="p">))</span> <span class="o">*</span> <span class="n">dt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">waveform</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">waveform</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">waveform_real_np</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">waveform_imag_np</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f77f09dabd0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x78b784369420&gt;]
 </pre></div>
 </div>
-<img alt="_images/329fb289eff199059dac2af75ccfe5f6c99d389517c1a93d7b1287e3db7aa812.png" src="_images/329fb289eff199059dac2af75ccfe5f6c99d389517c1a93d7b1287e3db7aa812.png" />
+<img alt="_images/564483c74544d62a447a80cdcece615326dab45dbfcaf91d927e218fb482d47e.png" src="_images/564483c74544d62a447a80cdcece615326dab45dbfcaf91d927e218fb482d47e.png" />
 </div>
 </div>
 <p>We can also assume a long-wavelength LISA response by setting <code class="docutils literal notranslate"><span class="pre">mich=True</span></code>. Please note this is not Time-delay interferometry (TDI).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">waveform_lw</span> <span class="o">=</span> <span class="n">wave_generator</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="n">Y0</span><span class="p">,</span> <span class="n">qS</span><span class="p">,</span> <span class="n">phiS</span><span class="p">,</span> <span class="n">qK</span><span class="p">,</span> <span class="n">phiK</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">mich</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="n">T</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">waveform_lw_cp</span> <span class="o">=</span> <span class="n">wave_generator</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="n">Y0</span><span class="p">,</span> <span class="n">qS</span><span class="p">,</span> <span class="n">phiS</span><span class="p">,</span> <span class="n">qK</span><span class="p">,</span> <span class="n">phiK</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">mich</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="n">T</span><span class="p">)</span>
+<span class="n">waveform_lw_real_np</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">waveform_lw_cp</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
+<span class="n">waveform_lw_imag_np</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">waveform_lw_cp</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">waveform_lw</span><span class="p">))</span> <span class="o">*</span> <span class="n">dt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">waveform_lw</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">waveform_lw</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">waveform_lw_cp</span><span class="p">))</span> <span class="o">*</span> <span class="n">dt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">waveform_lw_real_np</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">waveform_lw_imag_np</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fe13751b050&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x78b7807ee320&gt;]
 </pre></div>
 </div>
-<img alt="_images/54c8a350c2ac816d83ceb6398ae696c2e997484afef67ea7693de01fa7fa50f5.png" src="_images/54c8a350c2ac816d83ceb6398ae696c2e997484afef67ea7693de01fa7fa50f5.png" />
+<img alt="_images/186d615c46a4f40a6752493a8fb9aea99e593a70c674875e2e75b9cb1d26a424.png" src="_images/186d615c46a4f40a6752493a8fb9aea99e593a70c674875e2e75b9cb1d26a424.png" />
 </div>
 </div>
 <section id="pn-trajectory">
@@ -2783,7 +2522,7 @@ of each equation above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>140 4.530571061589189
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>138 4.530567146065856
 </pre></div>
 </div>
 </div>
@@ -2804,13 +2543,14 @@ of each equation above.</p>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlab</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylab</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
 
 <span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c2c3608334c39c8e1985efd0ef11935bf6e5228504e2dedab2267473259e0ce9.png" src="_images/c2c3608334c39c8e1985efd0ef11935bf6e5228504e2dedab2267473259e0ce9.png" />
+<img alt="_images/aa6d67d3754bc0ac9c0733f7c3044d6b37ef4b30c9e58d39458b98bf94a8106a.png" src="_images/aa6d67d3754bc0ac9c0733f7c3044d6b37ef4b30c9e58d39458b98bf94a8106a.png" />
 </div>
 </div>
 <p>With the PN trajectory, we need to be careful at smaller <span class="math notranslate nohighlight">\(p\)</span>, larger <span class="math notranslate nohighlight">\(a\)</span>, and larger <span class="math notranslate nohighlight">\(e\)</span>. This trajectory can exihibt pathological behavior near these extremes. Therefore, we provide the option to truncate the trajectory at the Schwarzschild (<span class="math notranslate nohighlight">\(a=0\)</span>) separatrix, <span class="math notranslate nohighlight">\(6 + 2e\)</span>. To do this, you provide the keyword <code class="docutils literal notranslate"><span class="pre">enforce_schwarz_sep=True</span></code> to the initialization of the class.</p>
@@ -2846,7 +2586,7 @@ of each equation above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>104 6.549942276116756
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>103 6.549942174832372
 </pre></div>
 </div>
 </div>
@@ -2873,7 +2613,7 @@ of each equation above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/adbd1c5b454da6137e6711a22f1b7dc57099cf3024bbbac109ba3be13e0edc52.png" src="_images/adbd1c5b454da6137e6711a22f1b7dc57099cf3024bbbac109ba3be13e0edc52.png" />
+<img alt="_images/dda2ff9e304189b192c1ad8b94ad1c011f6546a6b2383829ffde329ef59f1d4a.png" src="_images/dda2ff9e304189b192c1ad8b94ad1c011f6546a6b2383829ffde329ef59f1d4a.png" />
 </div>
 </div>
 </section>
@@ -2881,7 +2621,7 @@ of each equation above.</p>
 <h3>Generating the new AAK with the generic waveform generator<a class="headerlink" href="#generating-the-new-aak-with-the-generic-waveform-generator" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gen_wave</span> <span class="o">=</span> <span class="n">GenerateEMRIWaveform</span><span class="p">(</span><span class="s2">&quot;Pn5AAKWaveform&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gen_wave</span> <span class="o">=</span> <span class="n">GenerateEMRIWaveform</span><span class="p">(</span><span class="s2">&quot;Pn5AAKWaveform&quot;</span><span class="p">,</span> <span class="n">use_gpu</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># parameters</span>
 <span class="n">T</span> <span class="o">=</span> <span class="mf">0.01</span>  <span class="c1"># years</span>
@@ -2917,18 +2657,18 @@ of each equation above.</p>
     <span class="n">Phi_theta0</span><span class="p">,</span>
     <span class="n">Phi_r0</span><span class="p">,</span>
     <span class="n">T</span><span class="o">=</span><span class="n">T</span><span class="p">,</span>
-    <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span>
+    <span class="n">dt</span><span class="o">=</span><span class="n">dt</span>
 <span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">real</span><span class="p">[:</span><span class="mi">2000</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">real</span><span class="p">[:</span><span class="mi">2000</span><span class="p">]))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fe0f14fb350&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x78b784388370&gt;]
 </pre></div>
 </div>
-<img alt="_images/fff4b9ed6c0de6a1e4a85fc8fbc882399fc2773c3bcae085e11091cc1bc0f5ce.png" src="_images/fff4b9ed6c0de6a1e4a85fc8fbc882399fc2773c3bcae085e11091cc1bc0f5ce.png" />
+<img alt="_images/49e2a831cd9387c93160f5cd20e58060555e5aa04353279e14bdb3f99a7d03c1.png" src="_images/49e2a831cd9387c93160f5cd20e58060555e5aa04353279e14bdb3f99a7d03c1.png" />
 </div>
 </div>
 </section>
@@ -2975,7 +2715,16 @@ of each equation above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We reduced the mode content from 3843 modes to 874 modes.
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="nn">&lt;ipython-input-76-a256c5f4a6c5&gt;</span> in <span class="ni">&lt;cell line: 20&gt;</span><span class="nt">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">18</span> 
+<span class="g g-Whitespace">     </span><span class="mi">19</span> <span class="c1"># get ylms</span>
+<span class="ne">---&gt; </span><span class="mi">20</span> <span class="n">ylms</span> <span class="o">=</span> <span class="n">ylm_gen</span><span class="p">(</span><span class="n">amp</span><span class="o">.</span><span class="n">unique_l</span><span class="p">,</span> <span class="n">amp</span><span class="o">.</span><span class="n">unique_m</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()[</span><span class="n">amp</span><span class="o">.</span><span class="n">inverse_lm</span><span class="p">]</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span> 
+<span class="g g-Whitespace">     </span><span class="mi">22</span> <span class="c1"># select modes</span>
+
+<span class="ne">NameError</span>: name &#39;ylm_gen&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -3012,7 +2761,7 @@ of each equation above.</p>
 <p>Waveforms can also be generated through a generic interface (<a class="reference external" href="https://mikekatz04.github.io/FastEMRIWaveforms/html/index.html#few.waveform.GenerateEMRIWaveform">GenerateEMRIWaveform</a>) where the specific waveform model is chosen with an argument. This can also be used to produce waveforms in the detector frame used for data analysis. This interface includes all EMRI parameters, including spin and inclination, as well as sky and orientation parameters. When a specific waveform model does not require certain parameters, the parameters will not affect the waveform generation. A detector-frame waveform in this case means <span class="math notranslate nohighlight">\(h_+,h_x\)</span> in the SSB-frame.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gen_wave</span> <span class="o">=</span> <span class="n">GenerateEMRIWaveform</span><span class="p">(</span><span class="s2">&quot;FastSchwarzschildEccentricFlux&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gen_wave</span> <span class="o">=</span> <span class="n">GenerateEMRIWaveform</span><span class="p">(</span><span class="s2">&quot;FastSchwarzschildEccentricFlux&quot;</span><span class="p">,</span> <span class="n">use_gpu</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 
 <span class="n">T</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">12</span><span class="o">/</span><span class="mi">30</span><span class="o">/</span><span class="mi">24</span>  <span class="c1"># years</span>
 <span class="n">dt</span> <span class="o">=</span> <span class="mf">15.0</span>  <span class="c1"># seconds</span>
@@ -3066,8 +2815,8 @@ of each equation above.</p>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Time duration </span><span class="si">{</span><span class="n">T</span><span class="si">:</span><span class="s1">.2e</span><span class="si">}</span><span class="s1"> years&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">h</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$h_+$&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">h</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$-h_\times$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">real</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$h_+$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">imag</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$-h_\times$&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t [seconds]&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
@@ -3076,7 +2825,7 @@ of each equation above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0e14282d53159d99e68de389addeefc86b501ea8b1496cd3eb061ffa83b3a88f.png" src="_images/0e14282d53159d99e68de389addeefc86b501ea8b1496cd3eb061ffa83b3a88f.png" />
+<img alt="_images/5091b2b945434f6381ae1d9f867cad6a445f7f7e59ee770f2d2f3970716b697a.png" src="_images/5091b2b945434f6381ae1d9f867cad6a445f7f7e59ee770f2d2f3970716b697a.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -3105,8 +2854,8 @@ of each equation above.</p>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Time duration </span><span class="si">{</span><span class="n">T</span><span class="si">:</span><span class="s1">.2e</span><span class="si">}</span><span class="s1"> years&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">h</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$h_+$&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">h</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$-h_\times$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">real</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$h_+$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">imag</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$-h_\times$&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t [seconds]&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
@@ -3115,7 +2864,7 @@ of each equation above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c672555af28be03d40859d3da9531057757ebd64467462669a0318ab8953255c.png" src="_images/c672555af28be03d40859d3da9531057757ebd64467462669a0318ab8953255c.png" />
+<img alt="_images/497756a72908c99684cd3b9b5a29a5f6d4d38f4f74524a41ce97386449129036.png" src="_images/497756a72908c99684cd3b9b5a29a5f6d4d38f4f74524a41ce97386449129036.png" />
 </div>
 </div>
 </section>
@@ -3153,9 +2902,9 @@ of each equation above.</p>
     <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">))</span> <span class="o">*</span> <span class="n">dt</span>
 
 
-    <span class="n">FFT</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">real</span><span class="p">)</span><span class="o">*</span><span class="n">dt</span> <span class="o">/</span> <span class="n">Tnew</span> <span class="o">/</span><span class="n">mu</span>
+    <span class="n">FFT</span><span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">real</span><span class="p">)</span><span class="o">*</span><span class="n">dt</span> <span class="o">/</span> <span class="n">Tnew</span> <span class="o">/</span><span class="n">mu</span>
     <span class="n">f</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">dt</span><span class="p">),</span> <span class="n">num</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span> <span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">f</span> <span class="o">*</span><span class="n">M</span><span class="o">*</span><span class="n">MTSUN_SI</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">FFT</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="sa">fr</span><span class="s1">&#39;$h_+$, M=</span><span class="si">{</span><span class="n">M</span><span class="si">:</span><span class="s1">.2e</span><span class="si">}</span><span class="s1">, Tinsp=</span><span class="si">{</span><span class="n">Tnew</span><span class="si">:</span><span class="s1">.1e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">f</span> <span class="o">*</span><span class="n">M</span><span class="o">*</span><span class="n">MTSUN_SI</span><span class="p">,</span> <span class="n">xp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">xp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">FFT</span><span class="p">)),</span> <span class="n">label</span><span class="o">=</span><span class="sa">fr</span><span class="s1">&#39;$h_+$, M=</span><span class="si">{</span><span class="n">M</span><span class="si">:</span><span class="s1">.2e</span><span class="si">}</span><span class="s1">, Tinsp=</span><span class="si">{</span><span class="n">Tnew</span><span class="si">:</span><span class="s1">.1e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="n">max_FFT</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">FFT</span><span class="p">)))</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">M</span><span class="p">,</span><span class="n">max_FFT</span><span class="p">)</span>
 <span class="c1">#     plt.plot(t, h.imag, label=r&#39;$-h_\times$&#39;)</span>
@@ -3169,14 +2918,14 @@ of each equation above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100000.0 [3.577329752505046e-18]
-237137.37056616554 [3.577329752505046e-18, 3.577004826483748e-18]
-562341.3251903491 [3.577329752505046e-18, 3.577004826483748e-18, 3.577083417127196e-18]
-1333521.432163324 [3.577329752505046e-18, 3.577004826483748e-18, 3.577083417127196e-18, 3.5771349252280955e-18]
-3162277.6601683795 [3.577329752505046e-18, 3.577004826483748e-18, 3.577083417127196e-18, 3.5771349252280955e-18, 3.5771327572085345e-18]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100000.0 [array(3.57732975e-18)]
+237137.37056616554 [array(3.57732975e-18), array(3.57700483e-18)]
+562341.3251903491 [array(3.57732975e-18), array(3.57700483e-18), array(3.57708342e-18)]
+1333521.432163324 [array(3.57732975e-18), array(3.57700483e-18), array(3.57708342e-18), array(3.57713493e-18)]
+3162277.6601683795 [array(3.57732975e-18), array(3.57700483e-18), array(3.57708342e-18), array(3.57713493e-18), array(3.57713276e-18)]
 </pre></div>
 </div>
-<img alt="_images/2287bb01aa88817f8a016bf00aca9602ebeeef493cd020f9346f0735452ea7e0.png" src="_images/2287bb01aa88817f8a016bf00aca9602ebeeef493cd020f9346f0735452ea7e0.png" />
+<img alt="_images/0169959db08e6690100d54e8229836fa79c092aa0c9ec488cc175854c350cb9a.png" src="_images/0169959db08e6690100d54e8229836fa79c092aa0c9ec488cc175854c350cb9a.png" />
 </div>
 </div>
 </section>
@@ -3773,7 +3522,7 @@ Final point in semi-latus rectum is 6.492151527809079
 <h1>Analytical solution<a class="headerlink" href="#analytical-solution" title="Permalink to this heading">#</a></h1>
 <p>We need to calculate $<span class="math notranslate nohighlight">\(\Gamma_{d_{L}d_{L}} = 4\mathcal{R}\int_{0}^{\infty} \frac{1}{S_{n}(f)}\bigg\rvert \partial_{d_{L}}\tilde{h}\bigg\rvert^{2} df.\)</span>$</p>
 <p>Notice that since <span class="math notranslate nohighlight">\(\tilde{h}(f) \sim 1/d_{L}\)</span>, we have that <span class="math notranslate nohighlight">\(\partial_{d_{L}}\tilde{h}(f) \sim -\frac{1}{d_{L}^2}\)</span>. We thus have that
-$<span class="math notranslate nohighlight">\( \partial_{d_{L}}\tilde{h}(f) = -\frac{1}{d_{L}}\tilde{h}(f) \Longrightarrow |\partial_{d_{L}}\tilde{h}(f)|^2 = \left(\frac{1}{d_{L}}\right)^2 |\tilde{h}(f)|^2 \)</span><span class="math notranslate nohighlight">\( This implies that 
+$<span class="math notranslate nohighlight">\( \partial_{d_{L}}\tilde{h}(f) = -\frac{1}{d_{L}}\tilde{h}(f) \Longrightarrow |\partial_{d_{L}}\tilde{h}(f)|^2 = \left(\frac{1}{d_{L}}\right)^2 |\tilde{h}(f)|^2 \)</span><span class="math notranslate nohighlight">\( This implies that
 \)</span><span class="math notranslate nohighlight">\( \Gamma_{d_{L}d_{L}} = 4\mathcal{R}\int_{0}^{\infty} \frac{1}{S_{n}(f)}\big\rvert \partial_{d_{L}}\tilde{h}\big\rvert^{2} df = \left(\frac{1}{d_{L}}\right)^2 \cdot 4\mathcal{R}\int_{0}^{\infty} \frac{1}{S_{n}(f)}\big\rvert \tilde{h}(f)\big\rvert^{2} df = \left(\frac{(h|h)^2}{d^2_{L}}\right) = \frac{\rho^2}{d_{L}^2}\)</span>$</p>
 <p>The result then follows that <span class="math notranslate nohighlight">\(\Delta d_{L} = (\Gamma^{-1}_{d_{L}d_{L}})^{1/2} = \frac{d_{L}}{\rho} \)</span> as required.</p>
 </section>
