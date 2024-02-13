@@ -580,6 +580,9 @@ p(t), e(t), x_I(t), \Phi_\varphi(t), \Phi_\theta(t), \Phi_r(t)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="_images/c08f47e13a7423b14563010c73834451017a3d803cea25b0466b4b38521f522a.png" src="_images/c08f47e13a7423b14563010c73834451017a3d803cea25b0466b4b38521f522a.png" />
+</div>
 </div>
 </section>
 </section>
@@ -875,8 +878,8 @@ T_{\text{observation}} \sim 1/\epsilon
 </ol>
 <p>You should find that:</p>
 <ol class="arabic simple">
-<li><p>The relation between time-duration and eccentricity is weak</p></li>
-<li><p>The relation between time-duration and semi-latus rectum is near-linear</p></li>
+<li><p>The relation between time-duration and eccentricity is weak.</p></li>
+<li><p>The relation between time-duration and semi-latus rectum is exponential.</p></li>
 <li><p>The relation between time-duration and <span class="math notranslate nohighlight">\(M/\epsilon\)</span> is perfectly linear.</p></li>
 </ol>
 <div class="cell docutils container">
@@ -1116,7 +1119,7 @@ T_{\text{observation}} \sim 1/\epsilon
 </section>
 <section id="exercise-2">
 <h2>Exercise 2<a class="headerlink" href="#exercise-2" title="Permalink to this heading">#</a></h2>
-<p>Plot the FINAL number of cycles (<code class="docutils literal notranslate"><span class="pre">Ncycle.append(Phi_phi[-1]/(2*np.pi))</span></code>) for different mass ratios. What do you find? If you see a linear relationship then well done!!!</p>
+<p>Plot the FINAL number of cycles (<code class="docutils literal notranslate"><span class="pre">Ncycle.append(Phi_phi[-1]/(2*np.pi))</span></code>) for different mass ratios. What do you find?</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # set initial parameters</span>
@@ -2673,8 +2676,8 @@ of each equation above.</p>
 </ol>
 <p>You should find that:</p>
 <ol class="arabic simple">
-<li><p>The relation between time-duration and eccentricity is weak</p></li>
-<li><p>The relation between time-duration and semi-latus rectum is near-linear</p></li>
+<li><p>The relation between time-duration and eccentricity is weak.</p></li>
+<li><p>The relation between time-duration and semi-latus rectum is exponential.</p></li>
 <li><p>The relation between time-duration and <span class="math notranslate nohighlight">\(M/\epsilon\)</span> is perfectly linear.</p></li>
 </ol>
 <div class="cell docutils container">
@@ -2771,6 +2774,11 @@ of each equation above.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/a12186be0cb80f2045869464301308ceeb143d2c48ce2eaddab7f93dba5ad611.png" src="_images/a12186be0cb80f2045869464301308ceeb143d2c48ce2eaddab7f93dba5ad611.png" />
+<img alt="_images/39624696d8e17f865e489b8203dc90fadfecf01799a42958725e5e7e7a0acabe.png" src="_images/39624696d8e17f865e489b8203dc90fadfecf01799a42958725e5e7e7a0acabe.png" />
+<img alt="_images/8fcfd02a86a2dc01d5afabc99b87b3dad97440127b90dffaca218820a7dfb549.png" src="_images/8fcfd02a86a2dc01d5afabc99b87b3dad97440127b90dffaca218820a7dfb549.png" />
 </div>
 </div>
 </section>
@@ -3018,16 +3026,16 @@ $<span class="math notranslate nohighlight">\( \partial_{d_{L}}\tilde{h}(f) = -\
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "python"
+            mode: "vanilla_few"
         },
         kernelOptions: {
-            name: "python3",
+            name: "vanilla_few",
             path: "./."
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3'</script>
+    <script>kernelName = 'vanilla_few'</script>
 
                 </article>
               
