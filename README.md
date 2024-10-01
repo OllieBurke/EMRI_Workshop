@@ -22,5 +22,9 @@ To get access to the GPUs, follow the steps carefully:
 1. Execute the first cell
 2. Pray it works. If it crashes, just execute it again. Brute force is key here. 
 
+## Credit:
 
+Author **Ollie Burke** -- ollie.burke@l2it.in2p3.fr
+Based off Lorenzo's Grappa tutorial **Lorenzo Speri** -- lorenzo.speri@aei.mpg.de
+Contributions towards google collab and setting up tutorial **Avi Vajpeyi** -- avi.vajpeyi@gmail.com
 
